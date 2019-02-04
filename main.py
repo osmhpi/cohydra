@@ -12,19 +12,22 @@ conleft.create()
 conright = LXDContainer("con-right", "ubuntu:16.04")
 conright.create()
 
+# conleft2 = LXDContainer("con-left2", "ubuntu:16.04")
+# conleft2.create()
 
 conleft.start()
+# conleft2.start()
 conright.start()
 
 try:
-    print("a1")
-    network = CSMANetwork(2, 100, 2000)
-    print("a2")
-    network.add_node(conleft, "10.199.198.2", "24", "10.199.198.255", "10.199.198.1")
-    print("a3")
-    network.add_node(conright, "10.199.199.2", "24", "10.199.199.255", "10.199.199.1")
-    print("a4")
-    #network.set_delay(2000)
+    network = CSMANetwork(3, 100, 300)
+    network.add_node(conleft, "10.199.199.2", "24")
+    # network.add_node(conleft2, "10.199.199.3", "24")
+    network.add_node(conright, "10.199.199.4", "24")
+
+    # network = CSMANetwork(2, 100, 50)
+    # network.add_node(conleft, "10.199.200.2", "24")
+    # network.add_node(conleft2, "10.199.200.3", "24")
 
     ns.core.Simulator.Stop(ns.core.Seconds(6000))
     print("Start Simulation")

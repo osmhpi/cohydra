@@ -19,21 +19,14 @@ class CSMANetwork:
         self.devices = self.csmaHelper.Install(self.nodes)
         self.node_counter = 0
 
-    def add_node(self, node, ipv4_addr, ipv4_prefix, broadcast_addr, bridge_addr):
+    def add_node(self, node, ipv4_addr, ipv4_prefix):
         if self.node_counter >= self.size:
             print("Cannot connect since network is full")
             return
-        # netdevice = node.connect_to_netdevice(ipv4_addr, ipv4_prefix, broadcast_addr, bridge_addr)
-        print("b1")
-        # self.channel.Attach(netdevice)
-        print("b2")
-        # netdevice.Attach(self.channel)
-        print("b3")
         node.connect_to_netdevice(self.nodes.Get(self.node_counter), self.devices.Get(self.node_counter),
-                                  ipv4_addr, ipv4_prefix, broadcast_addr, bridge_addr)
+                                  ipv4_addr, ipv4_prefix)
         self.node_counter = self.node_counter + 1
-        print("b4")
-
+        
     def del_node(self, node):
         pass
 
