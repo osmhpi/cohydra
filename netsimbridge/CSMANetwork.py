@@ -26,7 +26,7 @@ class CSMANetwork:
         node.connect_to_netdevice(self.nodes.Get(self.node_counter), self.devices.Get(self.node_counter),
                                   ipv4_addr, ipv4_prefix)
         self.node_counter = self.node_counter + 1
-        
+
     def del_node(self, node):
         pass
 

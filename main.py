@@ -2,6 +2,28 @@ from netsimbridge.CSMANetwork import CSMANetwork
 from lxdcontainer.LXDContainer import LXDContainer
 import ns.core
 import sys
+# import ns.fd_net_device
+
+# emuHelper = ns.fd_net_device.EmuFdNetDeviceHelper()
+# print(type(emuHelper).__dict__)
+# print("Import successful")
+# exit(0)
+
+def overwrite_content_in_file(path, content):
+    print("Write "+content+ " to "+path)
+    f = open(path, "w")
+    f.write(content)
+
+def prepare_scenario():
+    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-arptables", "0")
+    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-iptables", "0")
+    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-filter-vlan-tagged", "0")
+    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-ip6tables", "0")
+    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-filter-pppoe-tagged", "0")
+    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-pass-vlan-input-dev", "0")
+
+
+prepare_scenario()
 
 ns.core.GlobalValue.Bind("SimulatorImplementationType", ns.core.StringValue("ns3::RealtimeSimulatorImpl"))
 ns.core.GlobalValue.Bind("ChecksumEnabled", ns.core.BooleanValue("true"))
