@@ -1,7 +1,11 @@
+from __future__ import print_function
+
 from netsimbridge.CSMANetwork import CSMANetwork
 from lxdcontainer.LXDContainer import LXDContainer
+from events.After import after
 import ns.core
 import sys
+
 # import ns.fd_net_device
 
 # emuHelper = ns.fd_net_device.EmuFdNetDeviceHelper()
@@ -41,6 +45,9 @@ conleft2.create()
 conleft.start()
 conleft2.start()
 conright.start()
+
+after(30).execute(lambda: conleft2.stop())
+after(60).execute(lambda: conleft2.start())
 
 try:
     network = CSMANetwork("net1", 3, 100, 300)
