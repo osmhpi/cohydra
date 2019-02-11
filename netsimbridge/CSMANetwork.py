@@ -8,7 +8,11 @@ import ns.applications
 
 class CSMANetwork:
 
-    def __init__(self, size, datarate, delay):
+    def __init__(self, name, size, datarate, delay):
+        self.name = name
+        if len(self.name) > 5:
+            raise ValueError("Network name can not be longer than 4 characters.")
+
         self.size = size
         self.nodes = ns.network.NodeContainer()
         self.nodes.Create(size)
@@ -23,7 +27,7 @@ class CSMANetwork:
         if self.node_counter >= self.size:
             print("Cannot connect since network is full")
             return
-        node.connect_to_netdevice(self.nodes.Get(self.node_counter), self.devices.Get(self.node_counter),
+        node.connect_to_netdevice(self.name, self.nodes.Get(self.node_counter), self.devices.Get(self.node_counter),
                                   ipv4_addr, ipv4_prefix)
         self.node_counter = self.node_counter + 1
 

@@ -10,9 +10,12 @@ from bridge.BridgeDevice import BridgeDevice
 class LXDContainer:
 
     def __init__(self, name, image):
+        self.name = name
+        if len(self.name) > 5:
+            raise ValueError("Container name can not be longer than 5 characters.")
+
         self.tun = None
         self.br = None
-        self.name = name
         self.image = image
         self.node = None
         self.tapbridge = None
@@ -22,22 +25,22 @@ class LXDContainer:
     def create(self):
         subprocess.call(["lxc", "init", self.image, self.name])
 
-    def connect_to_netdevice(self, ns3node, netdevice, ipv4_addr, ip_prefix):
+    def connect_to_netdevice(self, network_name, ns3node, netdevice, ipv4_addr, ip_prefix):
         # Create Tun-Tap Device and Bridge
-        self.tun = TunTapDevice("tun-"+self.name)
+        self.tun = TunTapDevice("tun-"+network_name+"-"+self.name)
         self.tun.create()
         self.tun.up()
 
-        self.br = BridgeDevice("br-"+self.name)
+        self.br = BridgeDevice("br-"+network_name+"-"+self.name)
         self.br.create()
         self.br.add_interface(self.tun)
         self.br.up()
 
         # Generate Network Interface Name
         suffix_length = 5
-        interface_name = "vnet" + ''.join(random.choice(string.ascii_lowercase) for _ in range(suffix_length))
+        interface_name = "vnet-" + network_name + "-" + ''.join(random.choice(string.ascii_lowercase) for _ in range(suffix_length))
         while interface_name in self.interfaces:
-            interface_name = "vnet" + ''.join(random.choice(string.ascii_lowercase) for _ in range(suffix_length))
+            interface_name = "vnet-" + network_name + "-" + ''.join(random.choice(string.ascii_lowercase) for _ in range(suffix_length))
         self.interfaces.append(interface_name)
 
         # Add NIC
