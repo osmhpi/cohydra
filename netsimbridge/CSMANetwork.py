@@ -6,7 +6,7 @@ import ns.csma
 import ns.applications
 
 
-class CSMANetwork:
+class CSMANetwork(object):
 
     def __init__(self, name, size, datarate, delay):
         self.name = name

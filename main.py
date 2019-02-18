@@ -3,6 +3,7 @@ from __future__ import print_function
 from netsimbridge.CSMANetwork import CSMANetwork
 from lxdcontainer.LXDContainer import LXDContainer
 from events.After import after
+from events.When import when
 import ns.core
 import sys
 
@@ -47,7 +48,10 @@ conleft2.start()
 conright.start()
 
 after(30).execute(lambda: conleft2.stop())
-after(60).execute(lambda: conleft2.start())
+# after(60).execute(lambda: conleft2.start())
+when(lambda: conleft2.running is False, globals(), locals()).execute(lambda obs, old, new: conleft2.start())
+# every(500).checkIf("ls -la").returns(0).thenExecute(lambda: print("ls -la returned 0"))
+# checkIf("ls -la").returns(0).thenExecute(lambda: print("ls -la returned 0"))
 
 try:
     network = CSMANetwork("net1", 3, 100, 300)

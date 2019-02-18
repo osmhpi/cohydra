@@ -8,7 +8,7 @@ from tuntap.TunTapDevice import TunTapDevice
 from bridge.BridgeDevice import BridgeDevice
 
 
-class LXDContainer:
+class LXDContainer(object):
 
     def __init__(self, name, image):
         self.name = name
@@ -17,6 +17,7 @@ class LXDContainer:
 
         self.image = image
         self.interfaces = {}
+        self.running = False
 
     def create(self):
         print("Create container " + self.name)
@@ -75,12 +76,14 @@ class LXDContainer:
         print("Start container " + self.name)
         subprocess.call(["lxc", "start", self.name])
         self.start_interfaces()
+        self.running = True
 
     def stop(self):
         print("Stop container " + self.name)
         subprocess.call(["lxc", "stop", self.name])
         for interface_name in self.interfaces:
             self.interfaces[interface_name].up = False
+        self.running = False
 
     def destroy(self):
         print("Destroy container " + self.name)
@@ -95,7 +98,7 @@ class LXDContainer:
                 interface.tun.destroy()
 
 
-class NetworkInterface:
+class NetworkInterface(object):
 
     def __init__(self, interface_name, network_name):
         self.interface_name = interface_name
