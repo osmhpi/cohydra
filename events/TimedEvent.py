@@ -1,7 +1,7 @@
 import ns.core
 
 
-class TimedEvent:
+class TimedEvent(object):
 
     def __init__(self, seconds):
         self.seconds = seconds
