@@ -2,9 +2,7 @@ from __future__ import print_function
 
 from netsimbridge.CSMANetwork import CSMANetwork
 from lxdcontainer.LXDContainer import LXDContainer
-from events.After import after
-from events.When import when
-from events.CheckIf import check_if, every
+from events.Event import e
 import ns.core
 import sys
 
@@ -48,11 +46,8 @@ conleft.start()
 conleft2.start()
 conright.start()
 
-# after(30).execute(lambda: conleft2.stop())
-# after(60).execute(lambda: conleft2.start())
-# when(lambda: conleft2.running is False, globals(), locals()).execute(lambda obs, old, new: conleft2.start())
-every(2).check_if("ls -la").returns(0).then_execute(lambda: print("ls -la returned 0"))
-check_if("pwd").returns(0).then_execute(lambda: print("pwd returned 0"))
+e().after(10).execute(lambda: print("After 10 seconds"))\
+    .after(15).execute(lambda: print("After 25 seconds")).start_on_simulation_start()
 
 try:
     network = CSMANetwork("net1", 3, 100, 300)
