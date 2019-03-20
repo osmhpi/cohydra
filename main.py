@@ -50,21 +50,27 @@ e().after(10).execute(lambda: print("After 10 seconds"))\
     .after(15).execute(lambda: print("After 25 seconds")).start_on_simulation_start()
 
 try:
-    network = CSMANetwork("net1", 3, 100, 300)
+    network = CSMANetwork("net1")
+    network.set_delay(300)
+    network.set_data_rate(100)
     network.add_node(conleft, "10.199.199.2", "24")
     network.add_node(conleft2, "10.199.199.3", "24")
     network.add_node(conright, "10.199.199.4", "24")
+    network.create()
 
-    network = CSMANetwork("net2", 2, 100, 50)
-    network.add_node(conleft, "10.199.200.2", "24")
-    network.add_node(conleft2, "10.199.200.3", "24")
+    network2 = CSMANetwork("net2")
+    network2.set_delay(50)
+    network2.set_data_rate(100)
+    network2.add_node(conleft, "10.199.200.2", "24")
+    network2.add_node(conleft2, "10.199.200.3", "24")
+    network2.create()
 
     ns.core.Simulator.Stop(ns.core.Seconds(6000))
     print("Start Simulation")
     ns.core.Simulator.Run(signal_check_frequency=-1)
     print("Simulation stopped")
 except:
-    print("Unexpected error:", sys.exc_info()[0])
+    print("Unexpected error:", sys.exc_info())
     pass
 
 print("Start cleanup")

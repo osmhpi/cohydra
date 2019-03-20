@@ -3,6 +3,7 @@ import string
 import subprocess
 
 import ns.tap_bridge
+import ns.network
 
 from tuntap.TunTapDevice import TunTapDevice
 from bridge.BridgeDevice import BridgeDevice
@@ -18,6 +19,12 @@ class LXDContainer(object):
         self.image = image
         self.interfaces = {}
         self.running = False
+        self.ns3node = None
+
+    def get_ns3_node(self):
+        if self.ns3node is None:
+            self.ns3node = ns.network.Node()
+        return self.ns3node
 
     def create(self):
         print("Create container " + self.name)
@@ -30,7 +37,7 @@ class LXDContainer(object):
                 self.execute_command("ip addr add " + interface.ip_addr + " dev " + interface_name, True)
                 self.interfaces[interface_name].up = True
 
-    def connect_to_netdevice(self, network_name, ns3node, netdevice, ipv4_addr, ip_prefix):
+    def connect_to_netdevice(self, network_name, netdevice, ipv4_addr, ip_prefix):
         # Generate Network Interface Name
         suffix_length = 5
         interface_name = "vnet-" + network_name + "-" + ''.join(
@@ -60,7 +67,7 @@ class LXDContainer(object):
         interface.tapbridge = ns.tap_bridge.TapBridgeHelper()
         interface.tapbridge.SetAttribute("Mode", ns.core.StringValue("UseBridge"))
         interface.tapbridge.SetAttribute("DeviceName", ns.core.StringValue(interface.tun.name))
-        interface.tapbridge.Install(ns3node, netdevice)
+        interface.tapbridge.Install(self.get_ns3_node(), netdevice)
 
         self.interfaces[interface_name] = interface
         self.start_interfaces()
