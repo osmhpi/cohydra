@@ -1,9 +1,7 @@
-import random
-import string
-import subprocess
-
 import ns.tap_bridge
 import ns.network
+from pexpect import pxssh
+import re
 
 from tuntap.TunTapDevice import TunTapDevice
 from bridge.BridgeDevice import BridgeDevice
@@ -57,8 +55,38 @@ class ExternalNetwork(object):
         self.tapbridge.SetAttribute("DeviceName", ns.core.StringValue(self.tun.name))
         self.tapbridge.Install(self.get_ns3_node(), netdevice)
 
-    def execute_command(self, command, sudo=False):
-        print("Execute Command has no effect for external networks.")
+    def execute_command(self, ip, user, password, command, sudo=False):
+        try:
+            s = pxssh.pxssh()
+            if password is None:
+                s.login(ip, user, sync_multiplier=10)
+            else:
+                s.login(ip, user, password, sync_multiplier=10)
+
+            if sudo:
+                rootprompt = re.compile('.*[$#]')
+                s.sendline('sudo -s')
+                i = s.expect([rootprompt, 'assword.*: '])
+                if i == 0:
+                    pass
+                elif i == 1:
+                    s.sendline(password)
+                    j = s.expect([rootprompt, 'Sorry, try again'])
+                    if j == 1:
+                        raise Exception("bad password")
+                else:
+                    raise Exception("unexpected output")
+                s.prompt()
+                s.sendline(command)
+                s.prompt()
+                s.sendline("exit")
+            else:
+                s.sendline(command)
+                s.prompt()
+            s.logout()
+        except pxssh.ExceptionPxssh as e:
+            print("pxssh failed on login.")
+            print(e)
 
     def start(self):
         print("Start has no effect for external networks.")
