@@ -37,7 +37,8 @@ class LXDContainer(object):
                 self.execute_command("ip addr add " + interface.ip_addr + " dev " + interface_name, True)
                 self.interfaces[interface_name].up = True
 
-    def connect_to_netdevice(self, network_name, netdevice, ipv4_addr, ip_prefix):
+    def connect_to_netdevice(self, network_name, netdevice, ipv4_addr, ip_prefix, bridge_connect=False,
+                             bridge_connect_ip=None, bridge_connect_mask=None):
         # Generate Network Interface Name
         suffix_length = 5
         interface_name = "vnet-" + network_name + "-" + ''.join(
@@ -58,6 +59,8 @@ class LXDContainer(object):
         interface.br.create()
         interface.br.add_interface(interface.tun)
         interface.br.up()
+        if bridge_connect:
+            interface.br.connect_veth(bridge_connect_ip, bridge_connect_mask)
 
         # Add NIC
         print(subprocess.call(["lxc", "config", "device", "add", self.name, interface_name, "nic",

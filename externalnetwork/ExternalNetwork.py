@@ -32,7 +32,8 @@ class ExternalNetwork(object):
     def create(self):
         print("Create has no effect for external networks")
 
-    def connect_to_netdevice(self, network_name, netdevice, ipv4_addr, ip_prefix):
+    def connect_to_netdevice(self, network_name, netdevice, ipv4_addr, ip_prefix, bridge_connect=False,
+                             bridge_connect_ip=None, bridge_connect_mask=None):
         if self.connected:
             print("External networks can be connected only once. Abort")
             return
@@ -47,6 +48,8 @@ class ExternalNetwork(object):
         self.br.add_interface(self.tun)
         self.br.add_interface(self.interface)
         self.br.up()
+        if bridge_connect:
+            self.br.connect_veth(bridge_connect_ip, bridge_connect_mask)
 
         # Connect to ns-3
         self.tapbridge = ns.tap_bridge.TapBridgeHelper()

@@ -19,8 +19,10 @@ class CSMANetwork(object):
         self.datarate = 100
         self.delay = 0
 
-    def add_node(self, system_node, ipv4_addr, ipv4_prefix):
-        self.system_nodes.append((system_node, ipv4_addr, ipv4_prefix))
+    def add_node(self, system_node, ipv4_addr=None, ipv4_prefix=None, bridge_connect=False,
+                 bridge_connect_ip=None, bridge_connect_mask=None):
+        self.system_nodes.append((system_node, ipv4_addr, ipv4_prefix, bridge_connect,
+                                  bridge_connect_ip, bridge_connect_mask))
 
     def del_node(self, node):
         pass
@@ -43,8 +45,9 @@ class CSMANetwork(object):
 
         for i in range(0, len(self.system_nodes)):
             system_node_tuple = self.system_nodes[i]
-            system_node_tuple[0].connect_to_netdevice(self.name, self.devices.Get(i),
-                                                      system_node_tuple[1], system_node_tuple[2])
+            system_node_tuple[0].connect_to_netdevice(self.name, self.devices.Get(i), system_node_tuple[1],
+                                                      system_node_tuple[2], system_node_tuple[3], system_node_tuple[4],
+                                                      system_node_tuple[5])
 
     def destroy(self):
         pass
