@@ -53,7 +53,6 @@ class Event(object):
         return self
 
     def start(self):
-        print("Start simulation")
         thread = Thread(target=event_worker, args=(self.queue,))
         thread.start()
 
