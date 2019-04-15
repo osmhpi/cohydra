@@ -56,12 +56,13 @@ class ExternalNetwork(object):
         self.tapbridge.Install(self.get_ns3_node(), netdevice)
 
     def execute_command(self, ip, user, password, command, sudo=False):
+        print("Execute " + command + " on " + ip)
         try:
-            s = pxssh.pxssh()
+            s = pxssh.pxssh(timeout=300)
             if password is None:
-                s.login(ip, user, sync_multiplier=10)
+                s.login(ip, user, sync_multiplier=10, login_timeout=10)
             else:
-                s.login(ip, user, password, sync_multiplier=10)
+                s.login(ip, user, password, sync_multiplier=10, login_timeout=10)
 
             if sudo:
                 rootprompt = re.compile('.*[$#]')
@@ -78,11 +79,11 @@ class ExternalNetwork(object):
                     raise Exception("unexpected output")
                 s.prompt()
                 s.sendline(command)
-                s.prompt()
+                s.prompt(timeout=-1)
                 s.sendline("exit")
             else:
                 s.sendline(command)
-                s.prompt()
+                s.prompt(timeout=-1)
             s.logout()
         except pxssh.ExceptionPxssh as e:
             print("pxssh failed on login.")
