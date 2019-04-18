@@ -54,6 +54,7 @@ class Event(object):
 
     def start(self):
         thread = Thread(target=event_worker, args=(self.queue,))
+        thread.daemon = True
         thread.start()
 
     def s(self):
@@ -84,7 +85,6 @@ def event_worker(queue):
 
     def exec_execute(event_part):
         event_part.expression()
-        pass
 
     def process():
         while not queue.empty():
