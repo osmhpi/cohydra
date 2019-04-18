@@ -21,6 +21,7 @@ class ExternalNetwork(object):
         self.br = None
         self.tapbridge = None
         self.connected = False
+        self.bridge_connected = False
 
     def get_ns3_node(self):
         if self.ns3node is None:
@@ -46,7 +47,9 @@ class ExternalNetwork(object):
         self.br.add_interface(self.tun)
         self.br.add_interface(self.interface)
         self.br.up()
-        if bridge_connect:
+
+        self.bridge_connected = bridge_connect
+        if self.bridge_connected:
             self.br.connect_veth(bridge_connect_ip, bridge_connect_mask)
 
         # Connect to ns-3
@@ -57,6 +60,13 @@ class ExternalNetwork(object):
 
     def execute_command(self, ip, user, password, command, sudo=False):
         print("Execute " + command + " on " + ip)
+        if self.connected is False:
+            print("Network " + self.name + " is not connected. Command execution is not possible.")
+            return
+
+        if self.bridge_connected is False:
+            print("Warning: Network " + self.name + " has no bridge connection. Executing commands can be impossible.")
+
         try:
             s = pxssh.pxssh(timeout=300)
             if password is None:
