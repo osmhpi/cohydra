@@ -70,9 +70,9 @@ class ExternalNetwork(object):
         try:
             s = pxssh.pxssh(timeout=300)
             if password is None:
-                s.login(ip, user, sync_multiplier=10, login_timeout=10)
+                s.login(ip, user, sync_multiplier=10, login_timeout=30)
             else:
-                s.login(ip, user, password, sync_multiplier=10, login_timeout=10)
+                s.login(ip, user, password, sync_multiplier=10, login_timeout=30)
 
             if sudo:
                 rootprompt = re.compile('.*[$#]')
@@ -87,17 +87,17 @@ class ExternalNetwork(object):
                         raise Exception("bad password")
                 else:
                     raise Exception("unexpected output")
-                s.prompt()
                 s.sendline(command)
-                s.prompt(timeout=-1)
                 s.sendline("exit")
             else:
                 s.sendline(command)
-                s.prompt(timeout=-1)
+                s.prompt(timeout=30)
             s.logout()
         except pxssh.ExceptionPxssh as e:
             print("pxssh failed on login.")
             print(e)
+            return
+        print("Command executed")
 
     def start(self):
         print("Start has no effect for external networks.")
