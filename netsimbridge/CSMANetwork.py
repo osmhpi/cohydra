@@ -115,7 +115,7 @@ class CSMANetwork(object):
                 self.disconnect_node(connected_node.system_node)
 
     def set_delay(self, delay):
-        print("Set delay of network " + self.name + " to " + delay)
+        print("Set delay of network " + self.name + " to " + str(delay))
         self.delay = delay
         if self.csma_channel is not None:
             ns.core.Config.Set("/ChannelList/" + str(self.csma_channel.GetId()) + "/$ns3::CsmaChannel/Delay",
