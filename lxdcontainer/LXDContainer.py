@@ -11,11 +11,12 @@ from bridge.BridgeDevice import BridgeDevice
 
 class LXDContainer(object):
 
-    def __init__(self, name, image):
+    def __init__(self, name, image, additional_configs=None):
         self.name = name
         if len(self.name) > 5:
             raise ValueError("Container name can not be longer than 5 characters.")
 
+        self.additional_configs = additional_configs if additional_configs else []
         self.image = image
         self.interfaces = {}
         self.running = False
@@ -29,6 +30,11 @@ class LXDContainer(object):
     def create(self):
         print("Create container " + self.name)
         subprocess.call(["lxc", "init", self.image, self.name])
+        for config in self.additional_configs:
+            self._configure_container(config)
+
+    def _configure_container(self, config):
+        subprocess.call(["lxc", "config", "set", self.name, config['property'], config['value']])
 
     def start_interfaces(self):
         for interface_name, interface in self.interfaces.items():
