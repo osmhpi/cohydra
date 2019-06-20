@@ -3,8 +3,10 @@ from __future__ import print_function
 from netsimbridge.CSMANetwork import CSMANetwork
 from lxdcontainer.LXDContainer import LXDContainer
 from events.Event import e
+from sumo.SumoSimulation import SumoSimulation
 import ns.core
 import sys
+import math
 
 # import ns.fd_net_device
 
@@ -39,31 +41,43 @@ conleft.create()
 conright = LXDContainer("right", "ubuntu:16.04")
 conright.create()
 
-conleft2 = LXDContainer("left2", "ubuntu:16.04")
-conleft2.create()
+# conleft2 = LXDContainer("left2", "ubuntu:16.04")
+# conleft2.create()
 
 conleft.start()
-conleft2.start()
+# conleft2.start()
 conright.start()
 
-e().after(10).execute(lambda: print("After 10 seconds"))\
-    .after(15).execute(lambda: print("After 25 seconds")).start_on_simulation_start()
+network = CSMANetwork("net1")
+network.set_delay(0)
+network.set_data_rate("100Mbps")
+network.add_node(conleft, "10.1.1.2", "24", connect_on_create=True)
+# network.add_node(conleft2, "10.199.199.3", "24")
+network.add_node(conright, "10.1.1.4", "24", connect_on_create=True)
+network.create()
+
+# e().after(10).execute(lambda: print("After 10 seconds"))\
+#     .after(15).execute(lambda: print("After 25 seconds")).start_on_simulation_start()
+
+
+def after_sumo_simulation_step(simulation, traci):
+    dist = simulation.get_distance_between_nodes(conleft, conright)
+    network.set_delay(int(math.ceil(dist)))
+
 
 try:
-    network = CSMANetwork("net1")
-    network.set_delay(300)
-    network.set_data_rate(100)
-    network.add_node(conleft, "10.199.199.2", "24")
-    network.add_node(conleft2, "10.199.199.3", "24")
-    network.add_node(conright, "10.199.199.4", "24")
-    network.create()
+    # network2 = CSMANetwork("net2")
+    # network2.set_delay(50)
+    # network2.set_data_rate(100)
+    # network2.add_node(conleft, "10.199.200.2", "24")
+    # network2.add_node(conleft2, "10.199.200.3", "24")
+    # network2.create()
 
-    network2 = CSMANetwork("net2")
-    network2.set_delay(50)
-    network2.set_data_rate(100)
-    network2.add_node(conleft, "10.199.200.2", "24")
-    network2.add_node(conleft2, "10.199.200.3", "24")
-    network2.create()
+    sim = SumoSimulation("/home/arne/source/sumo/bin/sumo-gui", "/home/arne/Masterarbeit/SUMO/test.sumocfg")
+    sim.add_node_to_mapping(conleft, "vehicle_0")
+    sim.add_node_to_mapping(conright, "vehicle_2")
+    sim.set_delay(2000)
+    e().after(10).execute(lambda: sim.start(after_sumo_simulation_step)).start_on_simulation_start()
 
     ns.core.Simulator.Stop(ns.core.Seconds(6000))
     print("Start Simulation")
@@ -78,5 +92,5 @@ ns.core.Simulator.Destroy()
 
 conleft.destroy()
 conright.destroy()
-conleft2.destroy()
+# conleft2.destroy()
 print("Clean Up Completed")
