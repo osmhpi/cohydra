@@ -74,7 +74,7 @@ class LXDContainer(object):
 
         # Connect to ns-3
         interface.tapbridge = ns.tap_bridge.TapBridgeHelper()
-        interface.tapbridge.SetAttribute("Mode", ns.core.StringValue("UseBridge"))
+        interface.tapbridge.SetAttribute("Mode", ns.core.StringValue("UseLocal"))
         interface.tapbridge.SetAttribute("DeviceName", ns.core.StringValue(interface.tun.name))
         interface.tapbridge.Install(self.get_ns3_node(), netdevice)
 
