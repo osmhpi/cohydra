@@ -105,14 +105,8 @@ class WifiNetwork(object):
                 conn_node.pos_y = pos_y
                 conn_node.pos_z = pos_z
                 conn_node.pos_vector = ns.core.Vector(pos_x, pos_y, pos_z)
-
-        node_container = ns.network.NodeContainer()
-        position_alloc = ns.mobility.ListPositionAllocator()
-        for connected_node in self.system_nodes:
-            position_alloc.Add(connected_node.pos_vector)
-            node_container.Add(connected_node.system_node.get_ns3_node())
-        self.mobility_helper.SetPositionAllocator(position_alloc)
-        self.mobility_helper.Install(node_container)
+                mobility = conn_node.system_node.get_ns3_node().GetObject(ns.mobility.MobilityModel.GetTypeId())
+                mobility.SetPosition(conn_node.pos_vector)
 
     def destroy(self):
         self.disconnect()
