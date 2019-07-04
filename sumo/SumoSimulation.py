@@ -39,7 +39,10 @@ class SumoSimulation(object):
     def add_node_to_mapping(self, node, sumo_vehicle_id):
         self.node_mapping[node.name] = sumo_vehicle_id
 
+    def get_position_of_node(self, node):
+        return traci.vehicle.getPosition(self.node_mapping[node.name])
+
     def get_distance_between_nodes(self, node1, node2):
-        x1, y1 = traci.vehicle.getPosition(self.node_mapping[node1.name])
-        x2, y2 = traci.vehicle.getPosition(self.node_mapping[node2.name])
+        x1, y1 = self.get_position_of_node(node1)
+        x2, y2 = self.get_position_of_node(node2)
         return hypot(x2 - x1, y2 - y1)

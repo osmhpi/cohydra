@@ -59,19 +59,20 @@ network.set_data_rate("54Mbps")
 network.add_node(conleft, 0, 0, 0, "10.1.1.2", "24", connect_on_create=True)
 # network.add_node(conleft2, "10.199.199.3", "24")
 # network.add_node(conright, "10.1.1.4", "24", connect_on_create=True)
-network.add_node(conright, 15, 0, 0, "10.1.1.4", "24", connect_on_create=True)
+network.add_node(conright, 0, 0, 0, "10.1.1.4", "24", connect_on_create=True)
 
-e().after(30).execute(lambda: network.set_position(conright, 1000, 0, 0)).start_on_simulation_start()
-e().after(90).execute(lambda: network.set_position(conright, 10, 0, 0)).start_on_simulation_start()
+# e().after(30).execute(lambda: network.set_position(conright, 1000, 0, 0)).start_on_simulation_start()
+# e().after(90).execute(lambda: network.set_position(conright, 10, 0, 0)).start_on_simulation_start()
 
 # e().after(10).execute(lambda: print("After 10 seconds"))\
 #     .after(15).execute(lambda: print("After 25 seconds")).start_on_simulation_start()
 
 
 def after_sumo_simulation_step(simulation, traci):
-    dist = simulation.get_distance_between_nodes(conleft, conright)
-    network.set_delay(int(math.ceil(dist)))
-
+    l_x, l_y = simulation.get_position_of_node(conleft)
+    network.set_position(conleft, int(l_x)*3, int(l_y)*3, 0)
+    r_x, r_y = simulation.get_position_of_node(conright)
+    network.set_position(conright, int(r_x)*3, int(r_y)*3, 0)
 
 try:
     network.create()
@@ -82,11 +83,11 @@ try:
     # network2.add_node(conleft2, "10.199.200.3", "24")
     # network2.create()
 
-    # sim = SumoSimulation("/home/arne/source/sumo/bin/sumo-gui", "/home/arne/Masterarbeit/SUMO/test.sumocfg")
-    # sim.add_node_to_mapping(conleft, "vehicle_0")
-    # sim.add_node_to_mapping(conright, "vehicle_2")
-    # sim.set_delay(2000)
-    # e().after(10).execute(lambda: sim.start(after_sumo_simulation_step)).start_on_simulation_start()
+    sim = SumoSimulation("/home/arne/source/sumo/bin/sumo-gui", "/home/arne/Masterarbeit/SUMO/test.sumocfg")
+    sim.add_node_to_mapping(conleft, "vehicle_0")
+    sim.add_node_to_mapping(conright, "vehicle_2")
+    sim.set_delay(2000)
+    e().after(10).execute(lambda: sim.start(after_sumo_simulation_step)).start_on_simulation_start()
 
     ns.core.Simulator.Stop(ns.core.Seconds(6000))
     print("Start Simulation")
