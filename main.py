@@ -59,7 +59,10 @@ network.set_data_rate("54Mbps")
 network.add_node(conleft, 0, 0, 0, "10.1.1.2", "24", connect_on_create=True)
 # network.add_node(conleft2, "10.199.199.3", "24")
 # network.add_node(conright, "10.1.1.4", "24", connect_on_create=True)
-network.add_node(conright, 1, 0, 0, "10.1.1.4", "24", connect_on_create=True)
+network.add_node(conright, 15, 0, 0, "10.1.1.4", "24", connect_on_create=True)
+
+e().after(30).execute(lambda: network.set_position(conright, 1000, 0, 0)).start_on_simulation_start()
+e().after(90).execute(lambda: network.set_position(conright, 10, 0, 0)).start_on_simulation_start()
 
 # e().after(10).execute(lambda: print("After 10 seconds"))\
 #     .after(15).execute(lambda: print("After 25 seconds")).start_on_simulation_start()

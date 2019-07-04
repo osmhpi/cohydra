@@ -39,39 +39,35 @@ class WifiNetwork(object):
     def create(self):
         print("Create network " + self.name)
         node_container = ns.network.NodeContainer()
-        positionAlloc = ns.mobility.ListPositionAllocator()
+        position_alloc = ns.mobility.ListPositionAllocator()
         for connected_node in self.system_nodes:
             node_container.Add(connected_node.system_node.get_ns3_node())
-            positionAlloc.Add(ns.core.Vector(connected_node.pos_x, connected_node.pos_y, connected_node.pos_z))
-
-        self.mobility_helper = ns.mobility.MobilityHelper()
-        self.mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel")
-        self.mobility_helper.SetPositionAllocator(positionAlloc)
-        self.mobility_helper.Install(node_container)
+            position_alloc.Add(connected_node.pos_vector)
 
         self.wifi_channel = ns.wifi.YansWifiChannelHelper.Default()
         # self.wifi_channel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel")
-        # self.wifi_channel.AddPropagationLoss("ns3::FriisPropagationLossModel",
-        #                                "Frequency", ns.core.DoubleValue(5.9e9),
-        #                                "MinLoss", ns.core.DoubleValue(3.0),
-        #                                "SystemLoss", ns.core.DoubleValue(2.0))
-        # self.wifi_channel.AddPropagationLoss("ns3::NakagamiPropagationLossModel")
+        # self.wifi_channel.AddPropagationLoss("ns3::LogDistancePropagationLossModel",
+        #                                     "Exponent", ns.core.DoubleValue(3.0),
+        #                                     "ReferenceLoss", ns.core.DoubleValue(0.0459))
 
-        self.wifi_channel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel")
-        self.wifi_channel.AddPropagationLoss("ns3::LogDistancePropagationLossModel",
-                                             "Exponent", ns.core.DoubleValue(3.0),
-                                             "ReferenceLoss", ns.core.DoubleValue(0.0459))
-
-        self.wave_phy_helper = ns.wave.YansWavePhyHelper.Default()
+        self.wave_phy_helper = ns.wifi.YansWifiPhyHelper.Default()
         self.wave_phy_helper.SetChannel(self.wifi_channel.Create())
-        self.wave_phy_helper.SetPcapDataLinkType(ns.wave.YansWavePhyHelper.DLT_IEEE802_11)
-        self.wave_phy_helper.Set("ChannelWidth", ns.core.UintegerValue(10))
-        self.wave_phy_helper.Set("TxPowerStart", ns.core.DoubleValue(20.0))
-        self.wave_phy_helper.Set("TxPowerEnd", ns.core.DoubleValue(20.0))
+        self.wave_phy_helper.SetPcapDataLinkType(ns.wifi.WifiPhyHelper.DLT_IEEE802_11)
+        wifi80211pMac = ns.wave.NqosWaveMacHelper.Default()
+        wifi80211p = ns.wave.Wifi80211pHelper.Default()
 
-        self.wifi_mac_helper = ns.wave.QosWaveMacHelper.Default()
-        wave_helper = ns.wave.WaveHelper.Default()
-        devices = wave_helper.Install(self.wave_phy_helper, self.wifi_mac_helper, node_container)
+        phy_mode = "OfdmRate6MbpsBW10MHz"
+        wifi80211p.SetRemoteStationManager("ns3::ConstantRateWifiManager",
+                                           "DataMode", ns.core.StringValue(phy_mode),
+                                           "ControlMode", ns.core.StringValue(phy_mode))
+
+        devices = wifi80211p.Install(self.wave_phy_helper, wifi80211pMac, node_container)
+        self.wave_phy_helper.EnablePcap("wave-simple-80211p", devices)
+
+        self.mobility_helper = ns.mobility.MobilityHelper()
+        self.mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel")
+        self.mobility_helper.SetPositionAllocator(position_alloc)
+        self.mobility_helper.Install(node_container)
 
         for i in range(0, len(self.system_nodes)):
             connected_node = self.system_nodes[i]
@@ -103,6 +99,20 @@ class WifiNetwork(object):
 
     def set_position(self, system_node, pos_x, pos_y, pos_z):
         print("Set position of " + system_node.name + " to (" + str(pos_x) + ", " + str(pos_y) + ", " + str(pos_z) + ")")
+        for conn_node in self.system_nodes:
+            if conn_node.system_node.name == system_node.name:
+                conn_node.pos_x = pos_x
+                conn_node.pos_y = pos_y
+                conn_node.pos_z = pos_z
+                conn_node.pos_vector = ns.core.Vector(pos_x, pos_y, pos_z)
+
+        node_container = ns.network.NodeContainer()
+        position_alloc = ns.mobility.ListPositionAllocator()
+        for connected_node in self.system_nodes:
+            position_alloc.Add(connected_node.pos_vector)
+            node_container.Add(connected_node.system_node.get_ns3_node())
+        self.mobility_helper.SetPositionAllocator(position_alloc)
+        self.mobility_helper.Install(node_container)
 
     def destroy(self):
         self.disconnect()
@@ -115,6 +125,7 @@ class ConnectedNode(object):
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.pos_z = pos_z
+        self.pos_vector = ns.core.Vector(pos_x, pos_y, pos_z)
         self.connected = False
         self.connect_on_create = False
         self.ipv4_addr = "255.255.255.255"
