@@ -4,6 +4,7 @@ import ns.internet
 import ns.applications
 import ns.mobility
 import ns.wifi
+import ns.wave
 
 
 class WifiNetwork(object):
@@ -17,7 +18,7 @@ class WifiNetwork(object):
         self.wifi_helper = None
         self.wifi_mac_helper = None
         self.wifi_channel = None
-        self.wifi_phy_helper = None
+        self.wave_phy_helper = None
         self.mobility_helper = None
         self.datarate = "54Mbps"
 
@@ -43,26 +44,34 @@ class WifiNetwork(object):
             node_container.Add(connected_node.system_node.get_ns3_node())
             positionAlloc.Add(ns.core.Vector(connected_node.pos_x, connected_node.pos_y, connected_node.pos_z))
 
-        self.wifi_helper = ns.wifi.WifiHelper()
-        self.wifi_helper.SetStandard(ns.wifi.WIFI_PHY_STANDARD_80211n_2_4GHZ)
-        self.wifi_helper.SetRemoteStationManager("ns3::ConstantRateWifiManager")  # , "DataMode",
-        # ns.core.StringValue("OfdmRate" + self.datarate)
-
-        self.wifi_mac_helper = ns.wifi.WifiMacHelper()
-        # self.wifi_mac_helper.SetType("ns3::StaWifiMac",
-        #                "Ssid", ns.wifi.SsidValue(ns.wifi.Ssid("wifi-default")))
-        self.wifi_mac_helper.SetType("ns3::AdhocWifiMac")
+        self.mobility_helper = ns.mobility.MobilityHelper()
+        self.mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel")
+        self.mobility_helper.SetPositionAllocator(positionAlloc)
+        self.mobility_helper.Install(node_container)
 
         self.wifi_channel = ns.wifi.YansWifiChannelHelper.Default()
-        self.wifi_phy_helper = ns.wifi.YansWifiPhyHelper.Default()
-        self.wifi_phy_helper.SetChannel(self.wifi_channel.Create())
+        # self.wifi_channel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel")
+        # self.wifi_channel.AddPropagationLoss("ns3::FriisPropagationLossModel",
+        #                                "Frequency", ns.core.DoubleValue(5.9e9),
+        #                                "MinLoss", ns.core.DoubleValue(3.0),
+        #                                "SystemLoss", ns.core.DoubleValue(2.0))
+        # self.wifi_channel.AddPropagationLoss("ns3::NakagamiPropagationLossModel")
 
-        devices = self.wifi_helper.Install(self.wifi_phy_helper, self.wifi_mac_helper, node_container)
+        self.wifi_channel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel")
+        self.wifi_channel.AddPropagationLoss("ns3::LogDistancePropagationLossModel",
+                                             "Exponent", ns.core.DoubleValue(3.0),
+                                             "ReferenceLoss", ns.core.DoubleValue(0.0459))
 
-        self.mobility_helper = ns.mobility.MobilityHelper()
-        self.mobility_helper.SetPositionAllocator(positionAlloc)
-        self.mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel")
-        self.mobility_helper.Install(node_container)
+        self.wave_phy_helper = ns.wave.YansWavePhyHelper.Default()
+        self.wave_phy_helper.SetChannel(self.wifi_channel.Create())
+        self.wave_phy_helper.SetPcapDataLinkType(ns.wave.YansWavePhyHelper.DLT_IEEE802_11)
+        self.wave_phy_helper.Set("ChannelWidth", ns.core.UintegerValue(10))
+        self.wave_phy_helper.Set("TxPowerStart", ns.core.DoubleValue(20.0))
+        self.wave_phy_helper.Set("TxPowerEnd", ns.core.DoubleValue(20.0))
+
+        self.wifi_mac_helper = ns.wave.QosWaveMacHelper.Default()
+        wave_helper = ns.wave.WaveHelper.Default()
+        devices = wave_helper.Install(self.wave_phy_helper, self.wifi_mac_helper, node_container)
 
         for i in range(0, len(self.system_nodes)):
             connected_node = self.system_nodes[i]

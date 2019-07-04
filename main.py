@@ -59,8 +59,7 @@ network.set_data_rate("54Mbps")
 network.add_node(conleft, 0, 0, 0, "10.1.1.2", "24", connect_on_create=True)
 # network.add_node(conleft2, "10.199.199.3", "24")
 # network.add_node(conright, "10.1.1.4", "24", connect_on_create=True)
-network.add_node(conright, 60, 0, 0, "10.1.1.4", "24", connect_on_create=True)
-network.create()
+network.add_node(conright, 1, 0, 0, "10.1.1.4", "24", connect_on_create=True)
 
 # e().after(10).execute(lambda: print("After 10 seconds"))\
 #     .after(15).execute(lambda: print("After 25 seconds")).start_on_simulation_start()
@@ -72,6 +71,7 @@ def after_sumo_simulation_step(simulation, traci):
 
 
 try:
+    network.create()
     # network2 = CSMANetwork("net2")
     # network2.set_delay(50)
     # network2.set_data_rate(100)
