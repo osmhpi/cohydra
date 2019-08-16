@@ -5,6 +5,7 @@ import ns.applications
 import ns.mobility
 import ns.wifi
 import ns.wave
+import ns.propagation
 
 
 class WifiNetwork(object):
@@ -20,7 +21,11 @@ class WifiNetwork(object):
         self.wifi_channel = None
         self.wave_phy_helper = None
         self.mobility_helper = None
-        self.datarate = "54Mbps"
+        self.delay = None
+        self.data_rate = "OfdmRate6MbpsBW10MHz"
+        self.wifi80211pMac = None
+        self.wifi80211p = None
+        self.propagation_delay_model = None
 
     def add_node(self, system_node, pos_x, pos_y, pos_z, ipv4_addr="255.255.255.255", ipv4_subnetmask="255.255.255.255",
                  bridge_connect=False, bridge_connect_ip="255.255.255.255", bridge_connect_mask="255.255.255.255",
@@ -41,27 +46,28 @@ class WifiNetwork(object):
         node_container = ns.network.NodeContainer()
         position_alloc = ns.mobility.ListPositionAllocator()
         for connected_node in self.system_nodes:
-            node_container.Add(connected_node.system_node.get_ns3_node())
-            position_alloc.Add(connected_node.pos_vector)
+            if connected_node.connect_on_create:
+                node_container.Add(connected_node.system_node.get_ns3_node())
+                position_alloc.Add(connected_node.pos_vector)
 
-        self.wifi_channel = ns.wifi.YansWifiChannelHelper.Default()
-        # self.wifi_channel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel")
-        # self.wifi_channel.AddPropagationLoss("ns3::LogDistancePropagationLossModel",
-        #                                     "Exponent", ns.core.DoubleValue(3.0),
-        #                                     "ReferenceLoss", ns.core.DoubleValue(0.0459))
+        wifi_channel_helper = ns.wifi.YansWifiChannelHelper.Default()
+        self.wifi_channel = wifi_channel_helper.Create()
+
+        self.propagation_delay_model = ns.propagation.ConstantSpeedPropagationDelayModel()
+        self.wifi_channel.SetAttribute("PropagationDelayModel", ns.core.PointerValue(self.propagation_delay_model))
 
         self.wave_phy_helper = ns.wifi.YansWifiPhyHelper.Default()
-        self.wave_phy_helper.SetChannel(self.wifi_channel.Create())
+        self.wave_phy_helper.SetChannel(self.wifi_channel)
         self.wave_phy_helper.SetPcapDataLinkType(ns.wifi.WifiPhyHelper.DLT_IEEE802_11)
-        wifi80211pMac = ns.wave.NqosWaveMacHelper.Default()
-        wifi80211p = ns.wave.Wifi80211pHelper.Default()
+        self.wifi80211pMac = ns.wave.NqosWaveMacHelper.Default()
+        self.wifi80211p = ns.wave.Wifi80211pHelper.Default()
 
-        phy_mode = "OfdmRate6MbpsBW10MHz"
-        wifi80211p.SetRemoteStationManager("ns3::ConstantRateWifiManager",
-                                           "DataMode", ns.core.StringValue(phy_mode),
-                                           "ControlMode", ns.core.StringValue(phy_mode))
+        phy_mode = self.data_rate
+        self.wifi80211p.SetRemoteStationManager("ns3::ConstantRateWifiManager",
+                                                "DataMode", ns.core.StringValue(phy_mode),
+                                                "ControlMode", ns.core.StringValue(phy_mode))
 
-        devices = wifi80211p.Install(self.wave_phy_helper, wifi80211pMac, node_container)
+        devices = self.wifi80211p.Install(self.wave_phy_helper, self.wifi80211pMac, node_container)
         self.wave_phy_helper.EnablePcap("wave-simple-80211p", devices)
 
         self.mobility_helper = ns.mobility.MobilityHelper()
@@ -69,33 +75,40 @@ class WifiNetwork(object):
         self.mobility_helper.SetPositionAllocator(position_alloc)
         self.mobility_helper.Install(node_container)
 
-        for i in range(0, len(self.system_nodes)):
-            connected_node = self.system_nodes[i]
-            connected_node.wifi_netdevice = devices.Get(i)
-            connected_node.system_node.connect_to_netdevice(self.name, connected_node.wifi_netdevice,
-                                                            connected_node.ipv4_addr,
-                                                            connected_node.ipv4_subnetmask,
-                                                            connected_node.bridge_connect,
-                                                            connected_node.bridge_connect_ip,
-                                                            connected_node.bridge_connect_subnetmask)
+        i = 0
+        for k in range(0, len(self.system_nodes)):
+            connected_node = self.system_nodes[k]
+            if connected_node.connect_on_create:
+                connected_node.wifi_netdevice = devices.Get(i)
+                connected_node.system_node.connect_to_netdevice(self.name, connected_node.wifi_netdevice,
+                                                                connected_node.ipv4_addr,
+                                                                connected_node.ipv4_subnetmask,
+                                                                connected_node.bridge_connect,
+                                                                connected_node.bridge_connect_ip,
+                                                                connected_node.bridge_connect_subnetmask)
+                i = i + 1
+        self.set_delay(self.delay)
 
     def connect_node(self, node):
-        print("Connect node " + node.name + " to network " + self.name)
+        print("Connect nodes is not supported on wifi-networks so far")
 
     def connect(self):
-        print("Connect all unconnected nodes to network " + self.name)
+        print("Connect all unconnected nodes is not supported on wifi-networks so far")
 
     def disconnect_node(self, node):
-        print("Disconnect node " + node.name + " from network " + self.name)
+        print("Disconnect nodes is not supported on wifi-networks so far")
 
     def disconnect(self):
-        print("Disconnect all connected nodes from network " + self.name)
+        print("Disconnect all nodes is not supported on wifi-networks so far")
 
     def set_delay(self, delay):
         print("Set delay of network " + self.name + " to " + str(delay))
+        self.delay = delay
+        self.propagation_delay_model.SetSpeed((100.0/delay)*1000.0)  # Initial setup: 100ms one-way means 1000 m/s speed
 
     def set_data_rate(self, data_rate):
         print("Set data rate of network " + self.name + " to " + data_rate)
+        self.data_rate = data_rate # This have no effect after creating the network so far.
 
     def set_position(self, system_node, pos_x, pos_y, pos_z):
         print("Set position of " + system_node.name + " to (" + str(pos_x) + ", " + str(pos_y) + ", " + str(pos_z) + ")")
