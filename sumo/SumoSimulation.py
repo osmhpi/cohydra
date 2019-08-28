@@ -16,12 +16,8 @@ class SumoSimulation(object):
     def __init__(self, binary_path, config_path):
         self.binary_path = binary_path
         self.config_path = config_path
-        self.delay = 100
         self.steps = 1000
         self.node_mapping = {}
-
-    def set_delay(self, delay):
-        self.delay = delay
 
     def start(self, after_simulation_step, steps=1000):
         self.steps = steps
@@ -32,17 +28,27 @@ class SumoSimulation(object):
             traci.simulationStep()
             after_simulation_step(self, traci)
             step_counter = step_counter + 1
-            time.sleep(self.delay/1000)
+            time.sleep(traci.simulation.getDeltaT())
 
         traci.close()
 
-    def add_node_to_mapping(self, node, sumo_vehicle_id):
-        self.node_mapping[node.name] = sumo_vehicle_id
+    def add_node_to_mapping(self, node, sumo_vehicle_id, obj_type="vehicle"):
+        self.node_mapping[node.name] = (sumo_vehicle_id, obj_type)
 
     def get_position_of_node(self, node):
-        return traci.vehicle.getPosition(self.node_mapping[node.name])
+        if self.node_mapping[node.name][1] == "person":
+            return traci.person.getPosition(self.node_mapping[node.name][0])
+        elif self.node_mapping[node.name][1] == "vehicle":
+            return traci.vehicle.getPosition(self.node_mapping[node.name][0])
+        elif self.node_mapping[node.name][1] == "junction":
+            return traci.junction.getPosition(self.node_mapping[node.name][0])
+        else:
+            print("Unknown type " + str(self.node_mapping[node.name][1]))
 
     def get_distance_between_nodes(self, node1, node2):
         x1, y1 = self.get_position_of_node(node1)
         x2, y2 = self.get_position_of_node(node2)
         return hypot(x2 - x1, y2 - y1)
+
+    def destroy(self):
+        traci.close()
