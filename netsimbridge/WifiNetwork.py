@@ -26,6 +26,7 @@ class WifiNetwork(object):
         self.wifi80211pMac = None
         self.wifi80211p = None
         self.propagation_delay_model = None
+        self.position_alloc = None
 
     def add_node(self, system_node, pos_x, pos_y, pos_z, ipv4_addr="255.255.255.255", ipv4_subnetmask="255.255.255.255",
                  bridge_connect=False, bridge_connect_ip="255.255.255.255", bridge_connect_mask="255.255.255.255",
@@ -44,11 +45,11 @@ class WifiNetwork(object):
     def create(self):
         print("Create network " + self.name)
         node_container = ns.network.NodeContainer()
-        position_alloc = ns.mobility.ListPositionAllocator()
+        self.position_alloc = ns.mobility.ListPositionAllocator()
         for connected_node in self.system_nodes:
             if connected_node.connect_on_create:
                 node_container.Add(connected_node.system_node.get_ns3_node())
-                position_alloc.Add(connected_node.pos_vector)
+                self.position_alloc.Add(connected_node.pos_vector)
 
         wifi_channel_helper = ns.wifi.YansWifiChannelHelper.Default()
         self.wifi_channel = wifi_channel_helper.Create()
@@ -72,7 +73,7 @@ class WifiNetwork(object):
 
         self.mobility_helper = ns.mobility.MobilityHelper()
         self.mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel")
-        self.mobility_helper.SetPositionAllocator(position_alloc)
+        self.mobility_helper.SetPositionAllocator(self.position_alloc)
         self.mobility_helper.Install(node_container)
 
         i = 0
@@ -90,7 +91,31 @@ class WifiNetwork(object):
         self.set_delay(self.delay)
 
     def connect_node(self, node):
-        print("Connect nodes is not supported on wifi-networks so far")
+        print("Connect node " + node.name + " to network " + self.name)
+        connected_node = None
+        for k in range(0, len(self.system_nodes)):
+            if self.system_nodes[k].system_node.name == node.name:
+                connected_node = self.system_nodes[k]
+        if connected_node is None:
+            print("Node " + node.name + " not found in network " + self.name)
+            return
+        node_container = ns.network.NodeContainer()
+        node_container.Add(connected_node.system_node.get_ns3_node())
+
+        self.position_alloc.Add(connected_node.pos_vector)
+        self.mobility_helper.SetPositionAllocator(self.position_alloc)
+
+        devices = self.wifi80211p.Install(self.wave_phy_helper, self.wifi80211pMac, node_container)
+        self.wave_phy_helper.EnablePcap("wave-simple-80211p", devices)
+        self.mobility_helper.Install(node_container)
+        connected_node.wifi_netdevice = devices.Get(0)
+        connected_node.system_node.connect_to_netdevice(self.name, connected_node.wifi_netdevice,
+                                                        connected_node.ipv4_addr,
+                                                        connected_node.ipv4_subnetmask,
+                                                        connected_node.bridge_connect,
+                                                        connected_node.bridge_connect_ip,
+                                                        connected_node.bridge_connect_subnetmask)
+        print("8")
 
     def connect(self):
         print("Connect all unconnected nodes is not supported on wifi-networks so far")
@@ -104,14 +129,19 @@ class WifiNetwork(object):
     def set_delay(self, delay):
         print("Set delay of network " + self.name + " to " + str(delay))
         self.delay = delay
-        self.propagation_delay_model.SetSpeed((100.0/delay)*1000.0)  # Initial setup: 100ms one-way means 1000 m/s speed
+        if self.propagation_delay_model is not None:
+            # Initial setup: 100ms one-way means 1000 m/s speed
+            if self.delay == 0:
+                self.propagation_delay_model.SetSpeed(299792458)  # Light Speed
+            else:
+                self.propagation_delay_model.SetSpeed((100.0/delay)*1000.0)
 
     def set_data_rate(self, data_rate):
         print("Set data rate of network " + self.name + " to " + data_rate)
-        self.data_rate = data_rate # This have no effect after creating the network so far.
+        self.data_rate = data_rate  # This have no effect after creating the network so far.
 
     def set_position(self, system_node, pos_x, pos_y, pos_z):
-        print("Set position of " + system_node.name + " to (" + str(pos_x) + ", " + str(pos_y) + ", " + str(pos_z) + ")")
+        # print("Set position of " + system_node.name + " to (" + str(pos_x) + ", " + str(pos_y) + ", " + str(pos_z) + ")")
         for conn_node in self.system_nodes:
             if conn_node.system_node.name == system_node.name:
                 conn_node.pos_x = pos_x
