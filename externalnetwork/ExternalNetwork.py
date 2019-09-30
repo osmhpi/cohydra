@@ -54,7 +54,7 @@ class ExternalNetwork(object):
 
         # Connect to ns-3
         self.tapbridge = ns.tap_bridge.TapBridgeHelper()
-        self.tapbridge.SetAttribute("Mode", ns.core.StringValue("UseBridge"))
+        self.tapbridge.SetAttribute("Mode", ns.core.StringValue("UseLocal"))
         self.tapbridge.SetAttribute("DeviceName", ns.core.StringValue(self.tun.name))
         self.tapbridge.Install(self.get_ns3_node(), netdevice)
 
