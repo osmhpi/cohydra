@@ -1,8 +1,8 @@
 from __future__ import print_function
 
 from netsimbridge.CSMANetwork import CSMANetwork
-from lxdcontainer.LXDContainer import LXDContainer
-from externalnetwork.ExternalNetwork import ExternalNetwork
+from nodes.LXDNode import LXDNode
+from nodes.InterfaceNode import InterfaceNode
 import ns.core
 import traceback
 from events.Event import e
@@ -23,10 +23,10 @@ def prepare_scenario():
     overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-pass-vlan-input-dev", "0")
 
 
-conleft = LXDContainer("db", "iot-postgres")
+conleft = LXDNode("db", "iot-postgres")
 conleft.create()
 conleft.start()
-externalnetwork1 = ExternalNetwork("enet1", "enx00e04c5804b9")
+externalnetwork1 = InterfaceNode("enet1", "enx00e04c5804b9")
 
 network = CSMANetwork("net1")
 network.set_delay(100)

@@ -3,10 +3,9 @@ import sys
 print(sys.version)
 
 from netsimbridge.WifiNetwork import WifiNetwork
-from lxdcontainer.LXDContainer import LXDContainer
-from externalnetwork.ExternalNetwork import ExternalNetwork
+from nodes.LXDNode import LXDNode
 from events.Event import e
-from sumo.SumoSimulation import SumoSimulation
+from simulations.SumoSimulation import SumoSimulation
 import ns.core
 # import sys
 
@@ -30,10 +29,10 @@ def prepare_scenario():
 ns.core.GlobalValue.Bind("SimulatorImplementationType", ns.core.StringValue("ns3::RealtimeSimulatorImpl"))
 ns.core.GlobalValue.Bind("ChecksumEnabled", ns.core.BooleanValue("true"))
 
-swtch = LXDContainer("swtch", "railToX")
+swtch = LXDNode("swtch", "railToX")
 swtch.create()
 
-train = LXDContainer("train", "railToX")
+train = LXDNode("train", "railToX")
 # train = ExternalNetwork("train", "enp0s10")
 train.create()
 

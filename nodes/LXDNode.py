@@ -5,11 +5,11 @@ import subprocess
 import ns.tap_bridge
 import ns.network
 
-from tuntap.TunTapDevice import TunTapDevice
-from bridge.BridgeDevice import BridgeDevice
+from hostcomponents.TunTapDevice import TunTapDevice
+from hostcomponents.BridgeDevice import BridgeDevice
 
 
-class LXDContainer(object):
+class LXDNode(object):
 
     def __init__(self, name, image, additional_configs=None):
         self.name = name

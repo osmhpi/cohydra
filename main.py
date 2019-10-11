@@ -1,13 +1,12 @@
 from __future__ import print_function
 
-from netsimbridge.CSMANetwork import CSMANetwork
 from netsimbridge.WifiNetwork import WifiNetwork
-from lxdcontainer.LXDContainer import LXDContainer
+from nodes.LXDNode import LXDNode
 from events.Event import e
-from sumo.SumoSimulation import SumoSimulation
+from simulations.SumoSimulation import SumoSimulation
 import ns.core
 import sys
-import math
+
 
 # import ns.fd_net_device
 
@@ -40,10 +39,10 @@ prepare_scenario()
 ns.core.GlobalValue.Bind("SimulatorImplementationType", ns.core.StringValue("ns3::RealtimeSimulatorImpl"))
 ns.core.GlobalValue.Bind("ChecksumEnabled", ns.core.BooleanValue("true"))
 
-conleft = LXDContainer("left", "java")  # ubuntu:16.04
+conleft = LXDNode("left", "java")  # ubuntu:16.04
 conleft.create()
 
-conright = LXDContainer("right", "java")  # ubuntu:16.04
+conright = LXDNode("right", "java")  # ubuntu:16.04
 conright.create()
 
 # conleft2 = LXDContainer("left2", "ubuntu:16.04")

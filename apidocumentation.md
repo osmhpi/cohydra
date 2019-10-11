@@ -3,7 +3,7 @@
 ## Knoten
 
 ### LXD-Container
-In `lxdcontainer/LXDContainer.py`
+In `nodes/LXDNode.py`
 
 Unterstützte Funktionen:
 ```
@@ -27,7 +27,7 @@ Keine
 Subklassen: `NetworkInterface`
 
 ### Externe Netzwerke
-In `externalnetwork/ExternalNetwork.py`
+In `nodes/InterfaceNode.py`
 
 Unterstützte Funktionen:
 ```
@@ -125,7 +125,7 @@ Keine
 ## Domain-Spezifische Simulation
 
 ### SUMO-Simulation
-In `sumo/SumoSimulation.py`
+In `simulations/SumoSimulation.py`
 
 Unterstützte Funktionen:
 ```
@@ -148,7 +148,7 @@ Keine
 ## System-Komponenten
 
 ### TUN-Schnittstellen
-In `tuntap/TunTapDevice.py`
+In `hostcomponents/TunTapDevice.py`
 
 Unterstützte Funktionen:
 ```
@@ -165,7 +165,7 @@ Keine
 ```
 
 ### Netzwerkbrücken
-In `bridge/BridgeDevice.py`
+In `hostcomponents/BridgeDevice.py`
 
 Unterstützte Funktionen:
 ```

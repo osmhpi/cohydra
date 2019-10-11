@@ -3,11 +3,11 @@ import ns.network
 from pexpect import pxssh
 import re
 
-from tuntap.TunTapDevice import TunTapDevice
-from bridge.BridgeDevice import BridgeDevice
+from hostcomponents.TunTapDevice import TunTapDevice
+from hostcomponents.BridgeDevice import BridgeDevice
 
 
-class ExternalNetwork(object):
+class InterfaceNode(object):
 
     def __init__(self, name, interface):
         self.name = name
