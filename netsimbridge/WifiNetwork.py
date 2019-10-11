@@ -141,7 +141,7 @@ class WifiNetwork(object):
         self.data_rate = data_rate  # This have no effect after creating the network so far.
 
     def set_position(self, system_node, pos_x, pos_y, pos_z):
-        # print("Set position of " + system_node.name + " to (" + str(pos_x) + ", " + str(pos_y) + ", " + str(pos_z) + ")")
+        print("Set position of " + system_node.name + " to (" + str(pos_x) + ", " + str(pos_y) + ", " + str(pos_z) + ")\n")
         for conn_node in self.system_nodes:
             if conn_node.system_node.name == system_node.name:
                 conn_node.pos_x = pos_x

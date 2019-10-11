@@ -1,5 +1,5 @@
 import ns.core
-from Queue import Queue
+import queue
 from threading import Thread
 from time import sleep
 from aexpr import aexpr
@@ -17,7 +17,7 @@ def e():
 class Event(object):
 
     def __init__(self):
-        self.queue = Queue()
+        self.queue = queue.Queue()
 
     def after(self, seconds):
         ep = EventPart()
