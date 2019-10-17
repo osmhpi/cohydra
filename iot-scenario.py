@@ -1,27 +1,16 @@
 from __future__ import print_function
 
 from netsimbridge.CSMANetwork import CSMANetwork
+from netsimbridge import Simulation
 from nodes.LXDNode import LXDNode
 from nodes.InterfaceNode import InterfaceNode
-import ns.core
-import traceback
+from hostcomponents import Preparation
 from events.Event import e
+import traceback
 import sys
 
-
-def overwrite_content_in_file(path, content):
-    f = open(path, "w")
-    f.write(content)
-
-
-def prepare_scenario():
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-arptables", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-iptables", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-filter-vlan-tagged", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-ip6tables", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-filter-pppoe-tagged", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-pass-vlan-input-dev", "0")
-
+Preparation.do_not_filter_bridge_traffic()
+Simulation.prepare_simulation()
 
 conleft = LXDNode("db", "iot-postgres")
 conleft.create()
@@ -33,11 +22,6 @@ network.set_delay(100)
 network.set_data_rate("100Mbps")
 
 try:
-    prepare_scenario()
-
-    ns.core.GlobalValue.Bind("SimulatorImplementationType", ns.core.StringValue("ns3::RealtimeSimulatorImpl"))
-    ns.core.GlobalValue.Bind("ChecksumEnabled", ns.core.BooleanValue("true"))
-
     network.add_node(conleft, "192.168.2.70", "255.255.255.0", bridge_connect=True, bridge_connect_ip="192.168.2.252",
                      bridge_connect_mask="255.255.255.0", connect_on_create=True)
     network.add_node(externalnetwork1, bridge_connect=True, bridge_connect_ip="192.168.2.253",
@@ -49,16 +33,13 @@ try:
     e().after(30).execute(lambda: externalnetwork1.execute_command("192.168.2.12", "pi", "pi",
                                                                    "service iot-save start", sudo=True))\
        .start_on_simulation_start()
-    ns.core.Simulator.Stop(ns.core.Seconds(6000))
-    print("Start Simulation")
-    ns.core.Simulator.Run(signal_check_frequency=-1)
-    print("Simulation stopped")
+    Simulation.start_simulation()
 except Exception as e:
     print("Unexpected error:")
     print(traceback.format_exc())
 finally:
     print("Start cleanup")
-    ns.core.Simulator.Destroy()
+    Simulation.destroy_simulation()
     network.destroy()
     conleft.destroy()
 

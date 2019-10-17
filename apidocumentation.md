@@ -1,5 +1,25 @@
 # API-Dokumentation
 
+## Simulation
+
+In `netsimbridge/Simulation.py`
+
+Unterstützte Funktionen:
+```
+prepare_simulation() -> None
+start_simulation(runtime=6000) -> None
+destroy_simulation() -> None
+```
+
+- `prepare_simulation` aktiviert die Realtime-Simulation und sollte daher auf jeden Fall ausgeführt werden.
+- `prepare_simulation` scheint eine Race-Condition zu `start_simulation` zu haben. `prepare_simulation` sollte daher deutlich vor `start_simulation` ausgeführt werden.
+- `start_simulation` startet die Simulation. Die übergebene Runtime ist in Sekunden.
+
+Nicht unterstützte aber angelegte Funktionen:
+```
+Keine
+```
+
 ## Knoten
 
 ### LXD-Container
@@ -14,6 +34,7 @@ _configure_container(config) [private] -> None
 start_interfaces() -> None
 connect_to_netdevice(network_name, netdevice, ipv4_addr, ip_prefix, bridge_connect=False, bridge_connect_ip=None, bridge_connect_mask=None) -> None
 execute_command(command, sudo=False) -> None
+set_position(x, y, z) -> None
 start() -> None
 stop() -> None
 destroy() -> None
@@ -35,6 +56,7 @@ init(name, interface) -> External-Network-Object
 get_ns3_node() -> ns3-Node (ns.network.Node)
 connect_to_netdevice(network_name, netdevice, ipv4_addr, ip_prefix, bridge_connect=False, bridge_connect_ip=None, bridge_connect_mask=None) -> None
 execute_command(ip, user, password, command, sudo=False) -> None
+set_position(x, y, z) -> None
 destroy() -> None
 ```
 
@@ -87,22 +109,22 @@ add_node(system_node, pos_x, pos_y, pos_z, ipv4_addr="255.255.255.255", ipv4_sub
 create() -> None
 set_delay(delay) -> None
 set_data_rate(data_rate) -> None
-set_position(system_node, pos_x, pos_y, pos_z) -> None
+connect_node(node) -> None
+connect() -> None
+disconnect_node(node) -> None
+disconnect() -> None
+destroy() -> None
 ```
 
 Anmerkungen:
 - `set_delay` legt die Latenz bei 100m Distanz fest. Bei 50m ist es dann nur noch die Hälfte.
 - `set_data_rate` hat nur vor `create` einen Effekt.
-- `set_position` soll langfristig Teil eines Knotens werden.
-- `connect_node` enthält noch Code, der jedoch nicht funktionieren sollte.
+- Die Position eines Knotens in dem Wifi-Netzwerk speichert der Knoten selbst (siehe `set_position` der Knotenklassen).
+- `disconnect_node` entfernt nicht wirklich den Knoten aus dem Netzwerk, sondern setzt den Knoten nur eine andere zufällige und sehr entfernte Position. Dies passiert nur im Netzwerk, die Position in der Knotenklasse ist weiterhin die richtige.
 
 Nicht unterstützte aber angelegte Funktionen:
 ```
-connect_node(node)
-connect()
-disconnect_node(node)
-disconnect()
-destroy()
+Keine
 ```
 
 Subklassen: `ConnectedNode`
@@ -138,7 +160,7 @@ destroy() -> None
 ```
 
 Anmerkungen:
-- `add_node_to_mapping` bis jetzt unterstützte Objekt-Typen: `vehicle`, `person`, `junction`. Mehr sollen noch kommen.
+- `add_node_to_mapping` bis jetzt unterstützte Objekt-Typen: `vehicle`, `person`, `junction`.
 
 Nicht unterstützte aber angelegte Funktionen:
 ```
@@ -146,6 +168,22 @@ Keine
 ```
 
 ## System-Komponenten
+
+### Vorbereitung
+
+In `hostcomponents/Preparation.py`
+
+Unterstützte Funktionen:
+```
+do_not_filter_bridge_traffic() -> None
+```
+
+- `do_not_filter_bridge_traffic` sollte ausgeführt werden. Auf manchen System kann dies jedoch scheitern, da die Dateien, die in der Funktion überschrieben werden, nicht existieren. Dann muss die Funktion auch nicht ausgeführt werden.
+
+Nicht unterstützte aber angelegte Funktionen:
+```
+Keine
+```
 
 ### TUN-Schnittstellen
 In `hostcomponents/TunTapDevice.py`

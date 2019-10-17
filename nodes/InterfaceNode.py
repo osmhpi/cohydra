@@ -22,6 +22,7 @@ class InterfaceNode(object):
         self.tapbridge = None
         self.connected = False
         self.bridge_connected = False
+        self.position = (0, 0, 0)  # x, y, z
 
     def get_ns3_node(self):
         if self.ns3node is None:
@@ -98,6 +99,9 @@ class InterfaceNode(object):
             print(e)
             return
         print("Command executed")
+
+    def set_position(self, x, y, z):
+        self.position = (x, y, z)
 
     def start(self):
         print("Start has no effect for external networks.")

@@ -6,6 +6,12 @@ import ns.mobility
 import ns.wifi
 import ns.wave
 import ns.propagation
+from aexpr import aexpr
+import random
+
+
+def get_random_pos():
+    return random.randint(-2 ** 100, 2 ** 100)
 
 
 class WifiNetwork(object):
@@ -15,7 +21,7 @@ class WifiNetwork(object):
         if len(self.name) > 4:
             raise ValueError("Network name can not be longer than 4 characters.")
 
-        self.system_nodes = []
+        self.connected_nodes = []
         self.wifi_helper = None
         self.wifi_mac_helper = None
         self.wifi_channel = None
@@ -28,11 +34,11 @@ class WifiNetwork(object):
         self.propagation_delay_model = None
         self.position_alloc = None
 
-    def add_node(self, system_node, pos_x, pos_y, pos_z, ipv4_addr="255.255.255.255", ipv4_subnetmask="255.255.255.255",
+    def add_node(self, system_node, ipv4_addr="255.255.255.255", ipv4_subnetmask="255.255.255.255",
                  bridge_connect=False, bridge_connect_ip="255.255.255.255", bridge_connect_mask="255.255.255.255",
                  connect_on_create=False):
         print("Add node " + system_node.name + " to network " + self.name)
-        connected_node = ConnectedNode(system_node, pos_x, pos_y, pos_z)
+        connected_node = ConnectedNode(system_node)
         connected_node.connect_on_create = connect_on_create
         connected_node.ipv4_addr = ipv4_addr
         connected_node.ipv4_subnetmask = ipv4_subnetmask
@@ -40,16 +46,28 @@ class WifiNetwork(object):
         connected_node.bridge_connect_ip = bridge_connect_ip
         connected_node.bridge_connect_subnetmask = bridge_connect_mask
 
-        self.system_nodes.append(connected_node)
+        self.connected_nodes.append(connected_node)
 
     def create(self):
         print("Create network " + self.name)
         node_container = ns.network.NodeContainer()
         self.position_alloc = ns.mobility.ListPositionAllocator()
-        for connected_node in self.system_nodes:
+
+        for connected_node in self.connected_nodes:
+            system_node = connected_node.system_node
+            node_container.Add(system_node.get_ns3_node())
             if connected_node.connect_on_create:
-                node_container.Add(connected_node.system_node.get_ns3_node())
-                self.position_alloc.Add(connected_node.pos_vector)
+                pos_vector = ns.core.Vector(system_node.position[0], system_node.position[1], system_node.position[2])
+            else:
+                pos_vector = ns.core.Vector(get_random_pos(), get_random_pos(), get_random_pos())
+            connected_node.connected = connected_node.connect_on_create
+            self.position_alloc.Add(pos_vector)
+
+            def update_position(obs, old_position, new_position):
+                if connected_node.connected:
+                    self.set_position(connected_node, new_position[0], new_position[1], new_position[2])
+
+            aexpr(lambda: system_node.position, globals(), locals()).on_change(update_position)
 
         wifi_channel_helper = ns.wifi.YansWifiChannelHelper.Default()
         self.wifi_channel = wifi_channel_helper.Create()
@@ -76,55 +94,65 @@ class WifiNetwork(object):
         self.mobility_helper.SetPositionAllocator(self.position_alloc)
         self.mobility_helper.Install(node_container)
 
-        i = 0
-        for k in range(0, len(self.system_nodes)):
-            connected_node = self.system_nodes[k]
-            if connected_node.connect_on_create:
-                connected_node.wifi_netdevice = devices.Get(i)
-                connected_node.system_node.connect_to_netdevice(self.name, connected_node.wifi_netdevice,
-                                                                connected_node.ipv4_addr,
-                                                                connected_node.ipv4_subnetmask,
-                                                                connected_node.bridge_connect,
-                                                                connected_node.bridge_connect_ip,
-                                                                connected_node.bridge_connect_subnetmask)
-                i = i + 1
+        for k in range(0, len(self.connected_nodes)):
+            connected_node = self.connected_nodes[k]
+            connected_node.wifi_netdevice = devices.Get(k)
+            connected_node.system_node.connect_to_netdevice(self.name, connected_node.wifi_netdevice,
+                                                            connected_node.ipv4_addr,
+                                                            connected_node.ipv4_subnetmask,
+                                                            connected_node.bridge_connect,
+                                                            connected_node.bridge_connect_ip,
+                                                            connected_node.bridge_connect_subnetmask)
         self.set_delay(self.delay)
 
+    def get_connected_node_of_system_node(self, system_node):
+        for connected_node in self.connected_nodes:
+            if connected_node.system_node.name == system_node.name:
+                return connected_node
+        return None
+
     def connect_node(self, node):
-        print("Connect node " + node.name + " to network " + self.name)
-        connected_node = None
-        for k in range(0, len(self.system_nodes)):
-            if self.system_nodes[k].system_node.name == node.name:
-                connected_node = self.system_nodes[k]
+        print("Connect " + node.name + " to network " + self.name)
+        connected_node = self.get_connected_node_of_system_node(node)
         if connected_node is None:
-            print("Node " + node.name + " not found in network " + self.name)
-            return
-        node_container = ns.network.NodeContainer()
-        node_container.Add(connected_node.system_node.get_ns3_node())
-
-        self.position_alloc.Add(connected_node.pos_vector)
-        self.mobility_helper.SetPositionAllocator(self.position_alloc)
-
-        devices = self.wifi80211p.Install(self.wave_phy_helper, self.wifi80211pMac, node_container)
-        self.wave_phy_helper.EnablePcap("wave-simple-80211p", devices)
-        self.mobility_helper.Install(node_container)
-        connected_node.wifi_netdevice = devices.Get(0)
-        connected_node.system_node.connect_to_netdevice(self.name, connected_node.wifi_netdevice,
-                                                        connected_node.ipv4_addr,
-                                                        connected_node.ipv4_subnetmask,
-                                                        connected_node.bridge_connect,
-                                                        connected_node.bridge_connect_ip,
-                                                        connected_node.bridge_connect_subnetmask)
-        print("8")
+            print("The node " + node.name + " was never added to the network")
+        else:
+            if connected_node.connected:
+                print("The node " + node.name + " is already connected")
+            else:
+                connected_node.connected = True
+                self.set_position(connected_node, node.position[0], node.position[1], node.position[2])
+                print("Connected " + node.name + " to network " + self.name)
 
     def connect(self):
-        print("Connect all unconnected nodes is not supported on wifi-networks so far")
+        print("Connect all unconnected nodes to the network " + self.name)
+        for connected_node in self.connected_nodes:
+            if not connected_node.connected:
+                self.connect_node(connected_node.system_node)
 
     def disconnect_node(self, node):
-        print("Disconnect nodes is not supported on wifi-networks so far")
+        print("Disconnect " + node.name + " from network " + self.name)
+        connected_node = self.get_connected_node_of_system_node(node)
+        if connected_node is None:
+            print("The node " + node.name + " was never added to the network")
+        else:
+            if not connected_node.connected:
+                print("The node " + node.name + " is already disconnected")
+            else:
+                connected_node.connected = False
+                self.set_position(connected_node, get_random_pos(), get_random_pos(), get_random_pos())
+                print("Disconnected " + node.name + " from network " + self.name)
 
     def disconnect(self):
-        print("Disconnect all nodes is not supported on wifi-networks so far")
+        print("Disconnect all connected nodes from the network " + self.name)
+        for connected_node in self.connected_nodes:
+            if connected_node.connected:
+                self.disconnect_node(connected_node.system_node)
+
+    def set_position(self, connected_node, pos_x, pos_y, pos_z):
+        pos_vector = ns.core.Vector(pos_x, pos_y, pos_z)
+        mobility = connected_node.system_node.get_ns3_node().GetObject(ns.mobility.MobilityModel.GetTypeId())
+        mobility.SetPosition(pos_vector)
 
     def set_delay(self, delay):
         print("Set delay of network " + self.name + " to " + str(delay))
@@ -140,29 +168,14 @@ class WifiNetwork(object):
         print("Set data rate of network " + self.name + " to " + data_rate)
         self.data_rate = data_rate  # This have no effect after creating the network so far.
 
-    def set_position(self, system_node, pos_x, pos_y, pos_z):
-        print("Set position of " + system_node.name + " to (" + str(pos_x) + ", " + str(pos_y) + ", " + str(pos_z) + ")\n")
-        for conn_node in self.system_nodes:
-            if conn_node.system_node.name == system_node.name:
-                conn_node.pos_x = pos_x
-                conn_node.pos_y = pos_y
-                conn_node.pos_z = pos_z
-                conn_node.pos_vector = ns.core.Vector(pos_x, pos_y, pos_z)
-                mobility = conn_node.system_node.get_ns3_node().GetObject(ns.mobility.MobilityModel.GetTypeId())
-                mobility.SetPosition(conn_node.pos_vector)
-
     def destroy(self):
         self.disconnect()
 
 
 class ConnectedNode(object):
 
-    def __init__(self, system_node, pos_x, pos_y, pos_z):
+    def __init__(self, system_node):
         self.system_node = system_node
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-        self.pos_z = pos_z
-        self.pos_vector = ns.core.Vector(pos_x, pos_y, pos_z)
         self.connected = False
         self.connect_on_create = False
         self.ipv4_addr = "255.255.255.255"

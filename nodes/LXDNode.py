@@ -21,6 +21,7 @@ class LXDNode(object):
         self.interfaces = {}
         self.running = False
         self.ns3node = None
+        self.position = (0, 0, 0)  # x, y, z
 
     def get_ns3_node(self):
         if self.ns3node is None:
@@ -87,6 +88,9 @@ class LXDNode(object):
             print("Commands for LXD containers were always executed as sudo.")
         print("exec: "+str(["lxc", "exec", self.name, "--", command]))
         print(subprocess.call("lxc exec " + self.name + " -- " + command, shell=True))
+
+    def set_position(self, x, y, z):
+        self.position = (x, y, z)
 
     def start(self):
         print("Start container " + self.name)

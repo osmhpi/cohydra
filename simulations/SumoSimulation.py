@@ -26,24 +26,34 @@ class SumoSimulation(object):
         step_counter = 0
         while step_counter < self.steps:
             traci.simulationStep()
+
+            # Update positions:
+            for node in self.node_mapping:
+                x, y = self.get_position_of_node(node)
+                node.set_position(x, y, 0)
+
             after_simulation_step(self, traci)
+
             step_counter = step_counter + 1
             time.sleep(traci.simulation.getDeltaT())
 
         traci.close()
 
     def add_node_to_mapping(self, node, sumo_vehicle_id, obj_type="vehicle"):
-        self.node_mapping[node.name] = (sumo_vehicle_id, obj_type)
+        self.node_mapping[node] = (sumo_vehicle_id, obj_type)
 
     def get_position_of_node(self, node):
-        if self.node_mapping[node.name][1] == "person":
-            return traci.person.getPosition(self.node_mapping[node.name][0])
-        elif self.node_mapping[node.name][1] == "vehicle":
-            return traci.vehicle.getPosition(self.node_mapping[node.name][0])
-        elif self.node_mapping[node.name][1] == "junction":
-            return traci.junction.getPosition(self.node_mapping[node.name][0])
+        if node not in self.node_mapping:
+            print("Unknown node "+str(node.name))
         else:
-            print("Unknown type " + str(self.node_mapping[node.name][1]))
+            if self.node_mapping[node][1] == "person":
+                return traci.person.getPosition(self.node_mapping[node][0])
+            elif self.node_mapping[node][1] == "vehicle":
+                return traci.vehicle.getPosition(self.node_mapping[node][0])
+            elif self.node_mapping[node][1] == "junction":
+                return traci.junction.getPosition(self.node_mapping[node][0])
+            else:
+                print("Unknown type " + str(self.node_mapping[node][1]))
 
     def get_distance_between_nodes(self, node1, node2):
         x1, y1 = self.get_position_of_node(node1)

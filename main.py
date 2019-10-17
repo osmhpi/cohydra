@@ -1,43 +1,21 @@
 from __future__ import print_function
 
 from netsimbridge.WifiNetwork import WifiNetwork
+from netsimbridge import Simulation
 from nodes.LXDNode import LXDNode
 from events.Event import e
 from simulations.SumoSimulation import SumoSimulation
+from hostcomponents import Preparation
 import ns.core
 import sys
-
-
-# import ns.fd_net_device
-
-# emuHelper = ns.fd_net_device.EmuFdNetDeviceHelper()
-# print(type(emuHelper).__dict__)
-# print("Import successful")
-# exit(0)
 
 # ns.core.LogComponentEnable("TapBridgeHelper", ns.core.LOG_LEVEL_INFO)
 # ns.core.LogComponentEnable("TapBridge", ns.core.LOG_LEVEL_INFO)
 # ns.core.LogComponentEnable("NetDevice", ns.core.LOG_LEVEL_INFO)
 # ns.core.LogComponentEnable("Object", ns.core.LOG_LEVEL_INFO)
 
-def overwrite_content_in_file(path, content):
-    f = open(path, "w")
-    f.write(content)
-
-
-def prepare_scenario():
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-arptables", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-iptables", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-filter-vlan-tagged", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-call-ip6tables", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-filter-pppoe-tagged", "0")
-    overwrite_content_in_file("/proc/sys/net/bridge/bridge-nf-pass-vlan-input-dev", "0")
-
-
-prepare_scenario()
-
-ns.core.GlobalValue.Bind("SimulatorImplementationType", ns.core.StringValue("ns3::RealtimeSimulatorImpl"))
-ns.core.GlobalValue.Bind("ChecksumEnabled", ns.core.BooleanValue("true"))
+Preparation.do_not_filter_bridge_traffic()
+Simulation.prepare_simulation()
 
 conleft = LXDNode("left", "java")  # ubuntu:16.04
 conleft.create()
@@ -96,16 +74,13 @@ try:
     e().after(5).execute(lambda: conleft.execute_command("java FileServer", True)).start_on_simulation_start()
     e().after(10).execute(lambda: conright.execute_command("java FileClient", True)).start_on_simulation_start()
 
-    ns.core.Simulator.Stop(ns.core.Seconds(6000))
-    print("Start Simulation")
-    ns.core.Simulator.Run(signal_check_frequency=-1)
-    print("Simulation stopped")
+    Simulation.start_simulation()
 except:
     print("Unexpected error:", sys.exc_info())
     pass
 
 print("Start cleanup")
-ns.core.Simulator.Destroy()
+Simulation.destroy_simulation()
 sim.destroy()
 conleft.destroy()
 conright.destroy()
