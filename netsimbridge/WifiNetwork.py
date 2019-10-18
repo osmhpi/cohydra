@@ -16,10 +16,15 @@ def get_random_pos():
 
 class WifiNetwork(object):
 
-    def __init__(self, name):
+    def __init__(self, name, frequency=5860, channel_width=10, antennas=2, tx_power=18.0):
         self.name = name
         if len(self.name) > 4:
             raise ValueError("Network name can not be longer than 4 characters.")
+
+        self.frequency = frequency
+        self.channel_width = channel_width
+        self.antennas = antennas
+        self.tx_power = tx_power
 
         self.connected_nodes = []
         self.wifi_helper = None
@@ -75,7 +80,16 @@ class WifiNetwork(object):
         self.propagation_delay_model = ns.propagation.ConstantSpeedPropagationDelayModel()
         self.wifi_channel.SetAttribute("PropagationDelayModel", ns.core.PointerValue(self.propagation_delay_model))
 
+        loss_model = ns.propagation.FriisPropagationLossModel()
+        loss_model.SetAttribute("SystemLoss", ns.core.DoubleValue(4.15))
+        self.wifi_channel.SetAttribute("PropagationLossModel", ns.core.PointerValue(loss_model))
+
         self.wave_phy_helper = ns.wifi.YansWifiPhyHelper.Default()
+        self.wave_phy_helper.Set("TxPowerStart", ns.core.DoubleValue(self.tx_power))
+        self.wave_phy_helper.Set("TxPowerEnd", ns.core.DoubleValue(self.tx_power))
+        self.wave_phy_helper.Set("Antennas", ns.core.UintegerValue(self.antennas))
+        self.wave_phy_helper.Set("Frequency", ns.core.UintegerValue(self.frequency))
+        self.wave_phy_helper.Set("ChannelWidth", ns.core.UintegerValue(self.channel_width))
         self.wave_phy_helper.SetChannel(self.wifi_channel)
         self.wave_phy_helper.SetPcapDataLinkType(ns.wifi.WifiPhyHelper.DLT_IEEE802_11)
         self.wifi80211pMac = ns.wave.NqosWaveMacHelper.Default()
@@ -162,7 +176,7 @@ class WifiNetwork(object):
             if self.delay == 0:
                 self.propagation_delay_model.SetSpeed(299792458)  # Light Speed
             else:
-                self.propagation_delay_model.SetSpeed((100.0/delay)*1000.0)
+                self.propagation_delay_model.SetSpeed((100.0/(delay-(1/2)))*1000.0)
 
     def set_data_rate(self, data_rate):
         print("Set data rate of network " + self.name + " to " + data_rate)
