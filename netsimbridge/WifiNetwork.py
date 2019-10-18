@@ -27,7 +27,7 @@ class WifiNetwork(object):
         self.wifi_channel = None
         self.wave_phy_helper = None
         self.mobility_helper = None
-        self.delay = None
+        self.delay = 0
         self.data_rate = "OfdmRate6MbpsBW10MHz"
         self.wifi80211pMac = None
         self.wifi80211p = None
