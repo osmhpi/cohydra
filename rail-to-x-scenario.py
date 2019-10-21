@@ -28,9 +28,9 @@ network.add_node(train, "192.168.2.152", "24", connect_on_create=True, bridge_co
 network.create()
 
 sim = SumoSimulation("/home/arne/source/sumo/bin/sumo-gui",
-                     "/home/arne/Masterarbeit/sumo-scenarios/scenario3/test.sumocfg")
+                     "/home/arne/Masterarbeit/sumo-scenarios/scenario4/scenario.sumocfg")
 sim.add_node_to_mapping(swtch, "n0", "junction")
-sim.add_node_to_mapping(train, "vehicle_2")
+sim.add_node_to_mapping(train, "train")
 
 
 def after_sumo_simulation_step(simulation, traci):
