@@ -225,11 +225,11 @@ def create():
     # But in the source you can find more examples in the same dir.
     acc_status = 0
     for x in range(0, numberOfNodes):
-        acc_status += subprocess.call("bash net/singleSetup.sh %s" % (nameList[x]), shell=True)
+        acc_status += subprocess.call("sudo bash net/singleSetup.sh %s" % (nameList[x]), shell=True)
 
     check_return_code(acc_status, "Creating bridge and tap interface")
 
-    acc_status += subprocess.call("bash net/singleEndSetup.sh", shell=True)
+    acc_status += subprocess.call("sudo bash net/singleEndSetup.sh", shell=True)
     check_return_code(acc_status, "Finalizing bridges and tap interfaces")
 
     if not os.path.exists(pidsDirectory):
@@ -283,7 +283,7 @@ def ns3():
     print('About to start NS3 RUN  with total emulation time of %s' % str(total_emu_time))
 
     tmp = 'cd $NS3_HOME && '
-    tmp += './waf -j {0} --run "scratch/tap-vm --NumNodes={1} --TotalTime={2} --TapBaseName=emu '
+    tmp += 'sudo ./waf -j {0} --run "scratch/tap-vm --NumNodes={1} --TotalTime={2} --TapBaseName=emu '
     tmp += '--SizeX={3} --SizeY={3} --MobilitySpeed={4} --MobilityPause={5}"'
     ns3_cmd = tmp.format(jobs, numberOfNodesStr, total_emu_time, scenarioSize, nodeSpeed, nodePause)
 
@@ -330,7 +330,7 @@ def run_emu():
         if os.path.exists(pidsDirectory + nameList[x]):
             with open(pidsDirectory + nameList[x], "rt") as in_file:
                 text = in_file.read()
-                r_code = subprocess.call("rm -rf /var/run/netns/%s" % (text.strip()), shell=True)
+                r_code = subprocess.call("sudo rm -rf /var/run/netns/%s" % (text.strip()), shell=True)
                 check_return_code_chill(r_code, "Destroying docker bridges %s" % (nameList[x]))
 
         cmd = ['docker', 'inspect', '--format', "'{{ .State.Pid }}'", nameList[x]]
@@ -391,13 +391,13 @@ def destroy():
 
     for x in range(0, numberOfNodes):
 
-        r_code = subprocess.call("bash net/singleDestroy.sh %s" % (nameList[x]), shell=True)
+        r_code = subprocess.call("sudo bash net/singleDestroy.sh %s" % (nameList[x]), shell=True)
         check_return_code_chill(r_code, "Destroying bridge and tap interface %s" % (nameList[x]))
 
         if os.path.exists(pidsDirectory + nameList[x]):
             with open(pidsDirectory + nameList[x], "rt") as in_file:
                 text = in_file.read()
-                r_code = subprocess.call("rm -rf /var/run/netns/%s" % (text.strip()), shell=True)
+                r_code = subprocess.call("sudo rm -rf /var/run/netns/%s" % (text.strip()), shell=True)
                 check_return_code_chill(r_code, "Destroying docker bridges %s" % (nameList[x]))
 
         r_code = subprocess.call("rm -rf %s" % (pidsDirectory + nameList[x]), shell=True)
