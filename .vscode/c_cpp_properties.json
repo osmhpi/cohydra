@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/test/Documents/workspace/source/ns-3.29/build/"
+                "/home/test/Documents/ns3docker/workspace/source/ns-3.29/build/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

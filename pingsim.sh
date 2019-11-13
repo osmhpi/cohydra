@@ -4,11 +4,11 @@ COUNTER=0
 MAIN_SCRIPT="main.new.py"
 
 NODES=10 # Number of nodes
-TIMEEMU=10 # Time of the emulation in seconds
+TIMEEMU=30 # Time of the emulation in seconds
 SIZE=300 # Size of the network, 300m x 300m
 SPEED=5 # Speed in m/s
 PAUSE=0 # Pause time of the nodes in seconds
-NUM_EMULATIONS=2
+NUM_EMULATIONS=1
 
 export BAKE_HOME=/home/test/Documents/ns3docker/workspace/bake
 export NS3_HOME=$BAKE_HOME/../source/ns-3.29

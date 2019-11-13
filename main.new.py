@@ -158,7 +158,7 @@ def create():
     r_code = subprocess.call("docker build -t %s docker/minimal/." % baseContainerNameMin, shell=True)
     check_return_code(r_code, "Building minimal container %s" % baseContainerNameMin)
 
-    r_code = subprocess.call("cd ns3 && bash update.sh tap-lan-virtual-machine.cc", shell=True)
+    r_code = subprocess.call("cd ns3 && bash update.sh tap-star-virtual-machine.cc", shell=True)
     if r_code != 0:
         print("Error copying latest ns3 file")
     else:
@@ -239,7 +239,6 @@ def create():
     # Fourth, we create the bridges for the docker containers
     # https://docs.docker.com/v1.7/articles/networking/
     acc_status = 0
-    print(f"namelist::::: {nameList}")
     for x in range(0, numberOfNodes):
         cmd = ['docker', 'inspect', '--format', "'{{ .State.Pid }}'", nameList[x]]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
