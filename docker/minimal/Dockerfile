@@ -21,13 +21,11 @@ FROM alpine
 
 #RUN apk update && apk add bash
 
+COPY ping.sh /ping.sh
+RUN chmod +x /ping.sh
+
 COPY wrapper.sh /wrapper.sh
 RUN chmod +x /wrapper.sh
 COPY --from=builder /go/bin/Beacon /beacon
 
-#CMD ["bash", "/wrapper.sh"]
-CMD /wrapper.sh
-
-# docker build -t hello-world-multi-stage .
-# docker run hello-world-multi-stage
-# docker image ls hello-world-multi-stage
+CMD ["/ping.sh"]

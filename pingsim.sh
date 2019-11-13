@@ -3,12 +3,14 @@
 COUNTER=0
 MAIN_SCRIPT="main.new.py"
 
-NODES=20 # Number of nodes
+NODES=10 # Number of nodes
 TIMEEMU=10 # Time of the emulation in seconds
 SIZE=300 # Size of the network, 300m x 300m
 SPEED=5 # Speed in m/s
 PAUSE=0 # Pause time of the nodes in seconds
+NUM_EMULATIONS=2
 
+export BAKE_HOME=/home/test/Documents/workspace/bake
 export NS3_HOME=$BAKE_HOME/../source/ns-3.29
 
 # We create everything
@@ -16,7 +18,7 @@ python3 ${MAIN_SCRIPT} -n ${NODES} -t ${TIMEEMU} -s ${SIZE} -ns ${SPEED} -np ${P
 # We run the NS3 simulation
 python3 ${MAIN_SCRIPT} -n ${NODES} -t ${TIMEEMU} -s ${SIZE} -ns ${SPEED} -np ${PAUSE} ns3
 
-while [  $COUNTER -lt 2 ]; do
+while [  $COUNTER -lt $NUM_EMULATIONS ]; do
 
     DATENOW=$(date +"%y_%m_%d_%H_%M")
 
@@ -24,8 +26,8 @@ while [  $COUNTER -lt 2 ]; do
     echo "---------------------------"
     echo ${DATENOW}
     echo "---------------------------"
-    mkdir -p var/archive/${DATENOW}
-    mv var/log/* var/archive/${DATENOW}/
+    sudo mkdir -p var/archive/${DATENOW}
+    sudo mv var/log/* var/archive/${DATENOW}/
 
     # Run the emulation
     python3 ${MAIN_SCRIPT} -n ${NODES} -t ${TIMEEMU} -s ${SIZE} -ns ${SPEED} -np ${PAUSE} emulation

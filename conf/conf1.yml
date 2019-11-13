@@ -1,5 +1,5 @@
-nodes: 20
+nodes: 10
 port: 10001
-rootnode: 1
-target: 1573296115
-timeout: 60
+rootnode: 0
+target: 0
+timeout: 800

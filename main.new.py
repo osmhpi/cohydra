@@ -158,7 +158,7 @@ def create():
     r_code = subprocess.call("docker build -t %s docker/minimal/." % baseContainerNameMin, shell=True)
     check_return_code(r_code, "Building minimal container %s" % baseContainerNameMin)
 
-    r_code = subprocess.call("cd ns3 && bash update.sh tap-wifi-virtual-machine.cc", shell=True)
+    r_code = subprocess.call("cd ns3 && bash update.sh tap-lan-virtual-machine.cc", shell=True)
     if r_code != 0:
         print("Error copying latest ns3 file")
     else:
@@ -202,13 +202,10 @@ def create():
 
         # "." are not allowed in the -v of docker and it just work with absolute paths
         log_host_path = dir_path + logsDirectory[1:] + nameList[x]
-        conf_host_path = dir_path + "/conf"
 
-        volumes = "-v " + log_host_path + ":/var/log/golang "
-        volumes += "-v " + conf_host_path + ":/beacon_conf "
+        volumes = "-v " + log_host_path + ":/var/log/"
 
         print("VOLUMES: " + volumes)
-
         acc_status += subprocess.call(
             "docker run --privileged -dit --net=none %s --name %s %s" % (volumes, nameList[x], baseContainerNameMin),
             shell=True)
@@ -225,11 +222,11 @@ def create():
     # But in the source you can find more examples in the same dir.
     acc_status = 0
     for x in range(0, numberOfNodes):
-        acc_status += subprocess.call("sudo bash net/singleSetup.sh %s" % (nameList[x]), shell=True)
+        acc_status += subprocess.call("sudo net/singleSetup.sh %s" % (nameList[x]), shell=True)
 
     check_return_code(acc_status, "Creating bridge and tap interface")
 
-    acc_status += subprocess.call("sudo bash net/singleEndSetup.sh", shell=True)
+    acc_status += subprocess.call("sudo net/singleEndSetup.sh", shell=True)
     check_return_code(acc_status, "Finalizing bridges and tap interfaces")
 
     if not os.path.exists(pidsDirectory):
@@ -242,6 +239,7 @@ def create():
     # Fourth, we create the bridges for the docker containers
     # https://docs.docker.com/v1.7/articles/networking/
     acc_status = 0
+    print(f"namelist::::: {nameList}")
     for x in range(0, numberOfNodes):
         cmd = ['docker', 'inspect', '--format', "'{{ .State.Pid }}'", nameList[x]]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -283,8 +281,7 @@ def ns3():
     print('About to start NS3 RUN  with total emulation time of %s' % str(total_emu_time))
 
     tmp = 'cd $NS3_HOME && '
-    tmp += 'sudo ./waf -j {0} --run "scratch/tap-vm --NumNodes={1} --TotalTime={2} --TapBaseName=emu '
-    tmp += '--SizeX={3} --SizeY={3} --MobilitySpeed={4} --MobilityPause={5}"'
+    tmp += 'sudo ./waf -j {0} --run "scratch/tap-vm --NumNodes={1} --TotalTime={2} --TapBaseName=emu"'
     ns3_cmd = tmp.format(jobs, numberOfNodesStr, total_emu_time, scenarioSize, nodeSpeed, nodePause)
 
     print(ns3_cmd)
@@ -391,7 +388,7 @@ def destroy():
 
     for x in range(0, numberOfNodes):
 
-        r_code = subprocess.call("sudo bash net/singleDestroy.sh %s" % (nameList[x]), shell=True)
+        r_code = subprocess.call("sudo net/singleDestroy.sh %s" % (nameList[x]), shell=True)
         check_return_code_chill(r_code, "Destroying bridge and tap interface %s" % (nameList[x]))
 
         if os.path.exists(pidsDirectory + nameList[x]):
