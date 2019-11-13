@@ -10,7 +10,7 @@ SPEED=5 # Speed in m/s
 PAUSE=0 # Pause time of the nodes in seconds
 NUM_EMULATIONS=2
 
-export BAKE_HOME=/home/test/Documents/workspace/bake
+export BAKE_HOME=/home/test/Documents/ns3docker/workspace/bake
 export NS3_HOME=$BAKE_HOME/../source/ns-3.29
 
 # We create everything
