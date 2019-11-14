@@ -175,11 +175,6 @@ def create():
     print('NS3 Build finished | Date now: %s' % datetime.datetime.now())
 
     #############################
-    # First and a half ... we generate the configuration yaml files.
-
-    write_conf(0, numberOfNodes, timeoutStr, 0, 10001, "conf1.yml")
-
-    #############################
     # Second, we run the numberOfNodes of containers.
     # https://docs.docker.com/engine/reference/run/
     # They have to run as privileged (don't remember why, need to clarify but I read it in stackoverflow)
@@ -337,10 +332,6 @@ def run_emu():
         with open(pidsDirectory + nameList[x], "w") as text_file:
             text_file.write(str(pid, 'utf-8'))
 
-    # syncConfigTime (s) = seconds + ~seconds
-    sync_config_time = int(time.time()) + numberOfNodes
-    write_conf(sync_config_time, numberOfNodes, timeoutStr, 1, 10001, "conf1.yml")
-
     acc_status = 0
     for x in range(0, numberOfNodes):
         acc_status += subprocess.call("bash net/container.sh %s %s" % (nameList[x], x), shell=True)
@@ -348,27 +339,13 @@ def run_emu():
     check_return_code_chill(acc_status, "Cleaning old netns and setting up new")
 
     print('Finished RUN SIM | Date now: %s' % datetime.datetime.now())
-    print('Letting the simulation run for %s' % emulationTimeStr)
+    print('Letting the simulation run for %ss' % emulationTimeStr)
 
     time.sleep(int(emulationTimeStr))
 
     print('Finished RUN SIM 2 | Date now: %s' % datetime.datetime.now())
 
     return
-
-
-def write_conf(target, nodes, timeout, root, port, filename):
-    config = {
-        'target': target,
-        'nodes': nodes,
-        'timeout': int(timeout),
-        'rootnode': root,
-        'port': port
-    }
-    filename = "conf/" + filename
-    with open(filename, 'w') as yaml_file:
-        yaml.dump(config, yaml_file, default_flow_style=False)
-
 
 ################################################################################
 # end ns3 ()
