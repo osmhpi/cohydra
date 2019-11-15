@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import logging
 
 class Simulation:
 
@@ -23,6 +24,7 @@ class Simulation:
     def prepare(self):
         """Prepares the simulation by building docker containers.
         """
+        logging.info('Preparing simulation')
         for network in self.scenario.networks:
             network.prepare()
 

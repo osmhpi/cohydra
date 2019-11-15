@@ -1,4 +1,6 @@
 from .interface import Interface
+import logging
+
 class Network:
     """
     A network connects many nodes together and assigns IP addresses.
@@ -24,6 +26,7 @@ class Network:
     def prepare(self):
         """Prepares the network by building the docker containers.
         """
+        logging.info('Preparing network (base ip: %s)', self.base_ip)
         for node in self.nodes:
             node.prepare()
 

@@ -1,6 +1,8 @@
+import logging
 from ns3d import Network, Node, Scenario
 
 def main():
+    logging.basicConfig(level=logging.INFO)
     scenario = Scenario()
 
     net = Network("10.0.0.0", "255.255.255.0")
@@ -10,7 +12,7 @@ def main():
     net.connect(node1, node2)
 
     scenario.add_network(net)
-    with scenario.prepare() as sim:
+    with scenario as sim:
         sim.simulate(30)
 
 if __name__ == "__main__":
