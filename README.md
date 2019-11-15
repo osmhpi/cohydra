@@ -10,14 +10,11 @@ This repo provides a python package called `ns3d`.
 
 *Caution:* This project fiddles with your network interfaces. Please consider to use it in a virtual machine for testing purposes.
 
-~~There is an installation script provided, that will create a folder called `workspace` in the current working directory.
-**There is no need to clone the repo before installing.**
-The script will ask you for your password because it needs sudo permissions.
-To install all the dependencies (tested on Debian Buster), run:~~
+Please install docker beforehand and ensure, that the current user is member of the *docker* group.
 
-**Do not run the following command as Felix will feel bad for possibly ruining your system**
+To install the required dependencies and ns-3, run:
 ```
-./install.sh
+make init
 ```
 
 # Examples Of Usage
