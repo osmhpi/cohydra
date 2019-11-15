@@ -1,6 +1,6 @@
 class Interface:
 
-    def __init__(self, network, nodes, delay='0ms', speed='100Mbps'):
+    def __init__(self, network, nodes, delay, speed):
         self.network = network
         self.nodes = nodes
         self.delay = delay
