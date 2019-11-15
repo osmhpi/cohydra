@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import logging
+from ns import core
 
 class Simulation:
 
@@ -25,6 +26,11 @@ class Simulation:
         """Prepares the simulation by building docker containers.
         """
         logging.info('Preparing simulation')
+
+        # This needs to be set to real time, to let the containers speek.
+        core.GlobalValue.Bind("SimulatorImplementationType", core.StringValue("ns3::RealtimeSimulatorImpl"))
+        core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
+
         for network in self.scenario.networks:
             network.prepare()
 
@@ -33,7 +39,10 @@ class Simulation:
 
         :param float time: The simulation timeout in seconds.
         """
-        pass
+        logging.info('Simulating for %.4fs', time)
+        core.Simulator.Stop(core.Seconds(time))
+        core.Simulator.Run()
+        core.Simulator.Destroy()
 
     def teardown(self):
         """Tear down the simulation.

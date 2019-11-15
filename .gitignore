@@ -3,3 +3,6 @@ var/*
 
 # NS-3 Directory
 /ns3
+
+# Python caches
+*.pyc

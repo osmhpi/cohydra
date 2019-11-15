@@ -5,5 +5,8 @@
     "python.pythonPath": "/home/test/.virtualenvs/ns3-docker-2_1RpiW3/bin/python",
     "python.autoComplete.extraPaths": [
         "${workspaceFolder}/ns3/ns-3.29/install/lib/python3.7/site-packages"
-    ]
+    ],
+    "python.linting.pylintArgs": [
+        "--extension-pkg-whitelist=ns"
+    ],
 }

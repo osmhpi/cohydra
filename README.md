@@ -17,7 +17,11 @@ To install the required dependencies and ns-3, run:
 make init
 ```
 
+After that, please use a python virtual environment for testing: `make shell`.
+
 # Examples Of Usage
+
+The simulations need to be run as `root` user, because network devices are created during simulation.
 
 ```
 rm -rf ./*
