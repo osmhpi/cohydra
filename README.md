@@ -22,4 +22,6 @@ To install all the dependencies (tested on Debian Buster), run:~~
 
 # Examples Of Usage
 
-**Don't**
+```
+rm -rf ./*
+```
