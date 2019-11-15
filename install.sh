@@ -5,7 +5,7 @@
 sudo apt-get update
 sudo apt-get install gcc g++ python python-dev mercurial bzr gdb valgrind gsl-bin libgsl-dev libgsl-dbg libgsl-dev flex bison tcpdump sqlite sqlite3 libsqlite3-dev libxml2 libxml2-dev libgtk2.0-0 libgtk2.0-dev uncrustify doxygen graphviz imagemagick python-pygraphviz python-kiwi libgoocanvas-2.0-dev python-pygccxml cmake autoconf libc6-dev libc6-dev-i386 g++-multilib texlive texlive-extra-utils texlive-latex-extra texlive-font-utils texlive-lang-portuguese dvipng git ipython libboost-signals-dev libboost-filesystem-dev openmpi-bin openmpi-common openmpi-doc libopenmpi-dev qt4-default libqt4-dev unzip p7zip-full unrar-free mercurial net-tools bridge-utils uml-utilities
 sudo apt-get install python-pip python3-pip
-pip install pygccxml
+pip install pygccxml docker
 sudo pip install pygccxml pyyaml --upgrade
 
 # Install bake
