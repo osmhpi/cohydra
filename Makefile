@@ -11,6 +11,7 @@ NS3_BASE ?= ${CURDIR}/ns3
 export NS3_HOME := ${NS3_BASE}/ns-${NS3_VERSION}
 export PYTHONPATH := ${PYTHONPATH}:${NS3_BASE}/install/lib/python3.7/site-packages
 export LD_LIBRARY_PATH := ${LD_LIBRARY_PATH}:${NS3_BASE}/install/lib
+export PATH := ${PATH}:${NS3_BASE}/install/bin
 
 PIPENV := ${shell which pipenv || echo /usr/bin/pipenv}
 PIPENV_INSTALL := ${VIRTUAL_ENV}/.last-install
@@ -45,7 +46,10 @@ ${PIPENV_INSTALL}: Pipfile | pipenv
 ${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv
 	mkdir -p ${NS3_BASE} 
 	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
-	cd $(NS3_BASE) && python3 ./build.py -- --prefix=${NS3_BASE}/install
+	# Fix SuidBuild, see https://groups.google.com/forum/#!topic/ns-3-users/Wlaj57ehruM
+	sed -i 's/"SuidBuild"/"SuidBuild_task"/' ${NS3_HOME}/wscript
+	# build and install ns3
+	cd $(NS3_BASE) && python3 ./build.py -- --enable-sudo --prefix=${NS3_BASE}/install
 	cd ${NS3_HOME} && ./waf install
 	touch $@
 

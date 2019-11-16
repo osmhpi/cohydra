@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import logging
 from ns3d import Network, Node, Scenario
 
