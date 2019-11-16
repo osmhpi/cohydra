@@ -1,0 +1,22 @@
+{
+	"name": "Debian 10",
+	"dockerFile": "Dockerfile",
+	"runArgs": [
+		// Uncomment the line if you will use a ptrace-based debugger like C++, Go, and Rust.
+		// "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined",
+		// mount docker socket
+		"-v",
+		"/var/run/docker.sock:/var/run/docker.sock",
+		// cache ns3 installation
+		"-v",
+		"ns3:/home/vscode/ns3",
+		// run as vscode user
+		"-u",
+		"vscode"
+	],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	//  "appPort": [],
+	"extensions": []
+}

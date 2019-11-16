@@ -6,3 +6,6 @@ var/*
 
 # Python caches
 *.pyc
+
+# Local Makefile
+/Makefile.local

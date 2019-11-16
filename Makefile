@@ -1,32 +1,71 @@
-NS3_VERSION=3.29
-NS3_DOWNLOAD=ns3/ns-${NS3_VERSION}.tar.bz2
+#### Variables
+NS3_VERSION := 3.29
+NS3_DOWNLOAD_SHA1 := 8e712a744a07318d0416dbf85137d11635a02e9d
 
-shell:
-	NS3_VERSION=${NS3_VERSION} pipenv shell
+#### Local variables
+include Makefile.local
 
-init: install-ns3
-	pip install -r requirements.txt
+#### Default variables
+NS3_BASE ?= ${CURDIR}/ns3
 
-install-dependencies:
-	sudo apt update
-	sudo apt upgrade gcc g++ g++-multilib pipenv mercurial bzr gdb\
-		valgrind gsl-bin libgsl-dev libgsl-dbg libgsl-dev flex bison tcpdump\
-		sqlite sqlite3 libsqlite3-dev libxml2 libxml2-dev libgtk2.0-0 libgtk2.0-dev\
-		uncrustify doxygen graphviz libgraphviz-dev imagemagick\
-		libgoocanvas-2.0-dev python-pygccxml cmake autoconf libc6-dev libc6-dev-i386\
-		dvipng git ipython libboost-signals-dev libboost-filesystem-dev\
-		openmpi-bin openmpi-common openmpi-doc\
-		libopenmpi-dev qt4-default libqt4-dev unzip p7zip-full unrar-free\
-		mercurial net-tools bridge-utils uml-utilities
+export NS3_HOME := ${NS3_BASE}/ns-${NS3_VERSION}
+export PYTHONPATH := ${PYTHONPATH}:${NS3_BASE}/install/lib/python3.7/site-packages
+export LD_LIBRARY_PATH := ${LD_LIBRARY_PATH}:${NS3_BASE}/install/lib
+
+PIPENV := ${shell which pipenv || echo /usr/bin/pipenv}
+PIPENV_INSTALL := ${VIRTUAL_ENV}/.last-install
+NS3_DOWNLOAD ?= ${NS3_HOME}.tar.bz2
+
+#### Targets
+.PHONY: shell env init pipenv clean uninstall-ns3
+
+all: shell
+
+shell: ${PIPENV}
+	@env -u MAKELEVEL pipenv shell || echo "Exit code: $$?"
+
+env:
+	env
+	echo ${NS3_DOWNLOAD}
+	echo ${CPP}
+
+Makefile.local:
+	touch $@
+
+init: ${NS3_HOME}.installed ${PIPENV_INSTALL}
+
+${PIPENV}:
+	apt-get install pipenv
+
+${PIPENV_INSTALL}: Pipfile | pipenv
+	pipenv install
+	touch $@
+
+
+${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv
+	mkdir -p ${NS3_BASE} 
+	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
+	cd $(NS3_BASE) && python3 ./build.py -- --prefix=${NS3_BASE}/install
+	cd ${NS3_HOME} && ./waf install
+	touch $@
 
 ${NS3_DOWNLOAD}:
-	mkdir -p ns3
-	curl -sL -o $@ https://www.nsnam.org/releases/ns-allinone-${NS3_VERSION}.tar.bz2
+	mkdir -p ${dir ${NS3_DOWNLOAD}}
+	curl -L -o $@ https://www.nsnam.org/releases/ns-allinone-${NS3_VERSION}.tar.bz2
+	echo "${NS3_DOWNLOAD_SHA1} $@" | sha1sum -c 
 
-install-ns3: install-dependencies ${NS3_DOWNLOAD}
-	mkdir -p ns3 
-	tar xvj --strip-components 1 -C ns3 -f ${NS3_DOWNLOAD}
-	cd ns3 && python3 ./build.py -- --prefix=${PWD}/ns3/ns-${NS3_VERSION}/install
-	cd ns3/ns-${NS3_VERSION} && ./waf install
+ifeq "${VIRTUAL_ENV}" ""
+pipenv:
+	${info Run `make shell` first:}
+	${info }
+	${info   make shell}
+	${info }
+	${error Not in a pipenv envirenment}
+else
+pipenv:
+endif
 
-.PHONY: init install-dependencies shell
+clean: uninstall-ns3
+
+uninstall-ns3:
+	${RM} -r ${NS3_BASE}
