@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8a30d37b784c926e33a4e90e12a7bdb85634400e8220542e3dcb72e33c919981"
+            "sha256": "020807b33f75d6b6fac1c482d15a3e9714697149c32e9a92102f1d12433fa255"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -72,13 +72,6 @@
                 "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"
             ],
             "version": "==1.0.1"
-        },
-        "pygraphviz": {
-            "hashes": [
-                "sha256:50a829a305dc5a0fd1f9590748b19fece756093b581ac91e00c2c27c651d319d"
-            ],
-            "index": "pypi",
-            "version": "==1.5"
         },
         "pyroute2": {
             "hashes": [

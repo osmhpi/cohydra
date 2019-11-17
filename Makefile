@@ -1,19 +1,20 @@
 #### Variables
 NS3_VERSION := 3.29
-NS3_DOWNLOAD_SHA1 := 8e712a744a07318d0416dbf85137d11635a02e9d
+NS3_DOWNLOAD_SHA1 := 8e712a744a07318d0416dbf85137d11635a02e9d # 3.29
+# NS3_DOWNLOAD_SHA1 := b4d40bb9777ee644bdba50e3a2e221da85715b4e # 3.30
 
 #### Local variables
 include Makefile.local
 
 #### Default variables
 NS3_BASE ?= ${CURDIR}/ns3
+NS3_INSTALL ?= ${NS3_BASE}/install/ns-${NS3_VERSION}
 
 export NS3_HOME := ${NS3_BASE}/ns-${NS3_VERSION}
-export PYTHONPATH := ${PYTHONPATH}:${NS3_BASE}/install/lib/python3.7/site-packages
-export LD_LIBRARY_PATH := ${LD_LIBRARY_PATH}:${NS3_BASE}/install/lib
-export PATH := ${PATH}:${NS3_BASE}/install/bin
+export PYTHONPATH := ${PYTHONPATH}:${NS3_INSTALL}/lib/python3.7/site-packages
+export LD_LIBRARY_PATH := ${LD_LIBRARY_PATH}:${NS3_INSTALL}/lib
+export PATH := ${PATH}:${NS3_INSTALL}/bin
 
-PIPENV := ${shell which pipenv || echo /usr/bin/pipenv}
 PIPENV_INSTALL := ${VIRTUAL_ENV}/.last-install
 NS3_DOWNLOAD ?= ${NS3_HOME}.tar.bz2
 
@@ -24,8 +25,12 @@ all: shell
 
 .EXPORT_ALL_VARIABLES: shell
 
-shell: ${PIPENV}
-	@env -u MAKELEVEL pipenv shell || echo "Exit code: $$?"
+shell:
+	@if [ `id -u` -eq 0 ]; then \
+		env -u MAKELEVEL pipenv shell || echo "Exit code: $$?"; \
+	else \
+		sudo $(MAKE) $@; \
+	fi
 
 env:
 	env
@@ -37,20 +42,15 @@ Makefile.local:
 
 init: ${NS3_HOME}.installed ${PIPENV_INSTALL}
 
-${PIPENV}:
-	apt-get install pipenv
 
 ${PIPENV_INSTALL}: Pipfile | pipenv
 	pipenv install
 	touch $@
 
 ${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv
-	mkdir -p ${NS3_BASE} 
+	mkdir -p ${NS3_BASE} ${NS3_INSTALL}
 	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
-	# Fix SuidBuild, see https://groups.google.com/forum/#!topic/ns-3-users/Wlaj57ehruM
-	sed -i 's/"SuidBuild"/"SuidBuild_task"/' ${NS3_HOME}/wscript
-	# build and install ns3
-	cd $(NS3_BASE) && python3 ./build.py -- --enable-sudo --prefix=${NS3_BASE}/install
+	cd $(NS3_BASE) && python3 ./build.py -- --prefix=${NS3_INSTALL}
 	cd ${NS3_HOME} && ./waf install
 	touch $@
 
