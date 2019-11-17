@@ -31,7 +31,8 @@ class Simulation:
         core.GlobalValue.Bind("SimulatorImplementationType", core.StringValue("ns3::RealtimeSimulatorImpl"))
         core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
         # core.LogComponentEnableAll(core.LOG_LOGIC)
-        # core.LogComponentEnable('TapBridge', core.LOG_LOGIC)
+        core.LogComponentEnable('TapBridge', core.LOG_DEBUG)
+        core.LogComponentEnable('TapBridge', core.LOG_WARN)
 
         for network in self.scenario.networks:
             network.prepare()

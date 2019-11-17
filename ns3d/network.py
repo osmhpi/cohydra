@@ -43,6 +43,7 @@ class Network:
             logging.info('Preparing bus #%d of network %s', interface_index, self.base_ip)
             interface.prepare()
 
+
     def teardown(self):
         for interface in self.interfaces:
             interface.teardown()

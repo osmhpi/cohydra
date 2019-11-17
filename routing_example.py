@@ -11,7 +11,9 @@ def main():
 
     node1 = Node('ping', docker_build_dir='./docker/ping')
     node2 = Node('pong', docker_build_dir='./docker/pong')
+    node3 = Node('ext', docker_build_dir='./docker/pong')
     net.connect(node1, node2, delay='200ms')
+    net.connect(node2, node3)
 
     scenario.add_network(net)
     with scenario as sim:

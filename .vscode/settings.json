@@ -2,7 +2,7 @@
     "files.associations": {
         "iosfwd": "cpp"
     },
-    "python.pythonPath": "/home/test/.virtualenvs/ns3-docker-2_1RpiW3/bin/python",
+    "python.pythonPath": "/home/test/.local/share/virtualenvs/ns3-docker-QYgIgdeb/bin/python",
     "python.autoComplete.extraPaths": [
         "${workspaceFolder}/ns3/ns-3.29/install/lib/python3.7/site-packages"
     ],
