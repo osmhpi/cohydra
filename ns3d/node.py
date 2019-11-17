@@ -1,8 +1,7 @@
 import logging
+import time
 
-from .mac_adress import generate_mac
-
-from ns import core, network, tap_bridge
+from ns import core, tap_bridge
 from nsenter import Namespace
 from pyroute2 import IPRoute, netlink
 import docker
@@ -69,9 +68,6 @@ class Node:
             self.container_pid = None
 
     def __setup_tap_bridge(self, ns3_node, ns3_device, node_ip):
-        mac_addr = generate_mac()
-        logging.warning("Assigning MAC: %s to %s", mac_addr, self.name)
-
         # Create Bridge
         try:
             ipr = IPRoute()

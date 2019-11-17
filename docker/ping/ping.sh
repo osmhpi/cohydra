@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ETH0=$(ip a | grep eth0 | wc -l) # This is for ALPINE
+ETH0=$(ip a | grep eth0 | wc -l)
 
 while [ $ETH0 -eq 0 ]
 do
