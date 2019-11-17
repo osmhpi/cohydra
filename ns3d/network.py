@@ -2,6 +2,8 @@ import logging
 from ns import internet, network
 from .interface import Interface
 
+logger = logging.getLogger(__name__)
+
 class Network:
     """
     A network connects many nodes together and assigns IP addresses.
@@ -31,19 +33,14 @@ class Network:
             node_set = node_set.union(set(interface.nodes))
         return node_set
 
-    def prepare(self):
+    def prepare(self, simulation):
         """Prepares the network by building the docker containers.
         """
-        logging.info('Preparing network (base IP: %s)', self.base_ip)
+        logger.info('Preparing network (base IP: %s)', self.base_ip)
 
         self.address_helper = internet.Ipv4AddressHelper(network.Ipv4Address(self.base_ip),
                                                          network.Ipv4Mask(self.subnet_mask))
         interface_index = 0
         for interface in self.interfaces:
-            logging.info('Preparing bus #%d of network %s', interface_index, self.base_ip)
-            interface.prepare()
-
-
-    def teardown(self):
-        for interface in self.interfaces:
-            interface.teardown()
+            logger.info('Preparing bus #%d of network %s', interface_index, self.base_ip)
+            interface.prepare(simulation)

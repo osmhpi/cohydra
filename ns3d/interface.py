@@ -1,6 +1,8 @@
 import logging
 from ns import core, csma, internet, network as ns_net
 
+logger = logging.getLogger(__name__)
+
 class Interface:
 
     def __init__(self, network, nodes, delay="100Mbps", speed="0ms"):
@@ -13,7 +15,7 @@ class Interface:
         self.devices_container = None
         self.csma = csma.CsmaHelper()
 
-    def prepare(self):
+    def prepare(self, simulation):
         logging.info('Creating container with %d nodes', len(self.nodes))
         self.ns3_nodes_container = ns_net.NodeContainer()
         for node in self.nodes:
@@ -24,7 +26,7 @@ class Interface:
         self.csma.SetChannelAttribute("Delay", core.StringValue(self.delay))
         self.devices_container = self.csma.Install(self.ns3_nodes_container)
 
-        logging.info('Set IP addresses on nodes')
+        logger.info('Set IP addresses on nodes')
 
         stack_helper = internet.InternetStackHelper()
         for node_index in range(0, len(self.nodes)):
@@ -35,10 +37,5 @@ class Interface:
                 stack_helper.Install(ns3_node)
             device_container = ns_net.NetDeviceContainer(device)
             ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
-            node.prepare(device, str(ip_address))
-        #stack_helper.EnablePcapIpv4All('./cap')
+            node.prepare(simulation, device, str(ip_address))
         self.csma.EnablePcapAll('./cap', True)
-
-    def teardown(self):
-        for node in self.nodes:
-            node.teardown()

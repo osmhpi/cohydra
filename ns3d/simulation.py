@@ -1,22 +1,21 @@
-import os
+import functools
 import subprocess
 import sys
 import logging
 from ns import core, internet
 
+logger = logging.getLogger(__name__)
+
 class Simulation:
 
     def __init__(self, scenario):
-        self.ns3_home_dir = os.getenv('NS3_HOME', None)
-        if self.ns3_home_dir is None:
-            print('Please set the "NS3_HOME" environment variable containing the ns3-sources and waf!',
-                  file=sys.stderr)
-            exit(-1)
         if self.__setup() != 0:
             print('There was an error setting up iptables for the simulation. Exiting!', file=sys.stderr)
             exit(-1)
 
         self.scenario = scenario
+        self.is_prepared = False
+        self.teardowns = list()
 
     def __setup(self):
         return_code = subprocess.call("sudo net/fix-iptables.sh", shell=True, stdout=subprocess.PIPE)
@@ -25,7 +24,8 @@ class Simulation:
     def prepare(self):
         """Prepares the simulation by building docker containers.
         """
-        logging.info('Preparing simulation')
+        logger.info('Preparing simulation')
+        self.is_prepared = True
 
         # This needs to be set to real time, to let the containers speek.
         core.GlobalValue.Bind("SimulatorImplementationType", core.StringValue("ns3::RealtimeSimulatorImpl"))
@@ -35,7 +35,7 @@ class Simulation:
         core.LogComponentEnable('TapBridge', core.LOG_WARN)
 
         for network in self.scenario.networks:
-            network.prepare()
+            network.prepare(self)
 
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()
@@ -45,15 +45,46 @@ class Simulation:
 
         :param float time: The simulation timeout in seconds.
         """
-        logging.info('Simulating for %.4fs', time)
+        if not self.is_prepared:
+            self.prepare()
+
+        logger.info('Simulating for %.4fs', time)
         core.Simulator.Stop(core.Seconds(time))
         core.Simulator.Run()
         core.Simulator.Destroy()
 
-    def teardown(self):
+    def teardown(self, raise_on_fail=True):
         """Tear down the simulation.
         This also stops and destroys docker containers.
         """
-        for network in self.scenario.networks:
-            network.teardown()
-  
+        logger.info("Tearing down the simulation (%d teardowns)", len(self.teardowns))
+
+        fails = 0
+        while self.teardowns:
+            teardown = self.teardowns.pop()
+            logger.debug("Running teardown %s (%d teardowns left)", teardown.__name__, len(self.teardowns))
+
+            try:
+                teardown()
+            except Exception as err: # pylint: disable=broad-except
+                logger.error("Failed to run teardown %s: %s", teardown.__name__, err)
+                fails += 1
+
+        if fails != 0:
+            if raise_on_fail:
+                raise Exception(f"Teardown failed: {fails} teardowns failed")
+            logger.warning("Teardown failed: %d teardowns failed", fails)
+        else:
+            logger.info("Teardown successful")
+
+    def add_teardown(self, teardown, name=None):
+        """Add a teardown function.
+        This function is added to the teardown stack and will be called on teardown.
+
+        :param function teardown: The teardown function.
+        :param str name: An optional name to override the name of the teardown function.
+        """
+        if name is not None:
+            teardown.__name__ = name
+        logger.debug("Added teardown %s", teardown.__name__)
+        self.teardowns.append(teardown)

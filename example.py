@@ -5,6 +5,7 @@ from ns3d import Network, Node, Scenario
 
 def main():
     logging.basicConfig(level=logging.INFO)
+    logging.getLogger('ns3d').setLevel(logging.DEBUG)
     scenario = Scenario()
 
     net = Network("10.0.0.0", "255.255.255.0")

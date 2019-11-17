@@ -14,8 +14,7 @@ class Scenario:
 
     def __enter__(self):
         self.simulation = Simulation(self)
-        self.simulation.prepare()
         return self.simulation
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        self.simulation.teardown()
+        self.simulation.teardown(raise_on_fail=exc_type is None)

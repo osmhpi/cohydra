@@ -8,6 +8,8 @@ This repo provides a python package called `ns3d`.
  
 ## Installation
 
+> If you are installing this for development, please consider your [development setup options](#development)
+
 *Caution:* This project fiddles with your network interfaces. Please consider to use it in a virtual machine for testing purposes.
 
 Please [install docker](https://docs.docker.com/install/linux/docker-ce/debian/) beforehand and ensure, that the current user is member of the *docker* group.
@@ -25,6 +27,17 @@ make init
 
 After that, please use a python virtual environment for testing: `make shell`.
 You always need to be in the environment to run simulations.
+
+## Development
+The project contains configuration for VS Code.
+
+To setup the VS Code related stuff run `make vscode-setup`.
+
+### With Docker (Windows and Mac only)
+You can open the VS Code Remote Container specified in [`.devcontainer`](.devcontainer).
+
+### With a Debian VM:
+You can also use VS Code Remote SSH to connect to your VM or install VS Code inside your VM and develop natively.
 
 ## Examples Of Usage
 

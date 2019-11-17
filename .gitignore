@@ -7,6 +7,12 @@ var/*
 # Python caches
 *.pyc
 
+# Python environment (generated via makefile)
+/.env
+
+# Python .virtualenv link
+/.virtualenv
+
 # Local Makefile
 /Makefile.local
 

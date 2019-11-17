@@ -2,11 +2,14 @@
     "files.associations": {
         "iosfwd": "cpp"
     },
-    "python.pythonPath": "/home/test/.local/share/virtualenvs/ns3-docker-QYgIgdeb/bin/python",
+    "python.pythonPath": "${workspaceFolder}/.virtualenv/bin/python",
     "python.autoComplete.extraPaths": [
-        "${workspaceFolder}/ns3/ns-3.29/install/lib/python3.7/site-packages"
+        "${workspaceFolder}/ns3/install/ns-3.29/lib/python3.7/site-packages"
     ],
     "python.linting.pylintArgs": [
         "--extension-pkg-whitelist=ns"
     ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.terminal.activateEnvironment": false,
 }
