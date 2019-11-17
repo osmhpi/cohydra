@@ -22,6 +22,8 @@ NS3_DOWNLOAD ?= ${NS3_HOME}.tar.bz2
 
 all: shell
 
+.EXPORT_ALL_VARIABLES: shell
+
 shell: ${PIPENV}
 	@env -u MAKELEVEL pipenv shell || echo "Exit code: $$?"
 
@@ -41,7 +43,6 @@ ${PIPENV}:
 ${PIPENV_INSTALL}: Pipfile | pipenv
 	pipenv install
 	touch $@
-
 
 ${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv
 	mkdir -p ${NS3_BASE} 

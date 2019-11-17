@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 import logging
-from ns import core
+from ns import core, internet
 
 class Simulation:
 
@@ -30,9 +30,13 @@ class Simulation:
         # This needs to be set to real time, to let the containers speek.
         core.GlobalValue.Bind("SimulatorImplementationType", core.StringValue("ns3::RealtimeSimulatorImpl"))
         core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
+        # core.LogComponentEnable('TapBridge', core.LOG_LOGIC)
 
         for network in self.scenario.networks:
             network.prepare()
+
+        routing_helper = internet.Ipv4GlobalRoutingHelper
+        routing_helper.PopulateRoutingTables()
 
     def simulate(self, time):
         """Simulate the network

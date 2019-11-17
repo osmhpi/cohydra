@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 docker = "*"
 pygraphviz = "*"
+nsenter = "*"
+pyroute2 = "*"
 
 [dev-packages]
 pylint = "*"

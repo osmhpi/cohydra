@@ -9,3 +9,6 @@ var/*
 
 # Local Makefile
 /Makefile.local
+
+# PCAP files from tests
+*.pcap

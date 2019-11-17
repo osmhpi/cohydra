@@ -14,15 +14,19 @@ Please install docker beforehand and ensure, that the current user is member of 
 
 To install the required dependencies and ns-3, run:
 ```
+make shell
 make init
 ```
 
 After that, please use a python virtual environment for testing: `make shell`.
+You always need to be in the environment to run simulations.
 
 # Examples Of Usage
 
 The simulations need to be run as `root` user, because network devices are created during simulation.
+To start an example where one host is simply pinging another host, type:
 
 ```
-rm -rf ./*
+sudo make shell
+./example.py
 ```

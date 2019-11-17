@@ -16,7 +16,7 @@ class Network:
 
         self.csma = csma.CsmaHelper()
         self.csma.SetChannelAttribute("DataRate", core.StringValue("5Mbps"))
-        self.csma.SetChannelAttribute("Delay", core.StringValue("2ms"))
+        self.csma.SetChannelAttribute("Delay", core.StringValue("200ms"))
 
         self.devices_container = None
         self.interfaces = None
@@ -52,7 +52,10 @@ class Network:
             node = self.nodes[node_index]
             device = self.devices_container.Get(node_index)
             ns3_node = self.nodes_container.Get(node_index)
-            node.prepare(ns3_node, device)
+            node_ip = str(self.interfaces.GetAddress(node_index))
+            node.prepare(ns3_node, device, node_ip)
+
+        self.csma.EnablePcapAll('./capture', True)
 
     def teardown(self):
         for node in self.nodes:
