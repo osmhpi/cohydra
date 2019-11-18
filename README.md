@@ -52,20 +52,8 @@ Also have a look at the usage of [bridges](./bridge_example.py) or bridges in co
 
 ## Writing your own simulations
 
-Please note that the `eth0` interface is added to the docker container, after it startet. Therefore, you need to wait before your container can start using the network. You can use the following script (requiring the `iproute` package) to do so (and use this as the container's entry):
-
-```sh
-#!/bin/sh
-
-ETH0=$(ip a | grep eth0 | wc -l)
-
-while [ $ETH0 -eq 0 ]
-do
-  echo "waiting ... "
-  sleep 1
-  ETH0=$(ip a | grep eth0 | wc -l)
-done
-
-...
-your-commands
+Please note that the `eth0` interface is added to the docker container, after it startet. Therefore, you need to wait before your container can start using the network. You can copy the [`entrypoint.sh`](docker/ping/entrypoint.sh) to your docker image and add the following lines to your `Dockerfile`:
+```dockerfile
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
 ```
