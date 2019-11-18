@@ -1,4 +1,3 @@
-import functools
 import subprocess
 import sys
 import logging
@@ -31,8 +30,8 @@ class Simulation:
         core.GlobalValue.Bind("SimulatorImplementationType", core.StringValue("ns3::RealtimeSimulatorImpl"))
         core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
         # core.LogComponentEnableAll(core.LOG_LOGIC)
-        core.LogComponentEnable('TapBridge', core.LOG_DEBUG)
-        core.LogComponentEnable('TapBridge', core.LOG_WARN)
+        # core.LogComponentEnable('TapBridge', core.LOG_DEBUG)
+        # core.LogComponentEnable('TapBridge', core.LOG_WARN)
 
         for network in self.scenario.networks:
             network.prepare(self)
@@ -40,7 +39,7 @@ class Simulation:
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()
 
-    def simulate(self, time):
+    def simulate(self, time=None):
         """Simulate the network
 
         :param float time: The simulation timeout in seconds.
@@ -48,8 +47,11 @@ class Simulation:
         if not self.is_prepared:
             self.prepare()
 
-        logger.info('Simulating for %.4fs', time)
-        core.Simulator.Stop(core.Seconds(time))
+        if time is None:
+            logger.info('Simulating for %.4fs', time)
+            core.Simulator.Stop(core.Seconds(time))
+        else:
+            logger.info('Simulating until process gets stopped')
         core.Simulator.Run()
         core.Simulator.Destroy()
 

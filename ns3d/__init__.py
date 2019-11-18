@@ -1,3 +1,3 @@
 from .network import Network
-from .node import Node
+from .node import DockerNode, BridgeNode
 from .scenario import Scenario

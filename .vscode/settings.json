@@ -2,7 +2,7 @@
     "files.associations": {
         "iosfwd": "cpp"
     },
-    "python.pythonPath": "${workspaceFolder}/.virtualenv/bin/python",
+    "python.pythonPath": ".virtualenv/bin/python",
     "python.autoComplete.extraPaths": [
         "${workspaceFolder}/ns3/install/ns-3.29/lib/python3.7/site-packages"
     ],

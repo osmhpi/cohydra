@@ -2,17 +2,64 @@ import logging
 
 from nsenter import Namespace
 from pyroute2 import IPRoute, netlink
-from ns import core, network, internet, tap_bridge
+from ns import core, bridge, network, tap_bridge
 import docker
+
+import inspect
 
 logger = logging.getLogger(__name__)
 
 class Node:
+    def __init__(self, name):
+        self.ns3_node_container = None
+        self.channels = list()
+        self.name = name
+
+    def ns3_node(self):
+        if self.ns3_node_container is None:
+            self.ns3_node_container = network.NodeContainer()
+            self.ns3_node_container.Create(1)
+            core.Names.Add(self.name, self.ns3_node_container.Get(0))
+        return self.ns3_node_container.Get(0)
+
+    def prepare(self, simulation, ns3_device, node_ip):
+        raise NotImplementedError
+
+    def wants_ip_stack(self):
+        raise NotImplementedError
+
+class BridgeNode(Node):
+    """This is representing a bridge between other nodes.
+       It acts like a switch.
+    """
+
+    def __init__(self, name):
+        super().__init__(name)
+        self.bridge_device = None
+
+    def prepare(self, simulation, ns3_device, node_ip):
+        if node_ip is not None:
+            raise 'Bridges may not have IP addresses.'
+
+        if self.bridge_device is None:
+            bridge_helper = bridge.BridgeHelper()
+            device_container = network.NetDeviceContainer(ns3_device)
+            # Python bindings do not seem to work quite well,
+            # so we need to take the detour with names...
+            self.bridge_device = bridge_helper.Install(self.name, device_container).Get(0)
+            print(self.bridge_device)
+        else:
+            self.bridge_device.AddBridgePort(ns3_device)
+
+    def wants_ip_stack(self):
+        return False
+
+class DockerNode(Node):
     """A node is representing a docker container.
     """
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile'):
-        self.name = name
+        super().__init__(name)
         self.container_name = ''.join(c.lower() for c in self.name if not c.isspace())
         self.docker_image = docker_image
         self.docker_build_dir = docker_build_dir
@@ -21,37 +68,31 @@ class Node:
         self.container = None
         self.container_pid = None
 
-        self.interfaces = list()
-        self.interface_counter = 0
-
-        self.ns3_node_container = None
+        self.channel_counter = 0
 
         if docker_build_dir is None and docker_image is None:
             raise Exception('Please specify Docker image or build directory')
 
-    def ns3_node(self):
-        if self.ns3_node_container is None:
-            self.ns3_node_container = network.NodeContainer()
-            self.ns3_node_container.Create(1)
-        return self.ns3_node_container.Get(0)
+    def wants_ip_stack(self):
+        return True
 
     def __tap_name(self):
         if self.container_name is None:
             raise Exception('Container must be created prior to creating bridges.')
-        return f'tap-{self.container_name}-{self.interface_counter}'
+        return f'tap-{self.container_name}-{self.channel_counter}'
 
     def __bridge_name(self):
         if self.container_name is None:
             raise Exception('Container must be created prior to creating bridges.')
-        return f'br-{self.container_name}-{self.interface_counter}'
+        return f'br-{self.container_name}-{self.channel_counter}'
 
     def __external_veth_if_name(self):
         if self.container_name is None:
             raise Exception('Container must be created prior to creating VETH pair.')
-        return f'ext-{self.container_name}-{self.interface_counter}'
+        return f'ext-{self.container_name}-{self.channel_counter}'
 
     def __internal_veth_if_name(self):
-        return f'eth{self.interface_counter}'
+        return f'eth{self.channel_counter}'
 
     def __build_docker_image(self):
         client = docker.from_env()
@@ -94,7 +135,7 @@ class Node:
             ipr.link('add', ifname=tap_name, kind="tuntap", mode="tap")
             ipr.link('set', ifname=tap_name, state='up')
             ipr.link('set', ifname=tap_name,
-                    master=ipr.link_lookup(ifname=bridge_name)[0])
+                     master=ipr.link_lookup(ifname=bridge_name)[0])
             simulation.add_teardown(lambda: self.__remove_ipr(tap_name), "remove tap")
 
             tap = tap_bridge.TapBridgeHelper()
@@ -139,10 +180,10 @@ class Node:
     def prepare(self, simulation, ns3_device, node_ip):
         """Prepares the node by building the docker container and ?
         """
-        logging.info('Preparing node %s (having %s)', self.name, node_ip)
+        logger.info('Preparing node %s (having %s)', self.name, node_ip)
         if self.container is None:
             self.__build_docker_image()
             self.__start_docker_container(simulation)
         self.__setup_tap_bridge(simulation, ns3_device)
         self.__setup_veth(node_ip)
-        self.interface_counter += 1
+        self.channel_counter += 1

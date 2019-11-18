@@ -1,6 +1,6 @@
 import logging
 from ns import internet, network
-from .interface import Interface
+from .channel import Channel
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ class Network:
     """
 
     def __init__(self, base_ip, subnet_mask):
-        self.interfaces = list()
+        self.channels = list()
         self.base_ip = base_ip
         self.subnet_mask = subnet_mask
         self.address_helper = None
@@ -22,15 +22,15 @@ class Network:
         """
         if len(nodes) < 2:
             raise ValueError('Please specify at least two nodes to connect.')
-        interface = Interface(self, nodes, delay=delay, speed=speed)
+        channel = Channel(self, nodes, delay=delay, speed=speed)
         for node in nodes:
-            node.interfaces.append(interface)
-        self.interfaces.append(interface)
+            node.channels.append(channel)
+        self.channels.append(channel)
 
     def all_nodes(self):
         node_set = set()
-        for interface in self.interfaces:
-            node_set = node_set.union(set(interface.nodes))
+        for channel in self.channels:
+            node_set = node_set.union(set(channel.nodes))
         return node_set
 
     def prepare(self, simulation):
@@ -40,7 +40,8 @@ class Network:
 
         self.address_helper = internet.Ipv4AddressHelper(network.Ipv4Address(self.base_ip),
                                                          network.Ipv4Mask(self.subnet_mask))
-        interface_index = 0
-        for interface in self.interfaces:
-            logger.info('Preparing bus #%d of network %s', interface_index, self.base_ip)
-            interface.prepare(simulation)
+        channel_index = 0
+        for channel in self.channels:
+            logger.info('Preparing bus #%d of network %s', channel_index, self.base_ip)
+            channel.prepare(simulation)
+            channel_index += 1
