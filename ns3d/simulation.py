@@ -1,7 +1,9 @@
-import subprocess
-import sys
 import logging
+import os
+
 from ns import core, internet
+
+from .util import once
 
 logger = logging.getLogger(__name__)
 
@@ -15,23 +17,26 @@ core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
 class Simulation:
 
     def __init__(self, scenario):
-        if self.__setup() != 0:
-            logger.error('There was an error setting up iptables for the simulation. Exiting!', file=sys.stderr)
-            exit(-1)
+        self.__setup()
 
         self.scenario = scenario
-        self.is_prepared = False
         self.teardowns = list()
 
-    def __setup(self):
-        return_code = subprocess.call("net/fix-iptables.sh", shell=True, stdout=subprocess.PIPE)
-        return return_code
+    @classmethod
+    @once
+    def __setup(cls):
+        bridgedir = '/proc/sys/net/bridge/'
+        for filename in os.listdir(bridgedir):
+            if filename.startswith('bridge-nf-'):
+                logger.debug('set %s = 0', filename)
+                with open(bridgedir + filename, 'w') as file:
+                    file.write('0')
 
+    @once
     def prepare(self):
         """Prepares the simulation by building docker containers.
         """
         logger.info('Preparing simulation')
-        self.is_prepared = True
 
         for network in self.scenario.networks:
             network.prepare(self)
@@ -44,8 +49,7 @@ class Simulation:
 
         :param float time: The simulation timeout in seconds.
         """
-        if not self.is_prepared:
-            self.prepare()
+        self.prepare()
 
         if time is not None:
             logger.info('Simulating for %.4fs', time)
