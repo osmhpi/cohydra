@@ -14,7 +14,8 @@ class Network:
         self.channels = list()
         self.base_ip = base_ip
         self.subnet_mask = subnet_mask
-        self.address_helper = None
+        self.address_helper = internet.Ipv4AddressHelper(network.Ipv4Address(self.base_ip),
+                                                         network.Ipv4Mask(self.subnet_mask))
 
     def connect(self, *nodes, delay='0ms', speed='100Mbps'):
         """Connects to or more nodes on a single conection.
@@ -38,8 +39,6 @@ class Network:
         """
         logger.info('Preparing network (base IP: %s)', self.base_ip)
 
-        self.address_helper = internet.Ipv4AddressHelper(network.Ipv4Address(self.base_ip),
-                                                         network.Ipv4Mask(self.subnet_mask))
         channel_index = 0
         for channel in self.channels:
             logger.info('Preparing bus #%d of network %s', channel_index, self.base_ip)

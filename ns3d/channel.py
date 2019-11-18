@@ -11,12 +11,10 @@ class Channel:
         self.delay = delay
         self.speed = speed
 
-        self.ns3_nodes_container = None
-        self.devices_container = None
         self.csma = csma.CsmaHelper()
 
-    def prepare(self, simulation):
-        logger.info('Creating container with %d nodes', len(self.nodes))
+        logger.debug('Creating container with %d nodes', len(self.nodes))
+
         self.ns3_nodes_container = ns_net.NodeContainer()
         for node in self.nodes:
             self.ns3_nodes_container.Add(node.ns3_node())
@@ -27,20 +25,29 @@ class Channel:
         self.devices_container = self.csma.Install(self.ns3_nodes_container)
 
         logger.info('Set IP addresses on nodes')
-
+        self.ip_map = dict()
+        self.csma_device_map = dict()
         stack_helper = internet.InternetStackHelper()
         for node_index in range(0, len(self.nodes)):
             node = self.nodes[node_index]
             ns3_node = node.ns3_node()
+
+            # Save CSMA device and ip for later
             device = self.devices_container.Get(node_index)
+            self.csma_device_map[node] = device
+
             if node.wants_ip_stack():
                 if ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
                     logger.info('Installing IP stack on %s', node.name)
                     stack_helper.Install(ns3_node)
                 device_container = ns_net.NetDeviceContainer(device)
                 ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
-                node.prepare(simulation, device, str(ip_address))
-            else:
-                node.prepare(simulation, device, None)
+                self.ip_map[node] = str(ip_address)
 
         self.csma.EnablePcapAll('./cap', True)
+
+    def prepare(self, simulation):
+        for node in self.nodes:
+            device = self.csma_device_map[node]
+            ip_address = self.ip_map.get(node)
+            node.prepare(simulation, device, ip_address)
