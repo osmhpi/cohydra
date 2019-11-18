@@ -5,8 +5,6 @@ from pyroute2 import IPRoute, netlink
 from ns import core, bridge, network, tap_bridge
 import docker
 
-import inspect
-
 logger = logging.getLogger(__name__)
 
 class Node:
@@ -15,11 +13,11 @@ class Node:
         self.channels = list()
         self.name = name
 
+        self.ns3_node_container = network.NodeContainer()
+        self.ns3_node_container.Create(1)
+        core.Names.Add(self.name, self.ns3_node_container.Get(0))
+
     def ns3_node(self):
-        if self.ns3_node_container is None:
-            self.ns3_node_container = network.NodeContainer()
-            self.ns3_node_container.Create(1)
-            core.Names.Add(self.name, self.ns3_node_container.Get(0))
         return self.ns3_node_container.Get(0)
 
     def prepare(self, simulation, ns3_device, node_ip):
@@ -35,20 +33,14 @@ class BridgeNode(Node):
 
     def __init__(self, name):
         super().__init__(name)
-        self.bridge_device = None
+        bridge_helper = bridge.BridgeHelper()
+        self.bridge_device = bridge_helper.Install(self.name, network.NetDeviceContainer()).Get(0)
 
     def prepare(self, simulation, ns3_device, node_ip):
         if node_ip is not None:
             raise 'Bridges may not have IP addresses.'
 
-        if self.bridge_device is None:
-            bridge_helper = bridge.BridgeHelper()
-            device_container = network.NetDeviceContainer(ns3_device)
-            # Python bindings do not seem to work quite well,
-            # so we need to take the detour with names...
-            self.bridge_device = bridge_helper.Install(self.name, device_container).Get(0)
-        else:
-            self.bridge_device.AddBridgePort(ns3_device)
+        self.bridge_device.AddBridgePort(ns3_device)
 
     def wants_ip_stack(self):
         return False

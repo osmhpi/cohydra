@@ -19,7 +19,7 @@ PIPENV_INSTALL := ${VIRTUAL_ENV}/.last-install
 NS3_DOWNLOAD ?= ${NS3_HOME}.tar.bz2
 
 #### Targets
-.PHONY: shell env vscode-setup init pipenv clean uninstall-ns3 vscode
+.PHONY: shell env vscode-setup init pipenv clean uninstall-ns3
 
 all: shell
 
@@ -56,9 +56,6 @@ Makefile.local:
 	touch $@
 
 init: ${NS3_HOME}.installed ${PIPENV_INSTALL}
-
-vscode:
-	env -u MAKELEVEL code ${PWD}
 
 ${PIPENV_INSTALL}: Pipfile | pipenv
 	pipenv install

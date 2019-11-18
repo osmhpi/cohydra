@@ -5,6 +5,13 @@ from ns import core, internet
 
 logger = logging.getLogger(__name__)
 
+# This needs to be set to real time, to let the containers speek.
+core.GlobalValue.Bind("SimulatorImplementationType", core.StringValue("ns3::RealtimeSimulatorImpl"))
+core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
+# core.LogComponentEnableAll(core.LOG_LOGIC)
+# core.LogComponentEnable('TapBridge', core.LOG_DEBUG)
+# core.LogComponentEnable('TapBridge', core.LOG_WARN)
+
 class Simulation:
 
     def __init__(self, scenario):
@@ -17,7 +24,7 @@ class Simulation:
         self.teardowns = list()
 
     def __setup(self):
-        return_code = subprocess.call("sudo net/fix-iptables.sh", shell=True, stdout=subprocess.PIPE)
+        return_code = subprocess.call("net/fix-iptables.sh", shell=True, stdout=subprocess.PIPE)
         return return_code
 
     def prepare(self):
@@ -25,13 +32,6 @@ class Simulation:
         """
         logger.info('Preparing simulation')
         self.is_prepared = True
-
-        # This needs to be set to real time, to let the containers speek.
-        core.GlobalValue.Bind("SimulatorImplementationType", core.StringValue("ns3::RealtimeSimulatorImpl"))
-        core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
-        # core.LogComponentEnableAll(core.LOG_LOGIC)
-        # core.LogComponentEnable('TapBridge', core.LOG_DEBUG)
-        # core.LogComponentEnable('TapBridge', core.LOG_WARN)
 
         for network in self.scenario.networks:
             network.prepare(self)

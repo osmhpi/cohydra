@@ -42,5 +42,5 @@ class Channel:
                 node.prepare(simulation, device, str(ip_address))
             else:
                 node.prepare(simulation, device, None)
-            
+
         self.csma.EnablePcapAll('./cap', True)
