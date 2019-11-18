@@ -47,7 +47,7 @@ class Simulation:
         if not self.is_prepared:
             self.prepare()
 
-        if time is None:
+        if time is not None:
             logger.info('Simulating for %.4fs', time)
             core.Simulator.Stop(core.Seconds(time))
         else:
