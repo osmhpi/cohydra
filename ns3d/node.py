@@ -47,7 +47,6 @@ class BridgeNode(Node):
             # Python bindings do not seem to work quite well,
             # so we need to take the detour with names...
             self.bridge_device = bridge_helper.Install(self.name, device_container).Get(0)
-            print(self.bridge_device)
         else:
             self.bridge_device.AddBridgePort(ns3_device)
 
@@ -108,7 +107,7 @@ class DockerNode(Node):
         client = docker.from_env()
         self.container = client.containers.run(self.docker_image, remove=True, auto_remove=True,
                                                network_mode='none', detach=True, name=self.container_name,
-                                               privileged=True)
+                                               hostname=self.container_name, privileged=True)
         simulation.add_teardown(self.__stop_docker_container)
 
         low_level_client = docker.APIClient()

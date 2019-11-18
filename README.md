@@ -43,14 +43,16 @@ You can also use VS Code Remote SSH to connect to your VM or install VS Code ins
 
 To start an example where one host is simply pinging another host, type:
 
-```
+```sh
 make shell
 ./example.py
 ```
 
+Also have a look at the usage of [bridges](./bridge_example.py) or bridges in connection with [a webserver](./webserver_example.py).
+
 ## Writing your own simulations
 
-Please note that the `eth0` interface is added to the docker container, after it startet. Therefore, you need to wait before your container can start using the network. You can use the following script to do so (and use this as the container's entry):
+Please note that the `eth0` interface is added to the docker container, after it startet. Therefore, you need to wait before your container can start using the network. You can use the following script (requiring the `iproute` package) to do so (and use this as the container's entry):
 
 ```sh
 #!/bin/sh

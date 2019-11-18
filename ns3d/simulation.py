@@ -9,7 +9,7 @@ class Simulation:
 
     def __init__(self, scenario):
         if self.__setup() != 0:
-            print('There was an error setting up iptables for the simulation. Exiting!', file=sys.stderr)
+            logger.error('There was an error setting up iptables for the simulation. Exiting!', file=sys.stderr)
             exit(-1)
 
         self.scenario = scenario
