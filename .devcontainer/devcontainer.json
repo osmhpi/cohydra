@@ -31,5 +31,7 @@
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
 	//  "appPort": [],
-	"extensions": []
+	"extensions": [
+		"ms-python.python"
+	]
 }
