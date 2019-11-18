@@ -75,19 +75,19 @@ class DockerNode(Node):
         return True
 
     def __interface_name(self, prefix):
-        return f'{prefix}{DockerNode.interface_counter}'
+        return f'{prefix}-ns3-{DockerNode.interface_counter}'
 
     def __tap_name(self):
-        return self.__interface_name('tap-')
+        return self.__interface_name('tap')
 
     def __bridge_name(self):
-        return self.__interface_name('br-')
+        return self.__interface_name('br')
 
     def __external_veth_if_name(self):
-        return self.__interface_name('ext-')
+        return self.__interface_name('ext')
 
     def __internal_veth_if_name(self):
-        return  f'eth{self.channel_counter}'
+        return f'eth{self.channel_counter}'
 
     def __build_docker_image(self):
         client = docker.from_env()
