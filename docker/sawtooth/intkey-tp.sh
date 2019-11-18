@@ -9,4 +9,4 @@ do
   ETH0=$(ip a | grep eth0 | wc -l)
 done
 
-intkey-tp-python -vv -C tcp://10.0.0.1:4004
+intkey-tp-python -vv -C tcp://validator:4004

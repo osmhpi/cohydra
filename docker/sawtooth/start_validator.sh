@@ -14,6 +14,6 @@ bash -c "sawadm keygen && \
     sawset genesis -k /root/.sawtooth/keys/my_key.priv && \
     sawadm genesis config-genesis.batch && \
     sawtooth-validator -vv \
-        --endpoint tcp://10.0.0.1:8800 \
+        --endpoint tcp://validator:8800 \
         --bind component:tcp://eth0:4004 \
         --bind network:tcp://eth0:8800"

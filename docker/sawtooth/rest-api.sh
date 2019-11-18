@@ -9,4 +9,4 @@ do
   ETH0=$(ip a | grep eth0 | wc -l)
 done
 
-sawtooth-rest-api -C tcp://10.0.0.1:4004 --bind 10.0.0.4:8008
+sawtooth-rest-api -C tcp://validator:4004 --bind rest-api:8008

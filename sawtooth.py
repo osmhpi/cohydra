@@ -21,7 +21,7 @@ def main():
     intkey_tp = DockerNode('intkey', docker_build_dir='./docker/sawtooth', dockerfile='intkey-tp.Dockerfile')
     net.connect(intkey_tp, bridge, delay='0', speed='1000Mbps')
 
-    rest_api = DockerNode('rest', docker_build_dir='./docker/sawtooth', dockerfile='rest-api.Dockerfile')
+    rest_api = DockerNode('rest-api', docker_build_dir='./docker/sawtooth', dockerfile='rest-api.Dockerfile')
     net.connect(rest_api, bridge, delay='0', speed='1000Mbps')
 
     shell = DockerNode('shell', docker_build_dir='./docker/sawtooth', dockerfile='shell.Dockerfile')

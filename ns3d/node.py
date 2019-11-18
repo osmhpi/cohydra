@@ -9,6 +9,9 @@ logger = logging.getLogger(__name__)
 
 class Node:
     def __init__(self, name):
+        for char in name:
+            if not (char.isalnum() or char == '-'):
+                raise ValueError('Please only supply alphanumeric names and "-"')
         self.ns3_node_container = None
         self.channels = list()
         self.name = name
@@ -53,7 +56,6 @@ class DockerNode(Node):
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile'):
         super().__init__(name)
-        self.container_name = 'ns3-' +  ''.join(c.lower() for c in self.name if c.isalnum())
         self.docker_image = docker_image
         self.docker_build_dir = docker_build_dir
         self.dockerfile = dockerfile
@@ -65,6 +67,9 @@ class DockerNode(Node):
 
         if docker_build_dir is None and docker_image is None:
             raise Exception('Please specify Docker image or build directory')
+
+    def __image_tag(self):
+        return f'ns3-{self.name}'
 
     def wants_ip_stack(self):
         return True
@@ -92,15 +97,16 @@ class DockerNode(Node):
         else:
             logger.info('Pulling docker image: %s', self.docker_image)
             self.docker_image = client.images.pull(self.docker_image)
-        self.docker_image.tag(self.container_name)
+        self.docker_image.tag(self.__image_tag())
 
 
     def __start_docker_container(self, simulation):
-        logger.info('Starting docker container: %s', self.container_name)
+        logger.info('Starting docker container: %s', self.name)
         client = docker.from_env()
-        self.container = client.containers.run(self.container_name, remove=True, auto_remove=True,
-                                               network_mode='none', detach=True, name=self.container_name,
-                                               hostname=self.container_name, privileged=True)
+        self.container = client.containers.run(self.__image_tag(), remove=True, auto_remove=True,
+                                               network_mode='none', detach=True, name=self.name,
+                                               hostname=self.name, privileged=True,
+                                               extra_hosts=simulation.hosts, labels={"created-by": "ns-3"})
         simulation.add_teardown(self.__stop_docker_container)
 
         low_level_client = docker.APIClient()

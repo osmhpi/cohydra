@@ -22,6 +22,9 @@ class Simulation:
         self.scenario = scenario
         self.teardowns = list()
 
+        # Saves IP -> hostname.
+        self.hosts = None
+
     @classmethod
     @once
     def __setup(cls):
@@ -37,6 +40,13 @@ class Simulation:
         """Prepares the simulation by building docker containers.
         """
         logger.info('Preparing simulation')
+
+        self.hosts = list()
+
+        for network in self.scenario.networks:
+            for channel in network.channels:
+                host_list = map(lambda kv: (f'{kv[0].name}:{kv[1]}'), channel.ip_map.items())
+                self.hosts.extend(host_list)
 
         for network in self.scenario.networks:
             network.prepare(self)

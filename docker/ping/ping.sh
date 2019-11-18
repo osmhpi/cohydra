@@ -2,5 +2,5 @@
 
 while true
 do
-    ping 10.0.0.2
+    ping pong
 done

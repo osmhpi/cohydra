@@ -44,3 +44,4 @@ class Network:
             logger.info('Preparing bus #%d of network %s', channel_index, self.base_ip)
             channel.prepare(simulation)
             channel_index += 1
+        

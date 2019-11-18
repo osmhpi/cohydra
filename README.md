@@ -57,3 +57,9 @@ Please note that the `eth0` interface is added to the docker container, after it
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 ```
+
+**Important:** The node names of all nodes in the simulation are added to the host files. Therefore you can do something like:
+
+```sh
+ping pong
+```
