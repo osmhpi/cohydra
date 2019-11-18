@@ -97,7 +97,8 @@ class DockerNode(Node):
         client = docker.from_env()
         if self.docker_image is None:
             logger.info('Building docker image: %s/%s', self.docker_build_dir, self.dockerfile)
-            self.docker_image = client.images.build(path=self.docker_build_dir, dockerfile=self.dockerfile)[0].id
+            self.docker_image = client.images.build(path=self.docker_build_dir, dockerfile=self.dockerfile, rm=True)[0]
+            self.docker_image.tag(self.container_name)
         else:
             logger.info('Building docker image: %s', self.docker_image)
             client.images.pull(self.docker_image)
@@ -105,7 +106,7 @@ class DockerNode(Node):
     def __start_docker_container(self, simulation):
         logger.info('Starting docker container: %s', self.docker_image)
         client = docker.from_env()
-        self.container = client.containers.run(self.docker_image, remove=True, auto_remove=True,
+        self.container = client.containers.run(self.container_name, remove=True, auto_remove=True,
                                                network_mode='none', detach=True, name=self.container_name,
                                                hostname=self.container_name, privileged=True)
         simulation.add_teardown(self.__stop_docker_container)
@@ -116,7 +117,7 @@ class DockerNode(Node):
     def __stop_docker_container(self):
         if self.container is not None:
             logger.info('Stopping docker container: %s', self.container.name)
-            self.container.stop(timeout=1)
+            self.container.stop()
             self.container = None
             self.container_pid = None
 
