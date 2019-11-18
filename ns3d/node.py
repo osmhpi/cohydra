@@ -49,9 +49,11 @@ class DockerNode(Node):
     """A node is representing a docker container.
     """
 
+    interface_counter = 0
+
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile'):
         super().__init__(name)
-        self.container_name = ''.join(c.lower() for c in self.name if not c.isspace())
+        self.container_name = 'ns3-' +  ''.join(c.lower() for c in self.name if c.isalnum())
         self.docker_image = docker_image
         self.docker_build_dir = docker_build_dir
         self.dockerfile = dockerfile
@@ -67,36 +69,34 @@ class DockerNode(Node):
     def wants_ip_stack(self):
         return True
 
+    def __interface_name(self, prefix):
+        return f'{prefix}{DockerNode.interface_counter}'
+
     def __tap_name(self):
-        if self.container_name is None:
-            raise Exception('Container must be created prior to creating bridges.')
-        return f'tap-{self.container_name}-{self.channel_counter}'
+        return self.__interface_name('tap-')
 
     def __bridge_name(self):
-        if self.container_name is None:
-            raise Exception('Container must be created prior to creating bridges.')
-        return f'br-{self.container_name}-{self.channel_counter}'
+        return self.__interface_name('br-')
 
     def __external_veth_if_name(self):
-        if self.container_name is None:
-            raise Exception('Container must be created prior to creating VETH pair.')
-        return f'ext-{self.container_name}-{self.channel_counter}'
+        return self.__interface_name('ext-')
 
     def __internal_veth_if_name(self):
-        return f'eth{self.channel_counter}'
+        return  f'eth{self.channel_counter}'
 
     def __build_docker_image(self):
         client = docker.from_env()
         if self.docker_image is None:
             logger.info('Building docker image: %s/%s', self.docker_build_dir, self.dockerfile)
             self.docker_image = client.images.build(path=self.docker_build_dir, dockerfile=self.dockerfile, rm=True)[0]
-            self.docker_image.tag(self.container_name)
         else:
-            logger.info('Building docker image: %s', self.docker_image)
-            client.images.pull(self.docker_image)
+            logger.info('Pulling docker image: %s', self.docker_image)
+            self.docker_image = client.images.pull(self.docker_image)
+        self.docker_image.tag(self.container_name)
+
 
     def __start_docker_container(self, simulation):
-        logger.info('Starting docker container: %s', self.docker_image)
+        logger.info('Starting docker container: %s', self.container_name)
         client = docker.from_env()
         self.container = client.containers.run(self.container_name, remove=True, auto_remove=True,
                                                network_mode='none', detach=True, name=self.container_name,
@@ -109,7 +109,7 @@ class DockerNode(Node):
     def __stop_docker_container(self):
         if self.container is not None:
             logger.info('Stopping docker container: %s', self.container.name)
-            self.container.stop()
+            self.container.stop(timeout=1)
             self.container = None
             self.container_pid = None
 
@@ -179,3 +179,4 @@ class DockerNode(Node):
         self.__setup_tap_bridge(simulation, ns3_device)
         self.__setup_veth(node_ip)
         self.channel_counter += 1
+        DockerNode.interface_counter += 1
