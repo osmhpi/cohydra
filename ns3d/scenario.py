@@ -4,6 +4,7 @@ class Scenario:
 
     def __init__(self):
         self.networks = set()
+        self.workflows = set()
         self.simulation = None
 
 
@@ -11,6 +12,9 @@ class Scenario:
         """Add a network to be simulated.
         """
         self.networks.add(network)
+
+    def workflow(self, func):
+        self.workflows.add(func)
 
     def __enter__(self):
         self.simulation = Simulation(self)

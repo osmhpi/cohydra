@@ -1,9 +1,13 @@
+import asyncio
 import logging
 import os
+import threading
+import time
 
 from ns import core, internet
 
 from .util import once
+from .workflow import Workflow
 
 logger = logging.getLogger(__name__)
 
@@ -61,13 +65,33 @@ class Simulation:
         """
         self.prepare()
 
+        started = threading.Semaphore(0)
+
+        core.Simulator.Schedule(core.Seconds(0), started.release)
+
         if time is not None:
             logger.info('Simulating for %.4fs', time)
-            core.Simulator.Stop(core.Seconds(time))
         else:
             logger.info('Simulating until process gets stopped')
-        core.Simulator.Run()
-        core.Simulator.Destroy()
+
+        def run_simulation():
+            core.Simulator.Run()
+            core.Simulator.Destroy()
+
+        thread = threading.Thread(target=run_simulation)
+
+        try:
+            thread.start()
+            started.acquire()
+
+            aws = list(func(Workflow()) for func in self.scenario.workflows)
+            if time is not None:
+                aws.append(asyncio.sleep(time))
+            asyncio.run(asyncio.wait(aws))
+            while time is None:
+                time.sleep(1)
+        finally:
+            core.Simulator.Stop()
 
     def teardown(self, raise_on_fail=True):
         """Tear down the simulation.
