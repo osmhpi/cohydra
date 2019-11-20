@@ -54,11 +54,14 @@ class DockerNode(Node):
 
     interface_counter = 0
 
-    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile'):
+    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile', volumes=dict()):
         super().__init__(name)
         self.docker_image = docker_image
         self.docker_build_dir = docker_build_dir
         self.dockerfile = dockerfile
+        strings_to_volumes = lambda kv: (kv[0], {'bind': kv[1], 'mode': 'rw'} if isinstance(kv[1], str) else kv[1])
+        self.volumes = dict(map(strings_to_volumes, volumes.items()))
+        print(self.volumes)
 
         self.container = None
         self.container_pid = None
@@ -105,7 +108,7 @@ class DockerNode(Node):
         client = docker.from_env()
         self.container = client.containers.run(self.__image_tag(), remove=True, auto_remove=True,
                                                network_mode='none', detach=True, name=self.name,
-                                               hostname=self.name, privileged=True,
+                                               hostname=self.name, privileged=True, volumes=self.volumes,
                                                extra_hosts=simulation.hosts, labels={"created-by": "ns-3"})
         simulation.add_teardown(self.__stop_docker_container)
 
