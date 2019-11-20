@@ -1,4 +1,6 @@
+import asyncio
 import logging
+import os
 
 from nsenter import Namespace
 from pyroute2 import IPRoute, netlink
@@ -48,20 +50,26 @@ class BridgeNode(Node):
     def wants_ip_stack(self):
         return False
 
+def log_to_file(container, log_path):
+    with open(log_path, 'wb') as log_file:
+        for line in container.logs(stdout=True, follow=True, stream=True):
+            log_file.write(line)
+
 class DockerNode(Node):
     """A node is representing a docker container.
     """
 
     interface_counter = 0
 
-    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile', volumes=dict()):
+    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile', volumes=None):
         super().__init__(name)
         self.docker_image = docker_image
         self.docker_build_dir = docker_build_dir
         self.dockerfile = dockerfile
+        if volumes is None:
+            volumes = {}
         strings_to_volumes = lambda kv: (kv[0], {'bind': kv[1], 'mode': 'rw'} if isinstance(kv[1], str) else kv[1])
         self.volumes = dict(map(strings_to_volumes, volumes.items()))
-        print(self.volumes)
 
         self.container = None
         self.container_pid = None
@@ -111,6 +119,10 @@ class DockerNode(Node):
                                                hostname=self.name, privileged=True, volumes=self.volumes,
                                                extra_hosts=simulation.hosts, labels={"created-by": "ns-3"})
         simulation.add_teardown(self.__stop_docker_container)
+
+        log_file_path = os.path.join(simulation.log_directory, f'{self.name}.log')
+        loop = asyncio.get_event_loop()
+        loop.run_in_executor(None, log_to_file, self.container, log_file_path)
 
         low_level_client = docker.APIClient()
         self.container_pid = low_level_client.inspect_container(self.container.id)['State']['Pid']

@@ -7,6 +7,7 @@ name = "pypi"
 docker = "*"
 nsenter = "*"
 pyroute2 = "*"
+aiofile = "*"
 
 [dev-packages]
 pylint = "*"

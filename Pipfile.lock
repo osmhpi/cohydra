@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9ba41f19ff710e00e8e92dcb3e21ab93facbde7ba128294f0e41000ff6d7d395"
+            "sha256": "4082591d5cea5f9706790837d77f46bd379860b88a8f46cf97b877ee8438e37a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,19 @@
         ]
     },
     "default": {
+        "aiofile": {
+            "hashes": [
+                "sha256:229078abbaab87adfcaad0fa7766b9b8251d42d0242deac6166da433b027ef1f",
+                "sha256:312d50ed7e646a40ab2a5457fdf382870aca926f956921ab8c7ab72c3922f372",
+                "sha256:8c50fcb42ee2bad2ae811edb972724e7f6bf3b0a6565a498f2432862b548b92d",
+                "sha256:a9a457654e561c396b88f70a0d5fa00e40a337853aa180bc805d9d5efb82317c",
+                "sha256:cef9e7bdf93db6a4c7ffe9ef0c354e2887695ec2a3a9dda8ed285005ec835616",
+                "sha256:d1da2fc9aa7509d29ea09617bf533bd1045f79cfdfb10ee83da90ba2212720a2",
+                "sha256:e43cb5e3181a8dfb73afbb4749b024e9a35a52e60ecf97d1d3db2731212cb0a0"
+            ],
+            "index": "pypi",
+            "version": "==1.5.2"
+        },
         "argparse": {
             "hashes": [
                 "sha256:62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4",

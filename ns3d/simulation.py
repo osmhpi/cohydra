@@ -2,7 +2,8 @@ import asyncio
 import logging
 import os
 import threading
-import time
+
+from datetime import datetime
 
 from ns import core, internet
 
@@ -25,6 +26,9 @@ class Simulation:
 
         self.scenario = scenario
         self.teardowns = list()
+        date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
+        os.makedirs(self.log_directory, exist_ok=True)
 
         # Saves IP -> hostname.
         self.hosts = None
