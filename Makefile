@@ -61,7 +61,7 @@ ${PIPENV_INSTALL}: Pipfile | pipenv
 	pipenv install
 	touch $@
 
-${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv
+${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv ${PIPENV_INSTALL}
 	mkdir -p ${NS3_BASE} ${NS3_INSTALL}
 	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
 	cd $(NS3_BASE) && python3 ./build.py -- --prefix=${NS3_INSTALL}

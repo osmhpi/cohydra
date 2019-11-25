@@ -117,7 +117,7 @@ class DockerNode(Node):
         return self.__interface_name('ext')
 
     def __internal_veth_if_name(self):
-        return f'eth{self.channel_counter}'
+        return f'ns3-eth{self.channel_counter}'
 
     def __build_docker_image(self):
         client = docker.from_env()
@@ -134,7 +134,7 @@ class DockerNode(Node):
         logger.info('Starting docker container: %s', self.name)
         client = docker.from_env()
         self.container = client.containers.run(self.__image_tag(), remove=True, auto_remove=True,
-                                               network_mode='none', detach=True, name=self.name,
+                                               detach=True, name=self.name,
                                                hostname=self.name, privileged=True, volumes=self.volumes,
                                                nano_cpus=int(self.cpus * 1e9),
                                                mem_limit=0 if self.memory is None else self.memory,

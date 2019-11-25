@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4082591d5cea5f9706790837d77f46bd379860b88a8f46cf97b877ee8438e37a"
+            "sha256": "401a4436f1636cef35c05721cacb99d3e5a1d2bd4b54a41508ed3830810b98eb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -85,6 +85,13 @@
                 "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"
             ],
             "version": "==1.0.1"
+        },
+        "pygccxml": {
+            "hashes": [
+                "sha256:1c87c840c92a03ba83a037f820ad9cb8a28ff70d8c2620225b1496873d0f0fe1"
+            ],
+            "index": "pypi",
+            "version": "==1.9.1"
         },
         "pyroute2": {
             "hashes": [

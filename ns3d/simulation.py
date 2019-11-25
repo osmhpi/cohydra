@@ -7,6 +7,8 @@ from datetime import datetime
 
 from ns import core, internet
 
+from pyroute2 import IPRoute
+
 from .util import once
 from .workflow import Workflow
 
@@ -49,7 +51,10 @@ class Simulation:
         """
         logger.info('Preparing simulation')
 
-        self.hosts = list()
+        ipr = IPRoute()
+        host_ip = ipr.get_addr(label='docker0')[0].get_attr('IFA_ADDRESS')
+
+        self.hosts = [f'host:{host_ip}']
 
         for network in self.scenario.networks:
             for channel in network.channels:

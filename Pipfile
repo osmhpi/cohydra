@@ -8,6 +8,7 @@ docker = "*"
 nsenter = "*"
 pyroute2 = "*"
 aiofile = "*"
+pygccxml = "*"
 
 [dev-packages]
 pylint = "*"

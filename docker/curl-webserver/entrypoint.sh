@@ -1,6 +1,6 @@
 #!/bin/sh
 
-until ip a show eth0 &> /dev/null
+until ip a show ns3-eth0 &> /dev/null
 do
   echo 'waiting for network connection ...'
   sleep 1

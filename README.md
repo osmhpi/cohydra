@@ -52,7 +52,7 @@ Also have a look at the usage of [bridges](./bridge_example.py) or bridges in co
 
 ## Writing your own simulations
 
-Please note that the `eth0` interface is added to the docker container, after it startet. Therefore, you need to wait before your container can start using the network. You can copy the [`entrypoint.sh`](docker/ping/entrypoint.sh) to your docker image and add the following lines to your `Dockerfile`:
+Please note that the `ns3-eth0` interface is added to the docker container, after it startet. Therefore, you need to wait before your container can start using the network. You can copy the [`entrypoint.sh`](docker/ping/entrypoint.sh) to your docker image and add the following lines to your `Dockerfile`:
 ```dockerfile
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
@@ -63,3 +63,5 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 ```sh
 ping pong
 ```
+
+The simulation host will be available as **host**, so please do not name a container in this manner.
