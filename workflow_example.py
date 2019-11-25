@@ -15,8 +15,8 @@ def main():
     server = DockerNode('server', docker_image='httpd:2.4')
     net.connect(server, bridge, delay='0', speed='1000Mbps')
 
-    client1 = DockerNode('client-1', docker_build_dir='./docker/curl-webserver')
-    client2 = DockerNode('client-2', docker_build_dir='./docker/curl-webserver')
+    client1 = DockerNode('client-1', docker_build_dir='./docker/curl-webserver', cpus=0.5, memory="128m")
+    client2 = DockerNode('client-2', docker_build_dir='./docker/curl-webserver', cpus=0.5, memory="128m")
     net.connect(client1, bridge, delay='50ms', speed='100Mbps')
     net.connect(client2, bridge, delay='20ms', speed='100Mbps')
 

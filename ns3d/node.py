@@ -77,7 +77,8 @@ class DockerNode(Node):
 
     interface_counter = 0
 
-    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile', volumes=None):
+    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
+                 volumes=None, cpus=0.0, memory=None):
         super().__init__(name)
         self.docker_image = docker_image
         self.docker_build_dir = docker_build_dir
@@ -86,6 +87,8 @@ class DockerNode(Node):
             volumes = {}
         strings_to_volumes = lambda kv: (kv[0], {'bind': kv[1], 'mode': 'rw'} if isinstance(kv[1], str) else kv[1])
         self.volumes = dict(map(strings_to_volumes, volumes.items()))
+        self.cpus = cpus
+        self.memory = memory
 
         self.container = None
         self.container_pid = None
@@ -133,6 +136,8 @@ class DockerNode(Node):
         self.container = client.containers.run(self.__image_tag(), remove=True, auto_remove=True,
                                                network_mode='none', detach=True, name=self.name,
                                                hostname=self.name, privileged=True, volumes=self.volumes,
+                                               nano_cpus=int(self.cpus * 1e9),
+                                               mem_limit=0 if self.memory is None else self.memory,
                                                extra_hosts=simulation.hosts, labels={"created-by": "ns-3"})
         simulation.add_teardown(self.__stop_docker_container)
 
@@ -217,3 +222,8 @@ class DockerNode(Node):
         self.__setup_veth(node_ip)
         self.channel_counter += 1
         DockerNode.interface_counter += 1
+
+    def execute_command(self, command):
+        """Executes a command as default user.
+        """
+        self.container.exec_run(command)
