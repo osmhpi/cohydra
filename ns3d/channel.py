@@ -1,4 +1,5 @@
 import logging
+import os
 from ns import core, csma, internet, network as ns_net
 
 logger = logging.getLogger(__name__)
@@ -44,9 +45,9 @@ class Channel:
                 ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
                 self.ip_map[node] = str(ip_address)
 
-        self.csma.EnablePcapAll('./cap', True)
-
     def prepare(self, simulation):
+        pcap_log_prefix = os.path.join(simulation.log_directory, f'capture')
+        self.csma.EnablePcapAll(pcap_log_prefix, True)
         for node in self.nodes:
             device = self.csma_device_map[node]
             ip_address = self.ip_map.get(node)
