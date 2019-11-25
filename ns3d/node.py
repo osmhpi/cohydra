@@ -4,7 +4,7 @@ import os
 
 from nsenter import Namespace
 from pyroute2 import IPRoute, netlink
-from ns import core, bridge, network, tap_bridge
+from ns import core, csma, bridge, network, tap_bridge
 import docker
 
 logger = logging.getLogger(__name__)
@@ -30,6 +30,22 @@ class Node:
 
     def wants_ip_stack(self):
         raise NotImplementedError
+
+    def go_offline(self):
+        n_devices = self.ns3_node().GetNDevices()
+        for device_index in range(0, n_devices):
+            device = self.ns3_node().GetDevice(device_index)
+            if isinstance(device, csma.CsmaNetDevice):
+                device.SetSendEnable(False)
+                device.SetReceiveEnable(False)
+
+    def go_online(self):
+        n_devices = self.ns3_node().GetNDevices()
+        for device_index in range(0, n_devices):
+            device = self.ns3_node().GetDevice(device_index)
+            if isinstance(device, csma.CsmaNetDevice):
+                device.SetSendEnable(True)
+                device.SetReceiveEnable(True)
 
 class BridgeNode(Node):
     """This is representing a bridge between other nodes.

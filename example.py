@@ -16,15 +16,6 @@ def main():
 
     scenario.add_network(net)
 
-    @scenario.workflow
-    async def test(workflow):
-        await workflow.sleep(2)
-        print('2 seconds...')
-        await workflow.sleep(3)
-        print('10 seconds...')
-        await workflow.sleep(3)
-        print('workflow done')
-
     with scenario as sim:
         # To simulate forever, just do not specifiy the time parameter.
         sim.simulate(time=60)
