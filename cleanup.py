@@ -40,13 +40,12 @@ def main(dry_run, images, all_images):
                 print(f'remove image {tags}')
                 if not dry_run:
                     client.images.remove(image=image.id)
-    
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    PARSER = argparse.ArgumentParser()
 
-    parser.add_argument('-d', '--dry-run', action='store_true', help="Do not execute any commands")
-    parser.add_argument('-i', '--images', action='store_true', help="Remove all images build by ns3d")
-    parser.add_argument('-a', '--all-images', action='store_true', help="Remove all images used by ns3d")
+    PARSER.add_argument('-d', '--dry-run', action='store_true', help="Do not execute any commands")
+    PARSER.add_argument('-i', '--images', action='store_true', help="Remove all images build by ns3d")
+    PARSER.add_argument('-a', '--all-images', action='store_true', help="Remove all images used by ns3d")
 
-    main(**vars(parser.parse_args()))
+    main(**vars(PARSER.parse_args()))

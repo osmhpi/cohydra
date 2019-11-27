@@ -92,6 +92,7 @@ class DockerNode(Node):
 
         self.container = None
         self.container_pid = None
+        self.network = None
 
         self.channel_counter = 0
 
@@ -215,10 +216,9 @@ class DockerNode(Node):
         """Prepares the node by building the docker container and ?
         """
         logger.info('Preparing node %s (having %s)', self.name, node_ip)
-        if self.container is None:
-            self.__build_docker_image()
-            self.__start_docker_container(simulation)
+        self.__build_docker_image()
         self.__setup_tap_bridge(simulation, ns3_device)
+        self.__start_docker_container(simulation)
         self.__setup_veth(node_ip)
         self.channel_counter += 1
         DockerNode.interface_counter += 1

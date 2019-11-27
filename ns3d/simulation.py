@@ -4,10 +4,10 @@ import os
 import threading
 
 from datetime import datetime
-
 from ns import core, internet
-
 from pyroute2 import IPRoute
+
+import docker
 
 from .util import once
 from .workflow import Workflow
@@ -32,6 +32,8 @@ class Simulation:
         self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
         os.makedirs(self.log_directory, exist_ok=True)
 
+        self.docker_client = docker.DockerClient()
+
         # Saves IP -> hostname.
         self.hosts = None
 
@@ -51,10 +53,19 @@ class Simulation:
         """
         logger.info('Preparing simulation')
 
+        # Add host to hostsfile.
         ipr = IPRoute()
         host_ip = ipr.get_addr(label='docker0')[0].get_attr('IFA_ADDRESS')
-
         self.hosts = [f'host:{host_ip}']
+
+        # Try to add influxdb to hosts file (if container is running).
+        try:
+            influxdb_container = self.docker_client.containers.get('ns3-influxdb')
+            influxdb_ip = influxdb_container.attrs["NetworkSettings"]["IPAddress"]
+            if influxdb_ip is not None:
+                self.hosts.append(f'influxdb:{influxdb_ip}')
+        except docker.errors.NotFound:
+            pass
 
         for network in self.scenario.networks:
             for channel in network.channels:

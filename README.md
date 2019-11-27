@@ -65,3 +65,8 @@ ping pong
 ```
 
 The simulation host will be available as **host**, so please do not name a container in this manner.
+
+## Monitoring
+
+You can use Grafana and InfluxDB to monitor various parameters of the Scenarios. By default, docker containers are monitored with their CPU and memory usage.
+To enable monitoring, run `docker-compose up`, which starts the services defined in [docker-compose.yaml](./docker-compose.yaml).
