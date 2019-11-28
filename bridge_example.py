@@ -15,7 +15,7 @@ def main():
 
     scenario.add_network(net)
     with scenario as sim:
-        sim.simulate(time=60)
+        sim.simulate(simluation_time=60)
 
 if __name__ == "__main__":
     parser = ArgumentParser()

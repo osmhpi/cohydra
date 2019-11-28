@@ -2,9 +2,10 @@ import asyncio
 import logging
 import os
 import threading
+import time
 
 from datetime import datetime
-from ns import core, internet
+from ns import core, internet, netanim
 from pyroute2 import IPRoute
 
 import docker
@@ -36,6 +37,9 @@ class Simulation:
 
         # Saves IP -> hostname.
         self.hosts = None
+
+        animation_file = os.path.join(self.log_directory, "netanim.xml")
+        self.animation_interface = netanim.AnimationInterface(animation_file)
 
     @classmethod
     @once
@@ -78,19 +82,19 @@ class Simulation:
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()
 
-    def simulate(self, time=None):
+    def simulate(self, simluation_time=None):
         """Simulate the network
 
-        :param float time: The simulation timeout in seconds.
+        :param float simluation_time: The simulation timeout in seconds.
         """
         self.prepare()
-
+        self.animation_interface.EnablePacketMetadata(True)
         started = threading.Semaphore(0)
 
         core.Simulator.Schedule(core.Seconds(0), started.release)
 
-        if time is not None:
-            logger.info('Simulating for %.4fs', time)
+        if simluation_time is not None:
+            logger.info('Simulating for %.4fs', simluation_time)
         else:
             logger.info('Simulating until process gets stopped')
 
@@ -105,10 +109,11 @@ class Simulation:
             started.acquire()
 
             aws = list(func(Workflow()) for func in self.scenario.workflows)
-            if time is not None:
-                aws.append(asyncio.sleep(time))
-            asyncio.run(asyncio.wait(aws))
-            while time is None:
+            if simluation_time is not None:
+                aws.append(asyncio.sleep(simluation_time))
+            if aws: # List not empty
+                asyncio.run(asyncio.wait(aws))
+            while simluation_time is None:
                 time.sleep(1)
         finally:
             core.Simulator.Stop()

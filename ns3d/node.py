@@ -1,6 +1,7 @@
-import threading
 import logging
 import os
+import random
+import threading
 
 from nsenter import Namespace
 from pyroute2 import IPRoute, netlink
@@ -61,6 +62,9 @@ class BridgeNode(Node):
         self.bridge_device = bridge_helper.Install(self.name, network.NetDeviceContainer()).Get(0)
 
     def prepare(self, simulation, ns3_device, node_ip):
+        simulation.animation_interface.SetConstantPosition(self.ns3_node(), random.randint(10, 100),
+                                                           random.randint(10, 100), 0)
+        simulation.animation_interface.UpdateNodeDescription(self.ns3_node(), "Switch")
         if node_ip is not None:
             raise 'Bridges may not have IP addresses.'
 
@@ -226,6 +230,9 @@ class DockerNode(Node):
         """Prepares the node by building the docker container and ?
         """
         logger.info('Preparing node %s (having %s)', self.name, node_ip)
+        simulation.animation_interface.SetConstantPosition(self.ns3_node(), random.randint(10, 100),
+                                                           random.randint(10, 100), 0)
+        simulation.animation_interface.UpdateNodeDescription(self.ns3_node(), self.name)
         self.__build_docker_image()
         self.__setup_tap_bridge(simulation, ns3_device)
         self.__start_docker_container(simulation)
