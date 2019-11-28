@@ -9,6 +9,7 @@ nsenter = "*"
 pyroute2 = "*"
 aiofile = "*"
 cxxfilt = "*"
+coloredlogs = "*"
 
 [dev-packages]
 pylint = "*"

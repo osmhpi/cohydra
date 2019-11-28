@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
-import logging
 import os
-from ns3d import Network, DockerNode, BridgeNode, Scenario
+from ns3d import ArgumentParser, Network, DockerNode, BridgeNode, Scenario
 
 def main():
-    logging.basicConfig(level=logging.INFO)
-    logging.getLogger('ns3d').setLevel(logging.DEBUG)
     scenario = Scenario()
 
     net = Network("10.0.0.0", "255.255.255.0")
@@ -33,4 +30,5 @@ def main():
         sim.simulate(time=60)
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser()
+    parser.run(main)

@@ -1,4 +1,4 @@
-import asyncio
+import threading
 import logging
 import os
 
@@ -27,6 +27,9 @@ class Node:
 
     def prepare(self, simulation, ns3_device, node_ip):
         raise NotImplementedError
+
+    def pcap_file_name(self):
+        return None
 
     def wants_ip_stack(self):
         raise NotImplementedError
@@ -66,10 +69,14 @@ class BridgeNode(Node):
     def wants_ip_stack(self):
         return False
 
-def log_to_file(container, log_path):
-    with open(log_path, 'wb') as log_file:
-        for line in container.logs(stdout=True, follow=True, stream=True):
+def log_to_file(container, log_path, stdout=False, stderr=False):
+    log = logging.getLogger(container.name)
+    log.debug('Write log to %s', log_path)
+    with open(log_path, 'wb', 0) as log_file:
+        for line in container.logs(stdout=stdout, stderr=stderr, follow=True, stream=True):
+            log.log(logging.INFO if stdout else logging.ERROR, '%s', line.decode().strip())
             log_file.write(line)
+        log.debug('Done logging')
 
 class DockerNode(Node):
     """A node is representing a docker container.
@@ -104,6 +111,9 @@ class DockerNode(Node):
 
     def wants_ip_stack(self):
         return True
+
+    def pcap_file_name(self):
+        return f'{self.name}.{self.__internal_veth_if_name()}.pcap'
 
     def __interface_name(self, prefix):
         return f'{prefix}-ns3-{DockerNode.interface_counter}'
@@ -142,9 +152,9 @@ class DockerNode(Node):
                                                extra_hosts=simulation.hosts, labels={"created-by": "ns-3"})
         simulation.add_teardown(self.__stop_docker_container)
 
-        log_file_path = os.path.join(simulation.log_directory, f'{self.name}.log')
-        loop = asyncio.get_event_loop()
-        loop.run_in_executor(None, log_to_file, self.container, log_file_path)
+        for stream in ('stdout', 'stderr'):
+            log_file_path = os.path.join(simulation.log_directory, f'{self.name}.{stream}.log')
+            threading.Thread(target=log_to_file, args=(self.container, log_file_path), kwargs={stream: True}).start()
 
         low_level_client = docker.APIClient()
         self.container_pid = low_level_client.inspect_container(self.container.id)['State']['Pid']

@@ -46,9 +46,13 @@ class Channel:
                 self.ip_map[node] = str(ip_address)
 
     def prepare(self, simulation):
-        pcap_log_prefix = os.path.join(simulation.log_directory, f'capture')
-        self.csma.EnablePcapAll(pcap_log_prefix, True)
         for node in self.nodes:
             device = self.csma_device_map[node]
             ip_address = self.ip_map.get(node)
+
+            pcap_file_name = node.pcap_file_name()
+            if pcap_file_name is not None:
+                pcap_log_path = os.path.join(simulation.log_directory, pcap_file_name)
+                self.csma.EnablePcap(pcap_log_path, device, True, True)
+
             node.prepare(simulation, device, ip_address)
