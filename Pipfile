@@ -8,7 +8,7 @@ docker = "*"
 nsenter = "*"
 pyroute2 = "*"
 aiofile = "*"
-pygccxml = "*"
+cxxfilt = "*"
 
 [dev-packages]
 pylint = "*"
@@ -16,3 +16,6 @@ rope = "*"
 
 [requires]
 python_version = "3.7"
+
+[packages.develop]
+git = "https://github.com/felix-gohla/pygccxml@v1.9.2"

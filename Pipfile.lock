@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "401a4436f1636cef35c05721cacb99d3e5a1d2bd4b54a41508ed3830810b98eb"
+            "sha256": "ac98eef3ca208eff5b1ccc01c6a51748e9ac41ce758e88a09a6841a4dcf43f53"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -38,10 +38,10 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:e4f3620cfea4f83eedc95b24abd9cd56f3c4b146dd0177e83a21b4eb49e21e50",
-                "sha256:fd7c7c74727ddcf00e9acd26bba8da604ffec95bf1c2144e67aff7a8b50e6cef"
+                "sha256:017c25db2a153ce562900032d5bc68e9f191e44e9a0f762f373977de9df1fbb3",
+                "sha256:25b64c7da4cd7479594d035c08c2d809eb4aab3a26e5a990ea98cc450c320f1f"
             ],
-            "version": "==2019.9.11"
+            "version": "==2019.11.28"
         },
         "chardet": {
             "hashes": [
@@ -56,6 +56,16 @@
                 "sha256:3355078a159fbb44ee60ea80abd0d87b80b78c248643b49aa6d94673b413609b"
             ],
             "version": "==0.6.0.post1"
+        },
+        "cxxfilt": {
+            "hashes": [
+                "sha256:6431205e2a2fe99cd7834e23e6a4224281e130a00f7cd2572e06d36cd208e801"
+            ],
+            "index": "pypi",
+            "version": "==0.2.0"
+        },
+        "develop": {
+            "git": "https://github.com/felix-gohla/pygccxml@v1.9.2"
         },
         "docker": {
             "hashes": [
@@ -85,13 +95,6 @@
                 "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"
             ],
             "version": "==1.0.1"
-        },
-        "pygccxml": {
-            "hashes": [
-                "sha256:1c87c840c92a03ba83a037f820ad9cb8a28ff70d8c2620225b1496873d0f0fe1"
-            ],
-            "index": "pypi",
-            "version": "==1.9.1"
         },
         "pyroute2": {
             "hashes": [

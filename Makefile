@@ -64,7 +64,8 @@ ${PIPENV_INSTALL}: Pipfile | pipenv
 ${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv ${PIPENV_INSTALL}
 	mkdir -p ${NS3_BASE} ${NS3_INSTALL}
 	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
-	cd $(NS3_BASE) && python3 ./build.py -- --prefix=${NS3_INSTALL}
+	patch ${NS3_HOME}/src/netanim/wscript netanim_python_${NS3_VERSION}.patch
+	cd $(NS3_BASE) && python3 ./waf -j 3 --apiscan=netanim && python3 ./build.py -- --prefix=${NS3_INSTALL}
 	cd ${NS3_HOME} && ./waf install
 	touch $@
 
