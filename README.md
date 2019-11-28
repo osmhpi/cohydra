@@ -16,7 +16,7 @@ Please [install docker](https://docs.docker.com/install/linux/docker-ce/debian/)
 
 Install requirements:
 ```
-apt install git make pipenv curl
+apt-get install -y --no-install-recommends pipenv curl bzip2 make git g++ python3-dev llvm clang cmake libclang-dev zlib1g-dev qt5-default
 ```
 
 To install the required dependencies and ns-3, run:

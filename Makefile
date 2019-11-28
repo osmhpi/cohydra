@@ -16,6 +16,7 @@ include Makefile.local
 NS3_BASE ?= ${CURDIR}/ns3
 NS3_HOME := ${NS3_BASE}/ns-${NS3_VERSION}
 NS3_INSTALL ?= ${NS3_BASE}/install/ns-${NS3_VERSION}
+CASTXML_BASE ?= ${NS3_BASE}/CastXML
 CASTXML_INSTALL ?= ${NS3_BASE}/install/castxml
 
 export PYTHONPATH := ${PYTHONPATH}:${NS3_INSTALL}/lib/python3.7/site-packages
@@ -68,16 +69,18 @@ ${PIPENV_INSTALL}: Pipfile | pipenv
 	pipenv install
 	touch $@
 
-${CASTXML_INSTALL}:
-	apt install llvm clang cmake
-	cd ${NS3_BASE} && git clone https://github.com/CastXML/CastXML.git
+${CASTXML_DOWNLOAD}: ${CASTXML_BASE}
+	cd ${CASTXML_BASE}/.. && git clone https://github.com/CastXML/CastXML.git
+
+
+${CASTXML_INSTALL}: ${CASTXML_DOWNLOAD}
 	cd ${NS3_BASE}/CastXML && cmake -DCMAKE_INSTALL_PREFIX=${CASTXML_INSTALL} . && make && make install
 
 ${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv ${PIPENV_INSTALL} ${CASTXML_INSTALL}
 	mkdir -p ${NS3_BASE} ${NS3_INSTALL}
 	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
 	patch ${NS3_HOME}/src/netanim/wscript netanim_python_${NS3_VERSION}.patch
-	cd ${NS3_BASE}/netanim* && make clean && qmake NetAnim.pro && make
+	cd ${NS3_BASE}/netanim* && qmake NetAnim.pro && make
 	cd $(NS3_HOME) && python3 ./waf configure && python3 ./waf --apiscan=netanim
 	cd ${NS3_BASE} && python3 ./build.py -- --prefix=${NS3_INSTALL}
 	cd ${NS3_HOME} && ./waf install
