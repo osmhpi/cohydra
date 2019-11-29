@@ -1,6 +1,8 @@
 import logging
 from ns import internet, network
+
 from .channel import Channel
+from .util import network_color_for
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +18,7 @@ class Network:
         self.subnet_mask = subnet_mask
         self.address_helper = internet.Ipv4AddressHelper(network.Ipv4Address(self.base_ip),
                                                          network.Ipv4Mask(self.subnet_mask))
+        self.color = None
 
     def connect(self, *nodes, delay='0ms', speed='100Mbps'):
         """Connects to or more nodes on a single conection.
@@ -34,10 +37,14 @@ class Network:
             node_set = node_set.union(set(channel.nodes))
         return node_set
 
-    def prepare(self, simulation):
+    def prepare(self, simulation, network_index):
         """Prepares the network by building the docker containers.
         """
         logger.info('Preparing network (base IP: %s)', self.base_ip)
+
+        # Color is needed for NetAnim.
+        color = network_color_for(network_index, len(simulation.scenario.networks))
+        self.color = color
 
         channel_index = 0
         for channel in self.channels:

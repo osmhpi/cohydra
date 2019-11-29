@@ -2,10 +2,11 @@ from .simulation import Simulation
 
 class Scenario:
 
-    def __init__(self):
+    def __init__(self, netanim_node_size=4):
         self.networks = set()
         self.workflows = set()
         self.simulation = None
+        self.netanim_node_size = netanim_node_size
 
 
     def add_network(self, network):

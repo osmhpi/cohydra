@@ -46,6 +46,11 @@ class Channel:
                 self.ip_map[node] = str(ip_address)
 
     def prepare(self, simulation):
+        red = self.network.color[0]
+        green = self.network.color[1]
+        blue = self.network.color[2]
+        node_size = simulation.scenario.netanim_node_size
+
         for node in self.nodes:
             device = self.csma_device_map[node]
             ip_address = self.ip_map.get(node)
@@ -56,3 +61,6 @@ class Channel:
                 self.csma.EnablePcap(pcap_log_path, device, True, True)
 
             node.prepare(simulation, device, ip_address)
+            # Set the color according to the network.
+            simulation.animation_interface.UpdateNodeColor(node.ns3_node(), red, green, blue)
+            simulation.animation_interface.UpdateNodeSize(node.ns3_node().GetId(), node_size, node_size)

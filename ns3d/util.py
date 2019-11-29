@@ -1,3 +1,4 @@
+import colorsys
 import functools
 import weakref
 
@@ -20,3 +21,8 @@ def once(func):
             return result
 
     return wrapper
+
+def network_color_for(network, number_of_networks):
+    hue = float(network) / float(number_of_networks + 1)
+    rgb = colorsys.hsv_to_rgb(hue, 1.0, 1.0)
+    return (int(rgb[0]*255.0), int(rgb[1]*255.0), int(rgb[2]*255.0))

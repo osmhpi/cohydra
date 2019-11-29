@@ -76,8 +76,10 @@ class Simulation:
                 host_list = map(lambda kv: (f'{kv[0].name}:{kv[1]}'), channel.ip_map.items())
                 self.hosts.extend(host_list)
 
+        network_index = 0
         for network in self.scenario.networks:
-            network.prepare(self)
+            network.prepare(self, network_index)
+            network_index += 1
 
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()

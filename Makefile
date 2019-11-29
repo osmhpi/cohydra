@@ -79,7 +79,7 @@ ${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv ${PIPENV_INSTALL} ${CASTXML_INST
 	mkdir -p ${NS3_BASE} ${NS3_INSTALL}
 	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
 	patch ${NS3_HOME}/src/netanim/wscript netanim_python_${NS3_VERSION}.patch
-	cd ${NS3_BASE}/netanim* && qmake NetAnim.pro && make
+	cd ${NS3_BASE}/netanim* && qmake NetAnim.pro && make -j $(nproc)
 	cd $(NS3_HOME) && python3 ./waf configure && python3 ./waf --apiscan=netanim
 	cd ${NS3_BASE} && python3 ./build.py -- --prefix=${NS3_INSTALL}
 	cd ${NS3_HOME} && ./waf install
