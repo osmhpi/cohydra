@@ -17,7 +17,7 @@ RUN apt-get install -y sudo && \
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
 
-RUN apt-get install -y --no-install-recommends pipenv curl bzip2 make git g++ python3-dev llvm clang libclang-dev cmake zlib1g-dev qt5-default
+RUN apt-get install -y --no-install-recommends pipenv curl bzip2 make git g++ python3-dev llvm llvm-dev clang libclang-dev cmake zlib1g-dev qt5-default
 
 # # Verify git, process tools, lsb-release (common in install instructions for CLIs) installed
 # RUN apt-get -y install git iproute2 procps lsb-release \

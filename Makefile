@@ -69,9 +69,8 @@ ${PIPENV_INSTALL}: Pipfile | pipenv
 	pipenv install
 	touch $@
 
-${CASTXML_DOWNLOAD}: ${CASTXML_BASE}
-	cd ${CASTXML_BASE}/.. && git clone https://github.com/CastXML/CastXML.git
-
+${CASTXML_DOWNLOAD}:
+	cd ${CASTXML_DOWNLOAD}/.. && git clone https://github.com/CastXML/CastXML.git
 
 ${CASTXML_INSTALL}: ${CASTXML_DOWNLOAD}
 	cd ${NS3_BASE}/CastXML && cmake -DCMAKE_INSTALL_PREFIX=${CASTXML_INSTALL} . && make && make install

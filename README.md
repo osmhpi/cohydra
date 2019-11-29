@@ -13,10 +13,11 @@ This repo provides a python package called `ns3d`.
 *Caution:* This project fiddles with your network interfaces. Please consider to use it in a virtual machine for testing purposes.
 
 Please [install docker](https://docs.docker.com/install/linux/docker-ce/debian/) beforehand and ensure, that the current user is member of the *docker* group.
+You probably also need [docker-compose](http://docs.docker.com/compose/install).
 
 Install requirements:
 ```
-apt-get install -y --no-install-recommends pipenv curl bzip2 make git g++ python3-dev llvm clang cmake libclang-dev zlib1g-dev qt5-default
+apt-get install -y --no-install-recommends pipenv curl bzip2 make git g++ python3-dev llvm llvm-dev clang cmake libclang-dev zlib1g-dev qt5-default
 ```
 
 To install the required dependencies and ns-3, run:
