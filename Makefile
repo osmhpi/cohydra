@@ -26,6 +26,9 @@ export PATH := ${PATH}:${NS3_INSTALL}/bin:${CASTXML_INSTALL}/bin
 PIPENV_INSTALL := ${VIRTUAL_ENV}/.last-install
 NS3_DOWNLOAD ?= ${NS3_HOME}.tar.bz2
 
+NPROC ?= ${shell nproc}
+MAKE_J_NPROC := ${MAKE} -j ${NPROC}
+
 #### Targets
 .PHONY: shell env vscode-setup init pipenv clean uninstall-ns3
 
@@ -35,7 +38,7 @@ shell:
 	@if [ `id -u` -eq 0 ]; then \
 		env -u MAKELEVEL PIPENV_DONT_LOAD_ENV=1 pipenv shell || echo "Exit code: $$?"; \
 	else \
-		sudo $(MAKE) $@; \
+		sudo ${MAKE} $@; \
 	fi
 
 env:
@@ -69,18 +72,25 @@ ${PIPENV_INSTALL}: Pipfile | pipenv
 	pipenv install
 	touch $@
 
-${CASTXML_DOWNLOAD}:
-	cd ${CASTXML_DOWNLOAD}/.. && git clone https://github.com/CastXML/CastXML.git
+${CASTXML_BASE}:
+	mkdir -p $@
+	cd ${CASTXML_BASE} && git clone https://github.com/CastXML/CastXML.git .
 
-${CASTXML_INSTALL}: ${CASTXML_DOWNLOAD}
-	cd ${NS3_BASE}/CastXML && cmake -DCMAKE_INSTALL_PREFIX=${CASTXML_INSTALL} . && make && make install
+${CASTXML_BASE}.installed: ${CASTXML_BASE}
+	cd ${CASTXML_BASE} && git pull
+	cd ${CASTXML_BASE} && cmake -DCMAKE_INSTALL_PREFIX=${CASTXML_INSTALL} .
+	cd ${CASTXML_BASE} && ${MAKE_J_NPROC}
+	cd ${CASTXML_BASE} && ${MAKE} install
+	touch $@
 
-${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv ${PIPENV_INSTALL} ${CASTXML_INSTALL}
+${NS3_HOME}.installed: ${NS3_DOWNLOAD} | pipenv ${PIPENV_INSTALL} ${CASTXML_BASE}.installed
 	mkdir -p ${NS3_BASE} ${NS3_INSTALL}
 	tar xvj --strip-components 1 -C ${NS3_BASE} -f ${NS3_DOWNLOAD}
 	patch ${NS3_HOME}/src/netanim/wscript netanim_python_${NS3_VERSION}.patch
-	cd ${NS3_BASE}/netanim* && qmake NetAnim.pro && make -j $(nproc)
-	cd $(NS3_HOME) && python3 ./waf configure && python3 ./waf --apiscan=netanim
+	cd ${NS3_BASE}/netanim* && qmake NetAnim.pro 
+	cd ${NS3_BASE}/netanim* && ${MAKE_J_NPROC}
+	cd ${NS3_HOME} && python3 ./waf configure
+	cd ${NS3_HOME} && python3 ./waf --apiscan=netanim
 	cd ${NS3_BASE} && python3 ./build.py -- --prefix=${NS3_INSTALL}
 	cd ${NS3_HOME} && ./waf install
 	touch $@
