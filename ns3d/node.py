@@ -101,7 +101,7 @@ class DockerNode(Node):
         self.exposed_ports = exposed_ports if exposed_ports is not None else dict()
         self.cpus = cpus
         self.memory = memory
-        self.command = None
+        self.command = command
 
         self.container = None
         self.container_pid = None
@@ -140,7 +140,8 @@ class DockerNode(Node):
         client = docker.from_env()
         if self.docker_image is None:
             logger.info('Building docker image: %s/%s', self.docker_build_dir, self.dockerfile)
-            self.docker_image = client.images.build(path=self.docker_build_dir, dockerfile=self.dockerfile, rm=True)[0]
+            self.docker_image = client.images.build(path=self.docker_build_dir, dockerfile=self.dockerfile,
+                                                    rm=True, nocache=False)[0]
         else:
             logger.info('Pulling docker image: %s', self.docker_image)
             self.docker_image = client.images.pull(self.docker_image)

@@ -21,3 +21,4 @@ var/*
 
 # Simulation log files
 /simulation-logs
+/docker/sawtooth-pbft/keys
