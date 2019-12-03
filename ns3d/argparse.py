@@ -12,7 +12,8 @@ class ArgumentParser(argparse.ArgumentParser):
 
         if self.setup_logging:
             default = 'INFO'
-            self.add_argument('-v', '--verbose', action='store_const', const='DEBUG', default=default, help=f'enable verbose logging for the {ns3d_name} logger', dest='log_level')
+            self.add_argument('-v', '--verbose', action='store_const', const='DEBUG', default=default,
+                              help=f'enable verbose logging for the {ns3d_name} logger', dest='log_level')
             self.add_argument('--log-level', default=default, help=f'log level for the {ns3d_name} logger')
             self.add_argument('--global-log-level', default=default, help='log level for the global logger')
 

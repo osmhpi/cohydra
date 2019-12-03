@@ -45,6 +45,8 @@ class Simulation:
     @once
     def __setup(cls):
         bridgedir = '/proc/sys/net/bridge/'
+        if not os.path.exists(bridgedir):
+            return
         for filename in os.listdir(bridgedir):
             if filename.startswith('bridge-nf-'):
                 logger.debug('set %s = 0', filename)
