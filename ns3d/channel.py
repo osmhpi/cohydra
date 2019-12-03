@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 class Channel:
 
-    def __init__(self, network, nodes, delay="100Mbps", speed="0ms"):
+    def __init__(self, network, nodes, delay="0ms", speed="100Mbps"):
         self.network = network
         self.nodes = nodes
         self.delay = delay
