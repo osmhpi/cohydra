@@ -89,7 +89,7 @@ class DockerNode(Node):
     interface_counter = 0
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
-                 volumes=None, exposed_ports=None, cpus=0.0, memory=None):
+                 volumes=None, exposed_ports=None, cpus=0.0, memory=None, command=None):
         super().__init__(name)
         self.docker_image = docker_image
         self.docker_build_dir = docker_build_dir
@@ -101,6 +101,7 @@ class DockerNode(Node):
         self.exposed_ports = exposed_ports if exposed_ports is not None else dict()
         self.cpus = cpus
         self.memory = memory
+        self.command = None
 
         self.container = None
         self.container_pid = None
@@ -155,7 +156,7 @@ class DockerNode(Node):
                                                nano_cpus=int(self.cpus * 1e9),
                                                mem_limit=0 if self.memory is None else self.memory,
                                                extra_hosts=simulation.hosts, labels={"created-by": "ns-3"},
-                                               ports=self.exposed_ports)
+                                               ports=self.exposed_ports, command=self.command)
         simulation.add_teardown(self.__stop_docker_container)
 
         for stream in ('stdout', 'stderr'):
