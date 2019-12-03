@@ -46,7 +46,7 @@ To start an example where one host is simply pinging another host, type:
 
 ```sh
 make shell
-./example.py
+./examples/basic_example.py
 ```
 
 Also have a look at the usage of [bridges](./bridge_example.py) or bridges in connection with [a webserver](./webserver_example.py).

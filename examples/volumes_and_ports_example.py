@@ -11,11 +11,11 @@ def main():
     bridge = BridgeNode('br-1')
 
     script_directory = os.path.dirname(os.path.realpath(__file__))
-    htdocs_directory = os.path.join(script_directory, 'docker/curl-webserver/htdocs')
+    htdocs_directory = os.path.join(script_directory, '../docker/curl-webserver/htdocs')
     # Always specify absolute paths. You can also set 'rw' as mode.
-    # If you are lazy, you can also give `{htdocs_directory: '/root/htdocs'}`, which
+    # If you are lazy, you can also give `{htdocs_directory: '/usr/local/apache2/htdocs'}`, which
     # automatically mounts it as read-write.
-    server_volumes = {htdocs_directory: {'bind': '/root/htdocs', 'mode':'ro'}}
+    server_volumes = {htdocs_directory: {'bind': '/usr/local/apache2/htdocs', 'mode':'ro'}}
 
     # Using ports: The first value (key) is the internal port in the container.
     # You can also restrict the ip: {'80/tcp': ('127.0.0.1', 8080)}
