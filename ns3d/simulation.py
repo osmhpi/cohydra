@@ -1,8 +1,6 @@
-import asyncio
 import logging
 import os
 import threading
-import time
 
 from datetime import datetime
 from ns import core, internet, netanim
@@ -93,6 +91,7 @@ class Simulation:
         """
         self.prepare()
         self.animation_interface.EnablePacketMetadata(True)
+
         started = threading.Semaphore(0)
 
         core.Simulator.Schedule(core.Seconds(0), started.release)
@@ -103,6 +102,8 @@ class Simulation:
             logger.info('Simulating until process gets stopped')
 
         def run_simulation():
+            if simluation_time is not None:
+                core.Simulator.Stop(core.Seconds(simluation_time))
             core.Simulator.Run()
             core.Simulator.Destroy()
 
@@ -112,13 +113,13 @@ class Simulation:
             thread.start()
             started.acquire()
 
-            aws = list(func(Workflow()) for func in self.scenario.workflows)
-            if simluation_time is not None:
-                aws.append(asyncio.sleep(simluation_time))
-            if aws: # List not empty
-                asyncio.run(asyncio.wait(aws))
-            while simluation_time is None:
-                time.sleep(1)
+            workflow = Workflow()
+            self.add_teardown(workflow.stop)
+
+            for task in self.scenario.workflows:
+                workflow.start(task)
+
+            thread.join()
         finally:
             core.Simulator.Stop()
 

@@ -18,10 +18,10 @@ def main():
     net.connect(client2, bridge, delay='20ms', speed='100Mbps')
 
     @scenario.workflow
-    async def test(workflow):
-        await workflow.sleep(5)
+    def test(workflow):
+        workflow.sleep(5)
         server.go_offline()
-        await workflow.sleep(20)
+        workflow.sleep(20)
         server.go_online()
 
     scenario.add_network(net)
