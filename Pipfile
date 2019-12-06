@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+docker = "*"
+nsenter = "*"
+pyroute2 = "*"
+aiofile = "*"
+cxxfilt = "*"
+coloredlogs = "*"
+activeexpressions = {git = "https://github.com/active-expressions/active-expressions-static-python"}
+
+[dev-packages]
+pylint = "*"
+rope = "*"
+
+[requires]
+python_version = "3.7"
+
+[packages.develop]
+git = "https://github.com/felix-gohla/pygccxml@v1.9.2"
