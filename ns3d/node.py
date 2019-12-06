@@ -37,6 +37,7 @@ class Node:
 
     def go_offline(self):
         n_devices = self.ns3_node().GetNDevices()
+        logger.debug('Go offline: %s (%d devices)', self.name, n_devices)
         for device_index in range(0, n_devices):
             device = self.ns3_node().GetDevice(device_index)
             if isinstance(device, csma.CsmaNetDevice):
@@ -45,6 +46,7 @@ class Node:
 
     def go_online(self):
         n_devices = self.ns3_node().GetNDevices()
+        logger.debug('Go online: %s (%d devices)', self.name, n_devices)
         for device_index in range(0, n_devices):
             device = self.ns3_node().GetDevice(device_index)
             if isinstance(device, csma.CsmaNetDevice):
