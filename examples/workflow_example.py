@@ -19,9 +19,10 @@ def main():
 
     @scenario.workflow
     def test(workflow):
+        client1.execute_command('curl server -v')
         workflow.sleep(5)
         server.go_offline()
-        workflow.sleep(20)
+        workflow.sleep(10)
         server.go_online()
 
     scenario.add_network(net)

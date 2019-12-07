@@ -1,0 +1,26 @@
+data:
+  # can be used in iptable templates
+  external: eno1
+  internal: &interface enx000ec6511f91
+
+iptables:
+  - POSTROUTING -t nat -o {external} -j MASQUERADE
+
+node_iptables:
+  # the bridge can connect to the internet
+  - FORWARD -i {bridge} -o {external} -j ACCEPT
+  - FORWARD -o {bridge} -i {external} -m state --state RELATED,ESTABLISHED -j ACCEPT
+  # the management network can connect to the bridge
+  - FORWARD -i {internal} -o {bridge} -j ACCEPT
+  - FORWARD -o {internal} -i {bridge} -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+nodes:
+  pong:
+    interface: *interface
+    vlan: 2
+    address: 10.242.2.2/24
+
+  ping:
+    interface: *interface
+    vlan: 3
+    address: 10.242.3.2/24

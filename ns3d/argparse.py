@@ -29,7 +29,8 @@ class ArgumentParser(argparse.ArgumentParser):
 
             logging.getLogger(__name__).debug('log_level=%s, global_log_level=%s', log_level, global_log_level)
 
-        if self.logger_arg:
-            args[self.logger_arg] = logging.getLogger(self.prog)
+            if self.logger_arg:
+                args[self.logger_arg] = logging.getLogger(self.prog)
+                args[self.logger_arg].setLevel(log_level)
 
         main(**args)

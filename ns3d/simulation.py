@@ -9,6 +9,7 @@ from pyroute2 import IPRoute
 import docker
 
 from .util import once
+from .context import defer
 from .workflow import Workflow
 
 logger = logging.getLogger(__name__)
@@ -35,9 +36,8 @@ class Simulation:
 
         # Saves IP -> hostname.
         self.hosts = None
-
-        animation_file = os.path.join(self.log_directory, "netanim.xml")
-        self.animation_interface = netanim.AnimationInterface(animation_file)
+        self.animation_interface = None
+        self.started = False
 
     @classmethod
     @once
@@ -71,15 +71,25 @@ class Simulation:
         except docker.errors.NotFound:
             pass
 
-        for network in self.scenario.networks:
-            for channel in network.channels:
-                host_list = map(lambda kv: (f'{kv[0].name}:{kv[1]}'), channel.ip_map.items())
-                self.hosts.extend(host_list)
+        for channel in self.scenario.channels():
+            for interface in channel.interfaces:
+                if interface.address is not None:
+                    self.hosts.append(f'{interface.node.name}:{interface.address.ip}')
 
-        network_index = 0
-        for network in self.scenario.networks:
-            network.prepare(self, network_index)
-            network_index += 1
+        for (i, network) in enumerate(self.scenario.networks):
+            network.prepare(self, i)
+
+        animation_file = os.path.join(self.log_directory, "netanim.xml")
+        self.animation_interface = netanim.AnimationInterface(animation_file)
+        self.animation_interface.EnablePacketMetadata(True)
+
+        node_size = self.scenario.netanim_node_size
+        for node in self.scenario.nodes():
+            self.animation_interface.UpdateNodeDescription(node.ns3_node, node.name)
+            if node.color:
+                self.animation_interface.UpdateNodeColor(node.ns3_node, *node.color)
+            self.animation_interface.UpdateNodeSize(node.ns3_node.GetId(), node_size, node_size)
+            node.prepare(self)
 
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()
@@ -89,8 +99,11 @@ class Simulation:
 
         :param float simluation_time: The simulation timeout in seconds.
         """
+        if self.started:
+            raise Exception('The simulation was already started')
+        self.started = True
+
         self.prepare()
-        self.animation_interface.EnablePacketMetadata(True)
 
         started = threading.Semaphore(0)
 
@@ -114,7 +127,7 @@ class Simulation:
             started.acquire()
 
             workflow = Workflow()
-            self.add_teardown(workflow.stop)
+            defer('stop workflows', workflow.stop)
 
             for task in self.scenario.workflows:
                 workflow.start(task)
@@ -122,39 +135,3 @@ class Simulation:
             thread.join()
         finally:
             core.Simulator.Stop()
-
-    def teardown(self, raise_on_fail=True):
-        """Tear down the simulation.
-        This also stops and destroys docker containers.
-        """
-        logger.info("Tearing down the simulation (%d teardowns)", len(self.teardowns))
-
-        fails = 0
-        while self.teardowns:
-            teardown = self.teardowns.pop()
-            logger.debug("Running teardown %s (%d teardowns left)", teardown.__name__, len(self.teardowns))
-
-            try:
-                teardown()
-            except Exception as err: # pylint: disable=broad-except
-                logger.error("Failed to run teardown %s: %s", teardown.__name__, err)
-                fails += 1
-
-        if fails != 0:
-            if raise_on_fail:
-                raise Exception(f"Teardown failed: {fails} teardowns failed")
-            logger.warning("Teardown failed: %d teardowns failed", fails)
-        else:
-            logger.info("Teardown successful")
-
-    def add_teardown(self, teardown, name=None):
-        """Add a teardown function.
-        This function is added to the teardown stack and will be called on teardown.
-
-        :param function teardown: The teardown function.
-        :param str name: An optional name to override the name of the teardown function.
-        """
-        if name is not None:
-            teardown.__name__ = name
-        logger.debug("Added teardown %s", teardown.__name__)
-        self.teardowns.append(teardown)

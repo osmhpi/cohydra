@@ -1,6 +1,8 @@
 import logging
+import ipaddress
 import os
 from ns import core, csma, internet, network as ns_net
+from .interface import Interface
 
 logger = logging.getLogger(__name__)
 
@@ -8,59 +10,49 @@ class Channel:
 
     def __init__(self, network, nodes, delay="0ms", speed="100Mbps"):
         self.network = network
-        self.nodes = nodes
         self.delay = delay
         self.speed = speed
+        self.interfaces = []
 
-        self.csma = csma.CsmaHelper()
+        self.csma_helper = csma.CsmaHelper()
 
-        logger.debug('Creating container with %d nodes', len(self.nodes))
+        logger.debug('Creating container with %d nodes', len(nodes))
 
         self.ns3_nodes_container = ns_net.NodeContainer()
-        for node in self.nodes:
-            self.ns3_nodes_container.Add(node.ns3_node())
+        for node in nodes:
+            self.ns3_nodes_container.Add(node.ns3_node)
 
         logger.info('Install connection between nodes')
-        self.csma.SetChannelAttribute("DataRate", core.StringValue(self.speed))
-        self.csma.SetChannelAttribute("Delay", core.StringValue(self.delay))
-        self.devices_container = self.csma.Install(self.ns3_nodes_container)
+        self.csma_helper.SetChannelAttribute("DataRate", core.StringValue(self.speed))
+        self.csma_helper.SetChannelAttribute("Delay", core.StringValue(self.delay))
+        self.devices_container = self.csma_helper.Install(self.ns3_nodes_container)
 
         logger.info('Set IP addresses on nodes')
-        self.ip_map = dict()
-        self.csma_device_map = dict()
         stack_helper = internet.InternetStackHelper()
-        for node_index in range(0, len(self.nodes)):
-            node = self.nodes[node_index]
-            ns3_node = node.ns3_node()
 
-            # Save CSMA device and ip for later
-            device = self.devices_container.Get(node_index)
-            self.csma_device_map[node] = device
+        for i, node in enumerate(nodes):
+            ns3_device = self.devices_container.Get(i)
 
+            address = None
             if node.wants_ip_stack():
-                if ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
+                if node.ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
                     logger.info('Installing IP stack on %s', node.name)
-                    stack_helper.Install(ns3_node)
-                device_container = ns_net.NetDeviceContainer(device)
+                    stack_helper.Install(node.ns3_node)
+                device_container = ns_net.NetDeviceContainer(ns3_device)
                 ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
-                self.ip_map[node] = str(ip_address)
+                netmask = network.network.prefixlen
+                address = ipaddress.ip_interface(f'{ip_address}/{netmask}')
+
+            interface = Interface(node=node, ns3_device=ns3_device, address=address)
+            node.add_interface(interface)
+            self.interfaces.append(interface)
+
+    @property
+    def nodes(self):
+        logger.warning('Channel.nodes is deprecated')
+        return list(map(lambda interface: interface.node, self.interfaces))
 
     def prepare(self, simulation):
-        red = self.network.color[0]
-        green = self.network.color[1]
-        blue = self.network.color[2]
-        node_size = simulation.scenario.netanim_node_size
-
-        for node in self.nodes:
-            device = self.csma_device_map[node]
-            ip_address = self.ip_map.get(node)
-
-            pcap_file_name = node.pcap_file_name()
-            if pcap_file_name is not None:
-                pcap_log_path = os.path.join(simulation.log_directory, pcap_file_name)
-                self.csma.EnablePcap(pcap_log_path, device, True, True)
-
-            node.prepare(simulation, device, ip_address)
-            # Set the color according to the network.
-            simulation.animation_interface.UpdateNodeColor(node.ns3_node(), red, green, blue)
-            simulation.animation_interface.UpdateNodeSize(node.ns3_node().GetId(), node_size, node_size)
+        for interface in self.interfaces:
+            pcap_log_path = os.path.join(simulation.log_directory, interface.pcap_file_name)
+            self.csma_helper.EnablePcap(pcap_log_path, interface.ns3_device, True, True)

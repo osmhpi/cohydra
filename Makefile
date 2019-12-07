@@ -4,7 +4,7 @@ NS3_VERSION := 3.30
 NS3_DOWNLOAD_SHA1 := b4d40bb9777ee644bdba50e3a2e221da85715b4e # 3.30
 
 export COLOREDLOGS_DATE_FORMAT = %H:%M:%S
-export COLOREDLOGS_LOG_FORMAT = %(asctime)s %(name)-20s %(levelname)-8s %(message)s
+export COLOREDLOGS_LOG_FORMAT = %(asctime)s %(name)-32s %(levelname)-8s %(message)s
 export COLOREDLOGS_LOG_LEVEL = DEBUG
 export COLOREDLOGS_LEVEL_STYLES = debug=cyan;warning=yellow;error=red;critical=red,bold
 export COLOREDLOGS_AUTO_INSTALL = true

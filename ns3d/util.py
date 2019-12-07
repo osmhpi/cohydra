@@ -19,10 +19,24 @@ def once(func):
             result = func(*args, **kwargs)
             has_run.add(first)
             return result
+        return None
 
     return wrapper
 
 def network_color_for(network, number_of_networks):
-    hue = float(network) / float(number_of_networks + 1)
-    rgb = colorsys.hsv_to_rgb(hue, 1.0, 1.0)
-    return (int(rgb[0]*255.0), int(rgb[1]*255.0), int(rgb[2]*255.0))
+    hue = network / number_of_networks + 1
+    (r, g, b) = colorsys.hsv_to_rgb(hue, 1, 1) # pylint: disable=invalid-name
+    return (int(r * 255), int(g * 255), int(b * 255))
+
+def unique(iterable):
+    seen = set()
+    for item in iterable:
+        if item not in seen:
+            seen.add(item)
+            yield item
+
+def unique_generator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return unique(func(*args, **kwargs))
+    return wrapper

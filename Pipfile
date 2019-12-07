@@ -10,6 +10,8 @@ pyroute2 = "*"
 aiofile = "*"
 cxxfilt = "*"
 coloredlogs = "*"
+paramiko = "*"
+pyyaml = "*"
 
 [dev-packages]
 pylint = "*"
