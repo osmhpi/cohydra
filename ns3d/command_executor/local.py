@@ -11,11 +11,17 @@ def log_file(logger, level, file, logfile):
             log.log(level, line.rstrip())
 
 class LocalCommandExecutor(CommandExecutor):
+    """! The LocalCommandExecutor runs commands on the simulation host."""
 
     def __init__(self, name=None):
         super().__init__(name)
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):
+        """! @copyDoc CommandExecutor.execute()
+
+        *Warning:* This raises an execption if something goes wrong.
+        Be sure to catch it or the simulation will stop.
+        """
         if user is not None:
             raise ValueError(f'LocalCommandExecutor does not implement user argument')
         if stdout_logfile is not None or stderr_logfile is not None:

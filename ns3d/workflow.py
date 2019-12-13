@@ -4,13 +4,18 @@ import threading
 logger = logging.getLogger(__name__)
 
 class Workflow:
+    """! A workflow is a contains a list of commands for
+    planned execution during the simulation.
+    """
     def __init__(self):
         self.close = threading.Event()
 
     def stop(self):
+        """! Stop the workflow."""
         self.close.set()
 
     def start(self, workflow):
+        """! Start the workflow."""
         thread = threading.Thread(target=workflow, args=(self,))
         thread.start()
 
@@ -22,9 +27,13 @@ class Workflow:
             self.__closed()
 
     def sleep(self, duration):
-        logger.debug('Sleep for %gs', duration)
+        """! Sleep and wait.
+
+        @param duration The duration to sleep in seconds.
+        """
+        logger.debug('Sleep for %gs.', duration)
         close = self.close.wait(duration)
-        logger.debug('Close %s', close)
+        logger.debug('Close %s.', close)
         if close is True:
             self.__closed()
 

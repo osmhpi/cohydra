@@ -11,6 +11,7 @@ def split_shell_arguments(command):
     return shlex.split(command)
 
 class LogFile:
+    """! The logfile helps by prepending timestamps to log lines."""
 
     def __init__(self, logger, path):
         self.logger = logger

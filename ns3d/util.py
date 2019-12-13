@@ -4,7 +4,7 @@ import weakref
 
 # from http://stackoverflow.com/questions/4103773/efficient-way-of-having-a-function-only-execute-once-in-a-loop
 def once(func):
-    """Runs a method (successfully) only once per instance.
+    """! Runs a method (successfully) only once per instance.
     """
 
     has_run = weakref.WeakSet()
@@ -24,6 +24,7 @@ def once(func):
     return wrapper
 
 def network_color_for(network, number_of_networks):
+    """! Calculates a color on the hue-spectrum for a specific network."""
     hue = network / number_of_networks + 1
     (r, g, b) = colorsys.hsv_to_rgb(hue, 1, 1) # pylint: disable=invalid-name
     return (int(r * 255), int(g * 255), int(b * 255))

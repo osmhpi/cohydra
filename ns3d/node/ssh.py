@@ -20,10 +20,15 @@ def default_ip(ifname):
     raise TypeError(f'Unable to calculate default node ip in {ifname} ({interface})')
 
 class SSHNode(ExternalNode):
-    """An SSH node is representing an external device reachable via SSH.
+    """! An SSH node represents an external device reachable via SSH.
     """
 
     def __init__(self, name, ip=None, bridge=None, username='pi', password='raspberry', ifname='eth0'):
+        """! @copydoc ExternalNode.__init__()
+
+        @param username The username used to login onto the device.
+        @param password the password for the given user.
+        """
         super().__init__(name, bridge=bridge, ifname=ifname)
 
         if ip is None:

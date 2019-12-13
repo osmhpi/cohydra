@@ -2,7 +2,7 @@
 
 import os
 
-from ns3d import ArgumentParser, Network, DockerNode, BridgeNode, Scenario
+from ns3d import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
 
 def volumes_for_validator(validator_num):
     script_directory = os.path.dirname(os.path.realpath(__file__))
@@ -18,7 +18,7 @@ def main():
 
     net = Network("10.0.0.0", "255.255.255.0")
 
-    bridge = BridgeNode('br-1')
+    bridge = SwitchNode('br-1')
 
     validator1 = DockerNode('validator1', docker_build_dir='./docker',
                             dockerfile='sawtooth-pbft/validator/Dockerfile',

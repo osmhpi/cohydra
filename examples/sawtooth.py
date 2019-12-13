@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-from ns3d import ArgumentParser, Network, DockerNode, BridgeNode, Scenario
+from ns3d import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
 
 def main():
     scenario = Scenario()
 
     net = Network("10.0.0.0", "255.255.255.0")
 
-    bridge = BridgeNode('br-1')
+    bridge = SwitchNode('br-1')
 
     validator = DockerNode('validator', docker_build_dir='./docker/sawtooth', dockerfile='validator.Dockerfile')
     net.connect(validator, bridge, delay='0', speed='1000Mbps')

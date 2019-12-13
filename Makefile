@@ -30,7 +30,7 @@ NPROC ?= ${shell nproc}
 MAKE_J_NPROC := ${MAKE} -j ${NPROC}
 
 #### Targets
-.PHONY: shell env vscode-setup init pipenv clean uninstall-ns3
+.PHONY: shell env vscode-setup init pipenv clean uninstall-ns3 docs
 
 all: shell
 
@@ -110,6 +110,11 @@ pipenv:
 else
 pipenv:
 endif
+
+docs:
+	doxygen docs/ns3d.dox
+	docker run --rm -u $(shell id -u) -v $(shell pwd)/docs/latex:/work -it olgapaw/doxygen-latex make &&\
+		mv docs/latex/refman.pdf docs/latex/ns3d-refman.pdf
 
 clean: uninstall-ns3
 

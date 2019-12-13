@@ -11,12 +11,20 @@ def log_file(logger, level, file, logfile):
             log.log(level, line)
 
 class SSHCommandExecutor(CommandExecutor):
+    """! The SSHCommandExecutor runs commands on a SSH remote host."""
 
     def __init__(self, name, client: SSHClient, sudo=False):
+        """! Create a new SSHCommandExecutor
+
+        @param name The name of the SSHCommandExecutor.
+        @param client The SSH connection to use.
+        @param sudo Indicates whether to run commands with `sudo`.
+        """
         super().__init__(name)
+        ## The SSH connection.
         self.client = client
+        ## Indicates whether to run commands with `sudo`.
         self.sudo = sudo
-        self.counter = 0
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):
         command = util.stringify_shell_arguments(command)

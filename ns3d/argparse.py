@@ -2,12 +2,23 @@ import argparse
 import logging
 
 class ArgumentParser(argparse.ArgumentParser):
+    """! A simple-to-use argument parser for log levels.
+
+    ArgumentParser by default defines the `--verbose` and `--log-level` flag.
+    It is used to abstract these flags away and prevent repetition in the example scenarios.
+    --verbose sets the overall log level to `DEBUG`.
+    Valid options for log-level are `INFO` and `DEBUG`.
+    """
     def __init__(self, *args, logger=None, **kvargs):
         super().__init__(*args, **kvargs)
         self.setup_logging = True
         self.logger_arg = 'logger' if logger is True else logger
 
     def run(self, main):
+        """! Parse the arguments and pass them to a function to be called afterwards
+
+        @param main The function to call and to pass the arguments to.
+        """
         ns3d_name = __name__.rsplit('.', 1)[0]
 
         if self.setup_logging:

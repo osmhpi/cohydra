@@ -6,9 +6,16 @@ from . import util
 from .base import CommandExecutor
 
 class DockerCommandExecutor(CommandExecutor):
+    """! The DockerCommandExecutor runs commands in a Docker container."""
 
     def __init__(self, name, container: Container):
+        """! Create a new DockerCommandExecutor.
+
+        @param name The name of the command executor.
+        @param container The container to run the commands in.
+        """
         super().__init__(name)
+        ## The container to run the commands in.
         self.container = container
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):

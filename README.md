@@ -16,12 +16,12 @@ Please [install docker](https://docs.docker.com/install/linux/docker-ce/debian/)
 You probably also need [docker-compose](http://docs.docker.com/compose/install).
 
 Install requirements:
-```
+```sh
 apt-get install -y --no-install-recommends pipenv curl bzip2 make git g++ python3-dev llvm llvm-dev clang cmake libclang-dev zlib1g-dev qt5-default
 ```
 
 To install the required dependencies and ns-3, run:
-```
+```sh
 make shell
 make init
 ```
@@ -39,6 +39,17 @@ You can open the VS Code Remote Container specified in [`.devcontainer`](.devcon
 
 ### With a Debian VM:
 You can also use VS Code Remote SSH to connect to your VM or install VS Code inside your VM and develop natively.
+
+### Documentation
+
+For building the documentation, you need to install `doxygen`:
+
+```sh
+sudo apt install doxygen
+```
+
+After that you can run `make docs` to build the HTML and PDF docs.
+The output files are in `docs/html/index.html` and `docs/latex/ns3d-refman.pdf`.
 
 ## Examples Of Usage
 

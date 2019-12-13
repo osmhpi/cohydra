@@ -25,25 +25,50 @@ class ThreadLocalStack:
         return self.stack[-1] if self.stack else None
 
 class Context:
+    """! A context can be used for deferring function calls.
+
+    In this project, it is used for deferring teardowns of the simulation.
+
+    You can use it like this:
+    @code
+    with SimpleContext() as ctx:
+        defer('Call afunction', afunction, args)
+        defer('Call another function', anotherfunction, args)
+        ctx.cleanup()
+    @endcode
+    """
     __stack = ThreadLocalStack()
 
     @staticmethod
     def current():
+        """! Return the current context."""
         return Context.__stack.top()
 
     def __init__(self):
+        """! Create a new context."""
+        ## The number of failed cleanups.
         self.fails = 0
 
     def defer(self, item):
+        """! Store a DeferredItem for running it later.
+
+        @param item The DeferredItem to execute later.
+        """
         raise NotImplementedError
 
     def cancel(self, item):
+        """! Cancel a specific item of the current context.
+
+        @param item The DeferredItem to cancel.
+        """
         raise NotImplementedError
 
     def cleanup(self):
+        """! Do whatever is needed to cleanup the context."""
         raise NotImplementedError
 
     def add_error(self, err: Exception): # pylint: disable=unused-argument
+        """! Add an error (to be implemented)."""
         self.fails += 1
 
     def __enter__(self):
@@ -54,18 +79,26 @@ class Context:
         assert Context.__stack.pop() is self, 'Invalid context stack, not the same number of push and pop operations'
 
 class DeferredItem:
-
+    """! A DeferredItem is used for storing functions calls that need to be executed later on."""
     def __init__(self, ctx: Context, name: str, func: callable, args, kwargs):
+        """! Create a new DeferredItem."""
+        ## The context to execute this item in.
         self.ctx = ctx
+        ## The name of the item (and description).
         self.name = name
+        ## The callable.
         self.func = func
+        ## (Positional) Arguments to be passed to the callable.
         self.args = args
+        ## Keyword arguments to be passed to the callable.
         self.kwargs = kwargs
 
     def cancel(self):
+        """! Cancel the execution of the item."""
         self.ctx.cancel(self)
 
     def cleanup(self):
+        """! Execute the function call."""
         try:
             self.func(*self.args, **self.kwargs)
         except Exception as err: # pylint: disable=broad-except
@@ -89,6 +122,11 @@ def defer(name, func, *args, **kwargs):
     return item
 
 class NoContext(Context):
+    """! The NoContext is a Null-Object and therefore does nothing.
+
+    It does not do any cleanups. This is useful if you do not want your simulated
+    containers to be torn down.
+    """
 
     def defer(self, item):
         pass
@@ -100,9 +138,10 @@ class NoContext(Context):
         pass
 
 class SimpleContext(Context):
-
+    """! The simple context executes Deferred items like it is intented."""
     def __init__(self):
         super().__init__()
+        ## The deque, the DeferredItems are stored in.
         self.dequeue = collections.deque()
 
     def defer(self, item):

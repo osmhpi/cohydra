@@ -22,21 +22,38 @@ core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
 # core.LogComponentEnable('TapBridge', core.LOG_WARN)
 
 class Simulation:
-
+    """! @brief The simulation runs ns-3.
+    The simulation is described by a scenario which also prepares the simulation.
+    It also takes care of preparing networks and nodes.
+    """
     def __init__(self, scenario):
+        """! Create a new simulation.
+
+        @param scenario The scenario to run the simulation with.
+        """
         self.__setup()
 
+        ## The scenario describing the simulation.
         self.scenario = scenario
+        ## The teardowns being run when the simulation finishes.
         self.teardowns = list()
         date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        ## The directory where all log files are stored.
         self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
         os.makedirs(self.log_directory, exist_ok=True)
 
+        ## A docker runtime client for checking whether there is an
+        ## influxdb running for monitoring purposes.
         self.docker_client = docker.DockerClient()
 
         # Saves IP -> hostname.
+        ## All hosts of the simulation for mapping in nodes.
+        ##
+        ## This can be used to modify the hosts file.
         self.hosts = None
+        ## NetAnim interface.
         self.animation_interface = None
+        ## Indicates whether the simulation is started.
         self.started = False
 
     @classmethod
@@ -53,7 +70,9 @@ class Simulation:
 
     @once
     def prepare(self):
-        """Prepares the simulation by building docker containers.
+        """! Prepares the simulation by setting up networks and nodes.
+
+        Iterates over all networks of the scenario and preparing them.
         """
         logger.info('Preparing simulation')
 
@@ -95,9 +114,9 @@ class Simulation:
         routing_helper.PopulateRoutingTables()
 
     def simulate(self, simluation_time=None):
-        """Simulate the network
+        """! Simulate the network
 
-        :param float simluation_time: The simulation timeout in seconds.
+        @param simluation_time The simulation timeout in seconds.
         """
         if self.started:
             raise Exception('The simulation was already started')
