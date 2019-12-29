@@ -1,7 +1,7 @@
 import logging
 
 import random
-from ns import core, csma, network, netanim
+from ns import core, csma, network, netanim, wifi
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +104,10 @@ class Node:
             if isinstance(device, csma.CsmaNetDevice):
                 device.SetSendEnable(False)
                 device.SetReceiveEnable(False)
+            elif isinstance(device, wifi.WifiNetDevice):
+                phy = device.GetPhy()
+                phy.SetRxGain(-10000)
+                phy.SetTxGain(-10000)
 
     def go_online(self):
         """! Connect the node back to all channels."""
@@ -114,3 +118,7 @@ class Node:
             if isinstance(device, csma.CsmaNetDevice):
                 device.SetSendEnable(True)
                 device.SetReceiveEnable(True)
+            elif isinstance(device, wifi.WifiNetDevice):
+                phy = device.GetPhy()
+                phy.SetRxGain(0)
+                phy.SetTxGain(0)

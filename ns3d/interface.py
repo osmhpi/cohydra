@@ -89,8 +89,9 @@ class Interface:
         ipr.link('set', ifname=self.tap_name, state='up')
         ipr.link('set', ifname=self.tap_name, master=ipr.link_lookup(ifname=bridge_name)[0])
 
+        logger.debug("Adding TapBridge for %s.", self.node.name)
         tap_helper = tap_bridge.TapBridgeHelper()
-        tap_helper.SetAttribute('Mode', core.StringValue('UseBridge'))
+        tap_helper.SetAttribute('Mode', core.StringValue('UseLocal'))
         tap_helper.SetAttribute('DeviceName', core.StringValue(self.tap_name))
         tap_helper.Install(self.node.ns3_node, self.ns3_device)
 

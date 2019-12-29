@@ -2,7 +2,7 @@ import logging
 import ipaddress
 from ns import internet, network as ns_net
 
-from .channel import Channel
+from .channel import CSMAChannel
 from .util import network_color_for
 
 logger = logging.getLogger(__name__)
@@ -54,20 +54,18 @@ class Network:
         ## The color of the network's nodes in NetAnim.
         self.color = None
 
-    def connect(self, *nodes, delay='0ms', speed='100Mbps'):
+    def connect(self, *nodes, channel_type=CSMAChannel, **kwargs):
         """! Connects to or more nodes on a single conection.
 
         This is comparable to inserting a cable between them.
 
         @param nodes The nodes to connect on one physical connection. These must be instances of subclasses of `Node`.
-        @param delay The delay on the physical connection.
-            Valid values e.g. are `5ms`, `1s`.
-        @param speed The connection speed.
-            Valid valus e.g. are `64kbps`, `1000Mbps` and so forth.
+        @param channel The channel to use.
+            This can be one of `CSMAChannel` or `WIFIChannel`.
         """
         if len(nodes) < 2:
             raise ValueError('Please specify at least two nodes to connect.')
-        channel = Channel(self, nodes, delay=delay, speed=speed)
+        channel = channel_type(self, nodes, **kwargs)
         self.channels.append(channel)
 
     def prepare(self, simulation, network_index):
