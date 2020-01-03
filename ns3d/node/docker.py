@@ -172,12 +172,10 @@ class DockerNode(Node):
             them to the container."""
         for name, interface in self.interfaces.items():
             interface.setup_bridge()
-            tap_mac = interface.connect_tap_to_bridge()
-
+            interface.connect_tap_to_bridge()
             interface.setup_veth_pair({
                 'ifname': name,
-                "net_ns_fd": f"/proc/{self.container_pid}/ns/net",
-                'address': tap_mac
+                "net_ns_fd": f"/proc/{self.container_pid}/ns/net"
             })
 
             # Get container's namespace and setup the interface in the container

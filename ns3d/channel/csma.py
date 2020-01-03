@@ -48,11 +48,13 @@ class CSMAChannel(Channel):
                 if node.ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
                     logger.info('Installing IP stack on %s', node.name)
                     stack_helper.Install(node.ns3_node)
-                ip_address = self.network.address_helper.NewAddress()
+                device_container = ns_net.NetDeviceContainer(ns3_device)
+                ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
                 netmask = network.network.prefixlen
                 address = ipaddress.ip_interface(f'{ip_address}/{netmask}')
 
             interface = Interface(node=node, ns3_device=ns3_device, address=address)
+            ns3_device.SetAddress(ns_net.Mac48Address(interface.mac_address))
             node.add_interface(interface)
             self.interfaces.append(interface)
 

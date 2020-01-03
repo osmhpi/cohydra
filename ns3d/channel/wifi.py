@@ -148,7 +148,6 @@ class WiFiChannel(Channel):
         self.wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager",
                                           "DataMode", core.StringValue(self.data_rate.value),
                                           "ControlMode", core.StringValue(self.data_rate.value))
-        # self.wifi.SetRemoteStationManager("ns3::IdealWifiManager")
         self.wifi.SetStandard(self.standard.value)
 
         wifi_mac_helper = wifi.WifiMacHelper()
@@ -157,7 +156,7 @@ class WiFiChannel(Channel):
         wifi_mac_helper.SetType("ns3::AdhocWifiMac")
 
         # Install on all connected nodes.
-        logger.debug("Installing the WiFi channel to %d nodes. Mode is %s/%s.", len(nodes),
+        logger.debug("Installing the WiFi channel to %d nodes. Mode is %s (data) / %s (control).", len(nodes),
                      self.standard, self.data_rate)
         ## All ns-3 devices on this channel.
         self.devices_container = self.wifi.Install(self.wifi_phy_helper, wifi_mac_helper, self.ns3_nodes_container)
@@ -173,11 +172,13 @@ class WiFiChannel(Channel):
                 if node.ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
                     logger.info('Installing IP stack on %s', node.name)
                     stack_helper.Install(node.ns3_node)
-                ip_address = self.network.address_helper.NewAddress()
+                device_container = ns_net.NetDeviceContainer(ns3_device)
+                ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
                 netmask = network.network.prefixlen
                 address = ipaddress.ip_interface(f'{ip_address}/{netmask}')
 
             interface = Interface(node=node, ns3_device=ns3_device, address=address)
+            ns3_device.GetMac().SetAddress(ns_net.Mac48Address(interface.mac_address))
             node.add_interface(interface)
             self.interfaces.append(interface)
 

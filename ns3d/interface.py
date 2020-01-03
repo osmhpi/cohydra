@@ -1,6 +1,6 @@
 import logging
 from pyroute2 import IPRoute
-from ns import core, tap_bridge
+from ns import core, tap_bridge, network as ns_net
 from .context import defer
 
 logger = logging.getLogger(__name__)
@@ -9,7 +9,7 @@ class Interface:
     """! The Interface resembles some kind of network card."""
     __counter = 0
 
-    def __init__(self, node, ns3_device, address):
+    def __init__(self, node, ns3_device, address, mac_address=None):
         """! Create a new interface with a unique name.
 
         *Warning:* The interface is controlled by the a `Channel`. Do not instantiate
@@ -18,6 +18,9 @@ class Interface:
         @param node The node to connect the interface to.
         @param ns3_device The ns-3 equivalent of the interface.
         @param address An IP address.
+        @param mac_address An MAC address. If `None`, a random MAC address will be assigned internally.
+            *Warning:* You may need to set the MAC address in order to reach your nodes correctly.
+            If you have any constraints on MAC addresses used externally, set it here.
         """
         ## A unique number identifying the interface.
         self.number = Interface.__counter
@@ -31,6 +34,12 @@ class Interface:
         self.address = address
         ## The name of the interface. This will be set by in `Node.add_interface(...)`.
         self.ifname = None
+        ## The MAC address of this interface.
+        self.mac_address = mac_address
+        if self.mac_address is None:
+            allocated_mac = ns_net.Mac48Address.Allocate()
+            checker = ns_net.MakeMac48AddressChecker()
+            self.mac_address = ns_net.Mac48AddressValue(allocated_mac).SerializeToString(checker)
 
     def __interface_name(self, prefix):
         """! Return the name of the interface."""
@@ -88,18 +97,17 @@ class Interface:
 
         ipr.link('set', ifname=self.tap_name, state='up')
 
-        tap_idx = ipr.link_lookup(ifname=self.tap_name)[0]
-        tap_link = ipr.get_links(tap_idx)[0]
-        mac_address = tap_link.get_attr('IFLA_ADDRESS')
-
         ipr.link('set', ifname=self.tap_name, master=ipr.link_lookup(ifname=bridge_name)[0])
 
         logger.debug("Adding TapBridge for %s.", self.node.name)
         tap_helper = tap_bridge.TapBridgeHelper()
-        tap_helper.SetAttribute('Mode', core.StringValue('UseLocal'))
+        # ConfigureLocal is used to prevent the TAP / bridged device to use a "learned" MAC address.
+        # So, we can set the CSMA and WiFiNetDevice address to something we control.
+        # Otherwise, WiFi ACK misses happen.
+        tap_helper.SetAttribute('Mode', core.StringValue('ConfigureLocal'))
         tap_helper.SetAttribute('DeviceName', core.StringValue(self.tap_name))
+        tap_helper.SetAttribute('MacAddress', ns_net.Mac48AddressValue(ns_net.Mac48Address.Allocate()))
         tap_helper.Install(self.node.ns3_node, self.ns3_device)
-        return mac_address
 
     def disconnect_tap_from_bridge(self):
         """! Disconnect the (tap) interface and delete it."""
@@ -119,6 +127,7 @@ class Interface:
         ipr = IPRoute()
 
         logger.debug('Create veth pair %s on bridge %s', self.veth_name, self.bridge_name)
+        peer['address'] = self.mac_address
         ipr.link('add', ifname=self.veth_name, peer=peer, kind='veth')
         ipr.link('set', ifname=self.veth_name, master=ipr.link_lookup(ifname=self.bridge_name)[0])
         ipr.link('set', ifname=self.veth_name, state='up')
