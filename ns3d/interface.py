@@ -87,6 +87,11 @@ class Interface:
         defer(f'disconnect ns3 node {self.node.name}', self.disconnect_tap_from_bridge)
 
         ipr.link('set', ifname=self.tap_name, state='up')
+
+        tap_idx = ipr.link_lookup(ifname=self.tap_name)[0]
+        tap_link = ipr.get_links(tap_idx)[0]
+        mac_address = tap_link.get_attr('IFLA_ADDRESS')
+
         ipr.link('set', ifname=self.tap_name, master=ipr.link_lookup(ifname=bridge_name)[0])
 
         logger.debug("Adding TapBridge for %s.", self.node.name)
@@ -94,6 +99,7 @@ class Interface:
         tap_helper.SetAttribute('Mode', core.StringValue('UseLocal'))
         tap_helper.SetAttribute('DeviceName', core.StringValue(self.tap_name))
         tap_helper.Install(self.node.ns3_node, self.ns3_device)
+        return mac_address
 
     def disconnect_tap_from_bridge(self):
         """! Disconnect the (tap) interface and delete it."""

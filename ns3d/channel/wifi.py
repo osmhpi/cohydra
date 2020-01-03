@@ -134,7 +134,7 @@ class WiFiChannel(Channel):
         self.wifi_phy_helper.Set("TxPowerEnd", core.DoubleValue(self.tx_power))
 
         # Enable monitoring of radio headers.
-        self.wifi_phy_helper.SetPcapDataLinkType(wifi.WifiPhyHelper.DLT_IEEE802_11)
+        self.wifi_phy_helper.SetPcapDataLinkType(wifi.WifiPhyHelper.DLT_IEEE802_11_RADIO)
 
         wifi_channel_helper = wifi.YansWifiChannelHelper()
         wifi_channel_helper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel")
@@ -173,10 +173,9 @@ class WiFiChannel(Channel):
                 if node.ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
                     logger.info('Installing IP stack on %s', node.name)
                     stack_helper.Install(node.ns3_node)
-            device_container = ns_net.NetDeviceContainer(ns3_device)
-            ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
-            netmask = network.network.prefixlen
-            address = ipaddress.ip_interface(f'{ip_address}/{netmask}')
+                ip_address = self.network.address_helper.NewAddress()
+                netmask = network.network.prefixlen
+                address = ipaddress.ip_interface(f'{ip_address}/{netmask}')
 
             interface = Interface(node=node, ns3_device=ns3_device, address=address)
             node.add_interface(interface)

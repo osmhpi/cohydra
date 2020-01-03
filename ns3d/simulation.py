@@ -20,6 +20,8 @@ core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
 # core.LogComponentEnableAll(core.LOG_LOGIC)
 # core.LogComponentEnable('TapBridge', core.LOG_DEBUG)
 # core.LogComponentEnable('TapBridge', core.LOG_WARN)
+# core.LogComponentEnable('MacLow', core.LOG_DEBUG)
+# core.LogComponentEnable('Txop', core.LOG_DEBUG)
 
 class Simulation:
     """! @brief The simulation runs ns-3.
