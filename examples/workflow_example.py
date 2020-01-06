@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ns3d import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
+from sn3t import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
 
 def main():
     scenario = Scenario()

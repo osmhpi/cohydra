@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from ns3d import ArgumentParser, Network, DockerNode, Scenario, WifiChannel
-from ns3d.mobility_input import SUMOMobilityInput
+from sn3t import ArgumentParser, Network, DockerNode, Scenario, WifiChannel
+from sn3t.mobility_input import SUMOMobilityInput
 
 def main():
     scenario = Scenario()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ns3d import argparse
+from sn3t import argparse
 from pyroute2 import IPRoute
 import docker
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(logger=True)
 
     parser.add_argument('-d', '--dry-run', action='store_true', help='do not execute any commands')
-    parser.add_argument('-i', '--images', action='store_true', help='remove all images build by ns3d')
-    parser.add_argument('-a', '--all-images', action='store_true', help='remove all images used by ns3d')
+    parser.add_argument('-i', '--images', action='store_true', help='remove all images build by sn3t')
+    parser.add_argument('-a', '--all-images', action='store_true', help='remove all images used by sn3t')
 
     parser.run(main)

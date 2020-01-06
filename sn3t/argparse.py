@@ -19,13 +19,13 @@ class ArgumentParser(argparse.ArgumentParser):
 
         @param main The function to call and to pass the arguments to.
         """
-        ns3d_name = __name__.rsplit('.', 1)[0]
+        sn3t_name = __name__.rsplit('.', 1)[0]
 
         if self.setup_logging:
             default = 'INFO'
             self.add_argument('-v', '--verbose', action='store_const', const='DEBUG', default=default,
-                              help=f'enable verbose logging for the {ns3d_name} logger', dest='log_level')
-            self.add_argument('--log-level', default=default, help=f'log level for the {ns3d_name} logger')
+                              help=f'enable verbose logging for the {sn3t_name} logger', dest='log_level')
+            self.add_argument('--log-level', default=default, help=f'log level for the {sn3t_name} logger')
             self.add_argument('--global-log-level', default=default, help='log level for the global logger')
 
         args = vars(self.parse_args())
@@ -36,7 +36,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
             logging.basicConfig(level=global_log_level)
             logging.getLogger().setLevel(global_log_level)
-            logging.getLogger(ns3d_name).setLevel(log_level)
+            logging.getLogger(sn3t_name).setLevel(log_level)
 
             logging.getLogger(__name__).debug('log_level=%s, global_log_level=%s', log_level, global_log_level)
 

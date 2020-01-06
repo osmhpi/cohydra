@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from ns3d import ArgumentParser, Scenario, Network
-from ns3d.node import SSHNode
+from sn3t import ArgumentParser, Scenario, Network
+from sn3t.node import SSHNode
 
 def main():
     scenario = Scenario()

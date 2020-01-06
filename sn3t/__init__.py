@@ -1,4 +1,4 @@
-"""! ns3d is a testbed for writing scenarios with the ns-3 network simulator."""
+"""! sn3t is a testbed for writing scenarios with the ns-3 network simulator."""
 
 from .channel import CSMAChannel, WiFiChannel
 from .network import Network

@@ -112,9 +112,9 @@ pipenv:
 endif
 
 docs:
-	doxygen docs/ns3d.dox
+	doxygen docs/sn3t.dox
 	docker run --rm -u $(shell id -u) -v $(shell pwd)/docs/latex:/work -it olgapaw/doxygen-latex make &&\
-		mv docs/latex/refman.pdf docs/latex/ns3d-refman.pdf
+		mv docs/latex/refman.pdf docs/latex/sn3t-refman.pdf
 
 clean: uninstall-ns3
 

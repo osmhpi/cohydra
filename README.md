@@ -1,10 +1,10 @@
-# NS-3 Docker Simulation
+# sn3t
 
-Network Simulation based on NS3 and Docker, with the help of NS3 docs, Docker docs and some ideas from some research papers.
+Network simulation hybrid testbed for interacting with Docker and real computers.
 
 ![NS3 Docker Emulator Schema](NS3DockerEmulatorSchema.png)
 
-This repo provides a python package called `ns3d`.
+This repo provides a python package called `sn3t`.
  
 ## Installation
 
@@ -49,7 +49,7 @@ sudo apt install doxygen
 ```
 
 After that you can run `make docs` to build the HTML and PDF docs.
-The output files are in `docs/html/index.html` and `docs/latex/ns3d-refman.pdf`.
+The output files are in `docs/html/index.html` and `docs/latex/sn3t-refman.pdf`.
 
 ## Examples Of Usage
 

@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = ns3d
+PROJECT_NAME           = sn3t
 PROJECT_NUMBER         = 0.1.0
 PROJECT_BRIEF          = "A testbed for writing scenarios with the ns-3 network simulator."
 PROJECT_LOGO           =
@@ -116,7 +116,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ./ns3d
+INPUT                  = ./sn3t
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.py \
                          *.pyw

@@ -2,7 +2,7 @@
 
 import os
 
-from ns3d import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
+from sn3t import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
 
 def volumes_for_validator(validator_num):
     script_directory = os.path.dirname(os.path.realpath(__file__))

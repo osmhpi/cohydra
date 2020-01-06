@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from ns3d import argparse
-from ns3d.command_executor import util, LocalCommandExecutor
+from sn3t import argparse
+from sn3t.command_executor import util, LocalCommandExecutor
 from pyroute2 import IPRoute
 import yaml
 import shlex
