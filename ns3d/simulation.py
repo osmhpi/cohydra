@@ -37,8 +37,7 @@ class Simulation:
 
         ## The scenario describing the simulation.
         self.scenario = scenario
-        ## The teardowns being run when the simulation finishes.
-        self.teardowns = list()
+
         date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         ## The directory where all log files are stored.
         self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
@@ -92,11 +91,13 @@ class Simulation:
         except docker.errors.NotFound:
             pass
 
+        logger.info('Preparing channels for simulation.')
         for channel in self.scenario.channels():
             for interface in channel.interfaces:
                 if interface.address is not None:
                     self.hosts.append(f'{interface.node.name}:{interface.address.ip}')
 
+        logger.info('Preparing networks for simulation.')
         for (i, network) in enumerate(self.scenario.networks):
             network.prepare(self, i)
 
@@ -105,6 +106,8 @@ class Simulation:
         self.animation_interface.EnablePacketMetadata(True)
 
         node_size = self.scenario.netanim_node_size
+
+        logger.info('Preparing nodes for simulation.')
         for node in self.scenario.nodes():
             self.animation_interface.UpdateNodeDescription(node.ns3_node, node.name)
             if node.color:
@@ -112,11 +115,15 @@ class Simulation:
             self.animation_interface.UpdateNodeSize(node.ns3_node.GetId(), node_size, node_size)
             node.prepare(self)
 
+        logger.info('Preparing mobility inputs for simulation.')
+        for mobility_input in self.scenario.mobility_inputs:
+            mobility_input.prepare(self)
+
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()
 
     def simulate(self, simluation_time=None):
-        """! Simulate the network
+        """! Simulate the network.
 
         @param simluation_time The simulation timeout in seconds.
         """
@@ -129,6 +136,11 @@ class Simulation:
         started = threading.Semaphore(0)
 
         core.Simulator.Schedule(core.Seconds(0), started.release)
+
+        logger.info('Starting MobilityInputs.')
+        for mobility_input in self.scenario.mobility_inputs:
+            mobility_input.start()
+            defer('stop mobility input', mobility_input.destroy)
 
         if simluation_time is not None:
             logger.info('Simulating for %.4fs', simluation_time)

@@ -19,7 +19,7 @@ NS3_INSTALL ?= ${NS3_BASE}/install/ns-${NS3_VERSION}
 CASTXML_BASE ?= ${NS3_BASE}/CastXML
 CASTXML_INSTALL ?= ${NS3_BASE}/install/castxml
 
-export PYTHONPATH := ${PYTHONPATH}:${NS3_INSTALL}/lib/python3.7/site-packages
+export PYTHONPATH := ${PYTHONPATH}:${NS3_INSTALL}/lib/python3.7/site-packages:/usr/share/sumo/tools
 export LD_LIBRARY_PATH := ${LD_LIBRARY_PATH}:${NS3_INSTALL}/lib
 export PATH := ${PATH}:${NS3_INSTALL}/bin:${CASTXML_INSTALL}/bin
 

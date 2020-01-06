@@ -78,6 +78,21 @@ ping pong
 
 The simulation host will be available as **host**, so please do not name a container in this manner.
 
+### Using SUMO (MobilityInput)
+
+In order to use SUMO with the testbed, you need to install it first. You can compile it yourself or install it via `apt`:
+```sh
+sudo apt-get install sumo sumo-tools sumo-doc
+```
+
+After installing, you need to set the `SUMO_HOME` environment variable to the SUMO install directory (containing `bin` and `tools`).
+When you chose the way using `apt`, the following path is correct.
+```sh
+export SUMO_HOME=/usr/share/sumo
+```
+
+Then you can start your simulation.
+
 ## Monitoring
 
 You can use Grafana and InfluxDB to monitor various parameters of the Scenarios. By default, docker containers are monitored with their CPU and memory usage.

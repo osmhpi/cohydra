@@ -35,14 +35,24 @@ class Scenario:
         self.context = None
         ## The size of a node (a circle) in NetAnim.
         self.netanim_node_size = netanim_node_size
+        self.mobility_inputs = []
 
 
     def add_network(self, network):
         """! Add a network to be simulated.
 
-        @param network The network to add. It will get prepared on simulation start.
+        @param network The Network to add.
+            It will get prepared on simulation start.
         """
         self.networks.add(network)
+
+    def add_mobility_input(self, mobility_input):
+        """! Add a MobilityInput.
+
+        @param mobility_input The MobilityInput to add.
+            It will get prepared on simulation start.
+        """
+        self.mobility_inputs.append(mobility_input)
 
     def channels(self):
         """! Retrieve all channels.
