@@ -56,6 +56,10 @@ class Simulation:
         self.animation_interface = None
         ## Indicates whether the simulation is started.
         self.started = False
+        ## The workflows in the simulation.
+        #
+        # Determined by the scenario.
+        self.workflows = []
 
     @classmethod
     @once
@@ -122,6 +126,12 @@ class Simulation:
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()
 
+    def __stop_workflows(self):
+        """! Stop all running workflows."""
+        logger.info('Stopping Workflows.')
+        for workflow in self.workflows:
+            workflow.stop()
+
     def simulate(self, simluation_time=None):
         """! Simulate the network.
 
@@ -159,12 +169,14 @@ class Simulation:
             thread.start()
             started.acquire()
 
-            workflow = Workflow()
-            defer('stop workflows', workflow.stop)
-
+            logger.debug('Starting workflows.')
             for task in self.scenario.workflows:
-                workflow.start(task)
-
+                workflow = Workflow(task)
+                self.workflows.append(workflow)
+                workflow.start()
             thread.join()
         finally:
+            # Stopping the workflows cannot be deferred, because
+            # the deferred items won't be cleaned up, until workflows ended.
+            self.__stop_workflows()
             core.Simulator.Stop()

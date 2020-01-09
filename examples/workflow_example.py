@@ -2,6 +2,10 @@
 
 from sn3t import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
 
+class Example(object):
+    def __init__(self):
+        self.some_value = 21
+
 def main():
     scenario = Scenario()
 
@@ -17,13 +21,20 @@ def main():
     net.connect(client1, bridge, delay='50ms', speed='100Mbps')
     net.connect(client2, bridge, delay='20ms', speed='100Mbps')
 
+    example = Example()
+
     @scenario.workflow
     def test(workflow):
-        client1.execute_command('curl server -v')
-        workflow.sleep(5)
+        workflow.wait_until(lambda: example.some_value, 6, globals(), locals())
         server.go_offline()
         workflow.sleep(10)
         server.go_online()
+
+    @scenario.workflow
+    def test2(workflow):
+        workflow.sleep(10)
+        client1.execute_command('curl server -v')
+        example.some_value = 42
 
     scenario.add_network(net)
     with scenario as sim:
