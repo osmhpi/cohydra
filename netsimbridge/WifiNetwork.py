@@ -16,7 +16,7 @@ def get_random_pos():
 
 class WifiNetwork(object):
 
-    def __init__(self, name, frequency=5860, channel_width=10, antennas=2, tx_power=18.0):
+    def __init__(self, name, frequency=5860, channel_width=10, antennas=2, tx_power=18.0, pcap_log=False):
         self.name = name
         if len(self.name) > 4:
             raise ValueError("Network name can not be longer than 4 characters.")
@@ -25,6 +25,7 @@ class WifiNetwork(object):
         self.channel_width = channel_width
         self.antennas = antennas
         self.tx_power = tx_power
+        self.pcap_log = pcap_log
 
         self.connected_nodes = []
         self.wifi_helper = None
@@ -101,7 +102,8 @@ class WifiNetwork(object):
                                                 "ControlMode", ns.core.StringValue(phy_mode))
 
         devices = self.wifi80211p.Install(self.wave_phy_helper, self.wifi80211pMac, node_container)
-        self.wave_phy_helper.EnablePcap("wave-simple-80211p", devices)
+        if self.pcap_log:
+            self.wave_phy_helper.EnablePcap("pcap-log-" + self.name, devices)
 
         self.mobility_helper = ns.mobility.MobilityHelper()
         self.mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel")

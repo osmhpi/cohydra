@@ -8,11 +8,12 @@ import ns.applications
 
 class CSMANetwork(object):
 
-    def __init__(self, name):
+    def __init__(self, name, pcap_log=False):
         self.name = name
         if len(self.name) > 4:
             raise ValueError("Network name can not be longer than 4 characters.")
 
+        self.pcap_log = pcap_log
         self.system_nodes = []
         self.csma_helper = None
         self.csma_channel = None
@@ -44,6 +45,8 @@ class CSMANetwork(object):
         self.set_delay(self.delay)
         self.set_data_rate(self.datarate)
         devices = self.csma_helper.Install(node_container, self.csma_channel)
+        if self.pcap_log:
+            self.csma_helper.EnablePcap("pcap-log-" + self.name, devices)
 
         for i in range(0, len(self.system_nodes)):
             connected_node = self.system_nodes[i]
