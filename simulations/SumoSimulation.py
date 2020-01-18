@@ -19,9 +19,9 @@ class SumoSimulation(object):
         self.steps = 1000
         self.node_mapping = {}
 
-    def start(self, after_simulation_step, steps=1000):
+    def start(self, after_simulation_step, steplength=1, steps=1000):
         self.steps = steps
-        traci.start([self.binary_path, "-c", self.config_path])
+        traci.start([self.binary_path, "--step-length", str(steplength), "-c", self.config_path])
 
         step_counter = 0
         while step_counter < self.steps:
