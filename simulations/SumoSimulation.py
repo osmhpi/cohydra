@@ -1,6 +1,6 @@
 import os, sys
 import time
-from math import hypot
+from math import sqrt
 
 if 'SUMO_HOME' in os.environ:
  tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
@@ -29,8 +29,8 @@ class SumoSimulation(object):
 
             # Update positions:
             for node in self.node_mapping:
-                x, y = self.get_position_of_node(node)
-                node.set_position(x, y, 0)
+                x, y, z = self.get_position_of_node(node)
+                node.set_position(x, y, z)
 
             after_simulation_step(self, traci)
 
@@ -47,18 +47,20 @@ class SumoSimulation(object):
             print("Unknown node "+str(node.name))
         else:
             if self.node_mapping[node][1] == "person":
-                return traci.person.getPosition(self.node_mapping[node][0])
+                return traci.person.getPosition3D(self.node_mapping[node][0])
             elif self.node_mapping[node][1] == "vehicle":
-                return traci.vehicle.getPosition(self.node_mapping[node][0])
+                return traci.vehicle.getPosition3D(self.node_mapping[node][0])
             elif self.node_mapping[node][1] == "junction":
-                return traci.junction.getPosition(self.node_mapping[node][0])
+                # Junction has no support for 3D positions
+                x, y = traci.junction.getPosition(self.node_mapping[node][0])
+                return x, y, 0.0
             else:
                 print("Unknown type " + str(self.node_mapping[node][1]))
 
     def get_distance_between_nodes(self, node1, node2):
-        x1, y1 = self.get_position_of_node(node1)
-        x2, y2 = self.get_position_of_node(node2)
-        return hypot(x2 - x1, y2 - y1)
+        x1, y1, z1 = self.get_position_of_node(node1)
+        x2, y2, z2 = self.get_position_of_node(node2)
+        return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
 
     def destroy(self):
         traci.close()
