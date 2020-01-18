@@ -86,7 +86,10 @@ def event_worker(queue):
             .on_change(lambda obs, old, new: process() if new == event_part.result else None)
 
     def exec_check_if(event_part):
-        if event_part.command is not None:
+        if event_part.command is not None and event_part.lambda_expr is not None:
+            print("In check-if is not possible to have a command and a "
+                  "lambda-expression at the same time. Aborting execution")
+        elif event_part.command is not None:
             return_code = subprocess.call(event_part.command, shell=True)
             if event_part.seconds == -1:
                 if return_code == event_part.return_code:
