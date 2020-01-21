@@ -1,0 +1,64 @@
+version: '3.7'
+
+services: 
+  influxdb:
+    build: docker/influxdb
+    network_mode: bridge # This is important to be able to write to the database from simulated containers!
+    container_name: ns3-influxdb
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB=metrics
+      - INFLUXDB_ADMIN_USER=admin 
+      - INFLUXDB_ADMIN_PASSWORD=admin
+      - INFLUXDB_USER=lrdata 
+      - INFLUXDB_USER_PASSWORD=lrdata
+    labels:
+      exclude.telegraf: "telegraf"
+
+  grafana:
+    build: docker/grafana
+    container_name: ns3-grafana
+    network_mode: bridge # This is important to be able to write to the database from simulated containers!
+    restart: always
+    volumes:
+      - grafana-data:/var/lib/grafana
+    links:
+      - influxdb
+    ports:
+      - 3000:3000
+    labels:
+      exclude.telegraf: "telegraf"
+  
+  chronograph:
+    image: chronograf:1.7.14
+    network_mode: bridge
+    container_name: ns3-chronograph
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
+    ports:
+      - "8888:8888"
+    labels:
+      exclude.telegraf: "telegraf"
+  
+  telegraf:
+    image: telegraf:1.12-alpine
+    container_name: ns3-telegraf
+    volumes:
+      - $PWD/docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    links:
+      - influxdb
+    network_mode: bridge
+    depends_on:
+      - influxdb
+    labels:
+      exclude.telegraf: "telegraf"
+
+volumes:
+  grafana-data:
+  influxdb-data:
