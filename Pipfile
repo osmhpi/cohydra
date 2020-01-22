@@ -10,6 +10,8 @@ pyroute2 = "*"
 aiofile = "*"
 cxxfilt = "*"
 coloredlogs = "*"
+paramiko = "*"
+pyyaml = "*"
 activeexpressions = {git = "https://github.com/active-expressions/active-expressions-static-python"}
 
 [dev-packages]
