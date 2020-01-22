@@ -5,6 +5,9 @@ os: linux
 services:
 - docker
 
+git:
+  submodules: false
+
 script:
 - docker build -t testbed .
 - docker-compose build
