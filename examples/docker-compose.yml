@@ -49,7 +49,7 @@ services:
     image: telegraf:1.12-alpine
     container_name: ns3-telegraf
     volumes:
-      - $PWD/docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /var/run/docker.sock:/var/run/docker.sock
     links:
       - influxdb

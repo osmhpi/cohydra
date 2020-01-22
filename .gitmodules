@@ -1,6 +1,6 @@
-[submodule "docker/sumo/filetransfer"]
-	path = docker/sumo/filetransfer
+[submodule "examples/docker/sumo/filetransfer"]
+	path = examples/docker/sumo/filetransfer
 	url = git@gitlab.hpi.de:arne.boockmeyer/filetransfer.git
-[submodule "docker/sumo/scenarios"]
-	path = docker/sumo/scenarios
+[submodule "examples/docker/sumo/scenarios"]
+	path = examples/docker/sumo/scenarios
 	url = git@gitlab.hpi.de:arne.boockmeyer/sumo-scenarios.git
