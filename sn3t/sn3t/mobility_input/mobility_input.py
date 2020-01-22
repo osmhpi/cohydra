@@ -1,0 +1,30 @@
+class MobilityInput:
+    """! A MobilityInput can be used to control multiple node's positions via an external positional simulation."""
+
+    def __init__(self, name):
+        """! Create a new MobilityInput.
+
+        @param name The name of the MobilityInput.
+            This does not have to be unique. It is used for logging debugging purposes.
+        """
+
+        ## The name of the input.
+        self.name = name
+
+        ## The mapping of simulation nodes to IDs identifying the nodes in the external simulation interface
+        self.node_mapping = {}
+
+    def prepare(self, simulation):
+        """! Prepare the external simulation if neccessary.
+
+        @param simulation The simulation that is going to run.
+        """
+        raise NotImplementedError
+
+    def start(self):
+        """! This function gets called on simulation start."""
+        raise NotImplementedError
+
+    def destroy(self):
+        """! Stop external simulations or any other teardowns."""
+        raise NotImplementedError

@@ -1,0 +1,28 @@
+var/*
+.idea/*
+
+# NS-3 Directory
+/ns3
+
+# Python caches
+*.pyc
+
+# Python environment (generated via makefile)
+/.env
+
+# Python .virtualenv link
+/.virtualenv
+
+# Local Makefile
+/Makefile.local
+
+# PCAP files from tests
+*.pcap
+
+# Simulation log files
+/simulation-logs
+/docker/sawtooth-pbft/keys
+
+# Generated documentation
+docs/html
+docs/latex

@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+
+from sn3t import argparse
+from sn3t.command_executor import util, LocalCommandExecutor
+from pyroute2 import IPRoute
+import yaml
+import shlex
+import sys
+import subprocess
+import ipaddress
+
+def default_gateway(address):
+    interface = ipaddress.ip_interface(address)
+    for host in interface.network.hosts():
+        if host != interface.ip:
+            return str(host)
+    raise ValueError(f'No default gateway for {interface}')
+
+def main(logger, config, global_iptables, command, nodes):
+    with open(config, 'r') as f:
+        config = yaml.safe_load(f)
+
+    if len(nodes) == 0:
+        global_iptables = True
+        nodes = config['nodes'].keys()
+
+    logger.info('Run command: %s, nodes: %s', command, ', '.join(nodes))
+
+    is_up = command == 'up'
+
+    def run(func, *args, **kwargs):
+        logger.debug('%s(%s)', func.__name__, ', '.join([*args, *map(lambda a: f'{a[0]}={a[1]}', kwargs.items())]))
+        func(*args, **kwargs)
+
+    def run_if_up(func, *args, **kwargs):
+        if is_up:
+            run(func, *args, **kwargs)
+
+    def setup(func, *args, **kwargs):
+        if is_up:
+            run(func, 'add', *args, **kwargs)
+        else:
+            try:
+                run(func, 'del', *args, **kwargs)
+            except Exception as err: # pylint: disable=broad-except
+                logger.error('%s', repr(err))
+
+    ipr = IPRoute()
+
+    def lookup(ifname):
+        links = ipr.link_lookup(ifname=ifname)
+        logger.debug('%s: %s', ifname, ', '.join(map(str, links)))
+        return links[0] if links else None
+
+    def ifup(ifname):
+        run_if_up(ipr.link, 'set', ifname=ifname, state='up')
+
+
+    def iptables(cmd, *args):
+        LocalCommandExecutor().execute(['iptables', '-A' if cmd == 'add' else '-D', *args])
+
+    def format_iptables(rule, **data):
+        if isinstance(rule, str):
+            rule = shlex.split(rule)
+        setup(iptables, *map(lambda s: s.format(**data), rule))
+
+    if global_iptables:
+        for rule in config['iptables']:
+            format_iptables(rule, **config['data'])
+
+    for name in nodes:
+        node = config['nodes'][name]
+        interface = node['interface']
+        if 'vlan' in node:
+            vlan = node['vlan']
+            ifname = interface[:12]
+            ifname = f'{ifname}.{vlan}'
+            logger.info('%s: Setup vlan %s on %s', name, vlan, interface)
+            setup(ipr.link, ifname=ifname, kind='vlan', link=lookup(interface), vlan_id=vlan)
+
+            ifup(ifname)
+            interface = ifname
+
+        ifname = 'ns3-' + name
+        logger.info('%s: Setup bridge %s with %s', name, ifname, interface)
+        setup(ipr.link, ifname=ifname, kind='bridge')
+        ifup(ifname)
+
+        address = node['address']
+        gateway = node.get('gateway') or default_gateway(address)
+        mask = ipaddress.ip_interface(address).network.prefixlen
+        if is_up:
+            index = lookup(ifname)
+            run(ipr.link, 'set', ifname=interface, master=index)
+            run(ipr.addr, 'add', index=index, address=gateway, mask=mask)
+
+        data = {
+            **config['data'],
+            **node,
+            'bridge': ifname,
+            'address': ipaddress.ip_interface(address),
+            'gateway': ipaddress.ip_interface(gateway),
+        }
+        for rule in config['node_iptables']:
+            format_iptables(rule, **data)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(logger=True)
+
+    parser.add_argument('-c', '--config', default='./config/external.yaml', help='config file')
+    parser.add_argument('-i', '--iptables', dest='global_iptables', action='store_true', help='select global iptable rules (default: only if nodes = all)')
+    parser.add_argument('command', choices=('up', 'down'), help='what should happen')
+    parser.add_argument('nodes', metavar='node', nargs='*', help='which node to select (default: all)')
+
+    parser.run(main)
