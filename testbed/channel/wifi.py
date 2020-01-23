@@ -4,7 +4,7 @@ import logging
 import os
 
 from enum import Enum
-from ns import core, internet, network as ns_net, wifi
+from ns import core, internet, network as ns_net, wifi, wave
 
 from .channel import Channel
 from ..interface import Interface
@@ -38,7 +38,6 @@ class WiFiChannel(Channel):
     data_rate : :class:`.WiFiDataRate`
         The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.
     """
-
     class WiFiStandard(Enum):
         """All available WiFi standards.
 
@@ -57,6 +56,8 @@ class WiFiChannel(Channel):
         WIFI_802_11ac = wifi.WIFI_PHY_STANDARD_80211ac
         ## "WiFi 6".
         WIFI_802_11ax = wifi.WIFI_PHY_STANDARD_80211ax_2_4GHZ
+        ## Wireless Access in Vehicular Environments (WAVE).
+        WIFI_802_11p = wifi.WIFI_PHY_STANDARD_80211_10MHZ
 
     class WiFiDataRate(Enum):
         """All available WiFi data rates.
@@ -87,7 +88,7 @@ class WiFiChannel(Channel):
         DSSS_RATE_2Mbps = "DsssRate2Mbps"
         ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
         # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
-        DSSS_RATE_5_5Mbps = "DsssRate5_%Mbps"
+        DSSS_RATE_5_5Mbps = "DsssRate5_5Mbps"
         ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
         # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
         DSSS_RATE_11Mbps = "DsssRate11Mbps"
@@ -107,6 +108,22 @@ class WiFiChannel(Channel):
         ERP_OFDM_RATE_48Mbps = "ErpOfdmRate48Mbps"
         ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_54Mbps = "ErpOfdmRate54Mbps"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_3Mbps = "OfdmRate3MbpsBW10MHz"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_4_5Mbps = "OfdmRate4_5MbpsBW10MHz"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_6Mbps = "OfdmRate6MbpsBW10MHz"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_9Mbps = "OfdmRate9MbpsBW10MHz"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_12Mbps = "OfdmRate12MbpsBW10MHz"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_18Mbps = "OfdmRate18MbpsBW10MHz"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_24Mbps = "OfdmRate24MbpsBW10MHz"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
+        OFDM_RATE_BW_27Mbps = "OfdmRate27MbpsBW10MHz"
 
     def __init__(self, network, nodes, frequency=None, channel=1, channel_width=40, antennas=1, tx_power=20.0,
                  standard: WiFiStandard = WiFiStandard.WIFI_802_11a,
@@ -153,23 +170,40 @@ class WiFiChannel(Channel):
 
         self.wifi_phy_helper.SetChannel(wifi_channel_helper.Create())
 
-        #: Helper for creating the WiFi channel
-        self.wifi = wifi.WifiHelper()
-        self.wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager",
-                                          "DataMode", core.StringValue(self.data_rate.value),
-                                          "ControlMode", core.StringValue(self.data_rate.value))
-        self.wifi.SetStandard(self.standard.value)
+        #: Helper for creating the WiFi channel.
+        self.wifi = None
 
-        wifi_mac_helper = wifi.WifiMacHelper()
+        #: All ns-3 devices on this channel.
+        self.devices_container = None
 
-        # Adhoc network between multiple nodes (no access point).
-        wifi_mac_helper.SetType("ns3::AdhocWifiMac")
+        #: Helper for creating MAC layers.
+        self.wifi_mac_helper = None
+
+        if self.standard != WiFiChannel.WiFiStandard.WIFI_802_11p:
+            self.wifi = wifi.WifiHelper()
+            self.wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager",
+                                              "DataMode", core.StringValue(self.data_rate.value),
+                                              "ControlMode", core.StringValue(self.data_rate.value))
+            self.wifi.SetStandard(self.standard.value)
+
+            self.wifi_mac_helper = wifi.WifiMacHelper()
+
+            # Adhoc network between multiple nodes (no access point).
+            self.wifi_mac_helper.SetType("ns3::AdhocWifiMac")
+        else:
+            self.wifi = wave.Wifi80211pHelper.Default()
+            self.wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager",
+                                              "DataMode", core.StringValue(self.data_rate.value),
+                                              "ControlMode", core.StringValue(self.data_rate.value),
+                                              "NonUnicastMode", core.StringValue(self.data_rate.value))
+            self.wifi_mac_helper = wave.NqosWaveMacHelper.Default()
 
         # Install on all connected nodes.
         logger.debug("Installing the WiFi channel to %d nodes. Mode is %s (data) / %s (control).", len(nodes),
                      self.standard, self.data_rate)
+
         #: All ns-3 devices on this channel.
-        self.devices_container = self.wifi.Install(self.wifi_phy_helper, wifi_mac_helper, self.ns3_nodes_container)
+        self.devices_container = self.wifi.Install(self.wifi_phy_helper, self.wifi_mac_helper, self.ns3_nodes_container)
 
         logger.info('Setting IP addresses on nodes.')
         stack_helper = internet.InternetStackHelper()
