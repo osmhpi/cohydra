@@ -1,23 +1,6 @@
-FROM rs22/ns3:netanim-bindings
+ARG SN3T_TAG=
 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
-    git \
-    python3-pip \
- && rm -rf /var/lib/apt/lists/*
+FROM mgjm/sn3t:base${SN3T_TAG:+-$SN3T_TAG}
 
-RUN pip3 install pipenv
-
-ENV DEBIAN_FRONTEND=
-
-WORKDIR /app
-
-COPY Pipfile Pipfile.lock ./
-RUN pipenv install --deploy --system
-
-COPY testbed/ testbed/
-COPY examples/ examples/
-COPY docker/ docker/
-
-ENV PYTHONPATH="/app:${PYTHONPATH}"
+COPY tools /usr/local/bin
+COPY testbed $PYTHONPATH/testbed

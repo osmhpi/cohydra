@@ -1,5 +1,5 @@
 {
-	"name": "Debian 10",
+	"name": "testbed",
 	"dockerFile": "Dockerfile",
 	"runArgs": [
 		// Uncomment the line if you will use a ptrace-based debugger like C++, Go, and Rust.
@@ -9,9 +9,6 @@
 		// mount docker socket
 		"-v",
 		"/var/run/docker.sock:/var/run/docker.sock",
-		// cache ns3 installation
-		"-v",
-		"ns3:/home/vscode/ns3",
 		// run with host network
 		"--net",
 		"host",
@@ -22,11 +19,10 @@
 		"--userns",
 		"host",
 		// run as privileged container
-		"--privileged",
-		// run as vscode user
-		"-u",
-		"vscode"
+		"--privileged"
 	],
+	"workspaceMount": "source=${localWorkspaceFolder},target=/root/testbed,type=bind",
+	"workspaceFolder": "/root/testbed",
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
