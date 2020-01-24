@@ -27,27 +27,34 @@ class SUMOMobilityInput(MobilityInput):
     ----------
     name : str
         The name of the MobilityInput.
-    binary_path : str
-        The path to the :code:`sumo` binary.
-    config_path : str
-        The path to the simulation configuration (.cfg).
+    steps : int
+        The number of steps to run the SUMO simulation.
+    sumo_host : str
+        The host on which the SUMO simulation is running.
+    sumo_port : int
+        The TraCI port.
     """
 
-    def __init__(self, binary_path, config_path, name="SUMO External Simulation", steps=1000):
+    def __init__(self, name="SUMO External Simulation", steps=1000,
+                 sumo_host='localhost', sumo_port=8813):
         super().__init__(name)
-        #: The path to the SUMO binary / server.
-        self.binary_path = binary_path
-        #: The path to the simulation scenarion configuration.
-        self.config_path = config_path
+        #: The host on which the SUMO simulation is running.
+        #:
+        #: When running on a devcontainer, this is probably `localhost`.
+        self.sumo_host = sumo_host
+        #: The TraCI port.
+        #:
+        #: Can be specified on the server with the `--remote-port` option.
+        self.sumo_port = sumo_port
         #: The number of steps to simulate.
         self.steps = steps
-
+        #: The number of steps to simulate in SUMO.
         self.step_counter = 0
 
     def prepare(self, simulation):
-        """Start SUMO server."""
-        logger.info('Starting SUMO for %s.', self.name)
-        traci.start([self.binary_path, "-c", self.config_path])
+        """Connect to SUMO server."""
+        logger.info('Starting SUMO for simulation "%s".', self.name)
+        traci.init(host=self.sumo_host, port=self.sumo_port)
         self.step_counter = 0
 
     def start(self):

@@ -28,7 +28,7 @@ class Interface:
     __counter = 0
 
     def __init__(self, node, ns3_device, address, mac_address=None):
-        ## A unique number identifying the interface.
+        #: A unique number identifying the interface.
         self.number = Interface.__counter
         Interface.__counter += 1
 

@@ -10,11 +10,11 @@ def main():
 
     switch = DockerNode('switch', docker_build_dir='./docker/sumo', command="java FileServer")
     train = DockerNode('train', docker_build_dir='./docker/sumo', command="java FileClient")
-    net.connect(train, switch, channel_type=WifiChannel, tx_power=30.0)
+    net.connect(train, switch, channel_type=WiFiChannel, tx_power=30.0)
 
     scenario.add_network(net)
 
-    sumo = SUMOMobilityInput('sumo-gui', 'docker/sumo/scenarios/scenario4/scenario.sumocfg', name='Rail-To-X')
+    sumo = SUMOMobilityInput(name='Rail-To-X', sumo_port=8081)
     sumo.add_node_to_mapping(switch, 'n0', obj_type='junction')
     sumo.add_node_to_mapping(train, 'train')
 
