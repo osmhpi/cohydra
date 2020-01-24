@@ -41,6 +41,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends \
+	ca-certificates \
 	libfox-1.6 \
 	libgdal20 \
 	libgl2ps1.4 \
