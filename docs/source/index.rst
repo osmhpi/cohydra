@@ -11,11 +11,9 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
-    page
+    installation
+    getting-started
     modules
-
-.. automodule:: testbed
-   :members:
 
 Indices and tables
 ==================

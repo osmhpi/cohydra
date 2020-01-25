@@ -1,3 +1,5 @@
+"""The simulation executable."""
+
 import logging
 import os
 import threading
@@ -24,15 +26,25 @@ core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
 # core.LogComponentEnable('Txop', core.LOG_DEBUG)
 
 class Simulation:
-    """! @brief The simulation runs ns-3.
-    The simulation is described by a scenario which also prepares the simulation.
+    """ The simulation runs ns-3.
+    The simulation is described by a :class:`.Scenario` which also prepares the simulation.
     It also takes care of preparing networks and nodes.
+
+    **Do not initialize a simulation yourself.** Use the :class:`.Scenario` instead!
+
+    Example
+    -------
+    .. code-block:: python
+
+        with scenario as simulation:
+            simulation.simulate(simluation_time=60)
+
+    Parameters
+    ----------
+    scenario : :class:`.Scenario`
+        The scenario to run the simulation with.
     """
     def __init__(self, scenario):
-        """! Create a new simulation.
-
-        @param scenario The scenario to run the simulation with.
-        """
         self.__setup()
 
         ## The scenario describing the simulation.
@@ -75,7 +87,7 @@ class Simulation:
 
     @once
     def prepare(self):
-        """! Prepares the simulation by setting up networks and nodes.
+        """Prepares the simulation by setting up networks and nodes.
 
         Iterates over all networks of the scenario and preparing them.
         """
@@ -127,15 +139,19 @@ class Simulation:
         routing_helper.PopulateRoutingTables()
 
     def __stop_workflows(self):
-        """! Stop all running workflows."""
+        """Stop all running workflows."""
         logger.info('Stopping Workflows.')
         for workflow in self.workflows:
             workflow.stop()
 
     def simulate(self, simluation_time=None):
-        """! Simulate the network.
+        """Simulate the network.
 
-        @param simluation_time The simulation timeout in seconds.
+        Parameters
+        ----------
+        simluation_time : float
+            The simulation timeout in seconds.
+            If set to `None` the simulation will continue until being manually aborted.
         """
         if self.started:
             raise Exception('The simulation was already started')

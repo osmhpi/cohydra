@@ -54,6 +54,8 @@ exclude_patterns = []
 #
 html_theme = 'sphinx_rtd_theme'
 
+html_show_sourcelink = True
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
@@ -70,3 +72,5 @@ autodoc_member_order = 'bysource'
 autodoc_default_flags = ['members', 'show-inheritance']
 ## Generate autodoc stubs with summaries from code
 autosummary_generate = True
+
+html_show_sphinx = False

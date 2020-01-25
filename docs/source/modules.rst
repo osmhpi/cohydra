@@ -1,5 +1,6 @@
-API Reference
-=============
+*****************************
+API Reference :mod:`testbed`
+*****************************
 
 .. currentmodule:: testbed
 .. autopackagesummary:: testbed

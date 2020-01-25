@@ -1,3 +1,4 @@
+"""Base abstract class for a node."""
 import logging
 
 import random
@@ -6,15 +7,16 @@ from ns import core, csma, network, netanim, wifi
 logger = logging.getLogger(__name__)
 
 class Node:
-    """! A node represents a computer in the simulation.
+    """A node represents a computer in the simulation.
 
     It has a unique name.
+
+    Parameters
+    ----------
+    name : str
+        A unique name for this node consisting only of alphanumeric characters.
     """
     def __init__(self, name):
-        """! Create a new Node.
-
-        @param name The unique name of the node consisting only of alphanumeric characters.
-        """
         for char in name:
             if not (char.isalnum() or char == '-'):
                 raise ValueError('Please only supply alphanumeric names and "-"')
@@ -37,23 +39,32 @@ class Node:
         self.command_executor = None
 
     def set_position(self, x, y, z=0): # pylint: disable=invalid-name
-        """! Set the position of the node in NetAnim.
+        """Set the position of the node in NetAnim.
 
-        @param x The x-position.
-        @param y The y-position.
-        @param z The z-position.
+        Parameters:
+        x : float
+            The x-position.
+        y : float
+            The y-position.
+        z : float
+            The z-position.
         """
         netanim.AnimationInterface.SetConstantPosition(self.ns3_node, x, y, z)
 
     def add_interface(self, interface, name=None, prefix='eth'):
-        """! Add an interface to the node.
+        """Add an interface to the node.
 
         *Warning:* Do not call this function manually.
             The functionality is handled by the network and channels.
 
-        @param interface The interface to add.
-        @param name The name of the interface.
-        @param prefix If no name is supplied, the function works out
+        Parameters
+        ----------
+        interface : :class:`.Interface`
+            The interface to add.
+        name : str
+            The name of the interface.
+        prefix : str
+            If no name is supplied, the function works out
             a name by appending a number to the prefix.
         """
         if name in self.interfaces:
@@ -71,32 +82,44 @@ class Node:
         self.interfaces[name] = interface
 
     def prepare(self, simulation):
-        """! Do all neccesary steps to prepare a node for the simulation.
+        """Do all neccesary steps to prepare a node for the simulation.
 
-        @param simulation The simulation to prepare the node for.
+        Parameters
+        ----------
+        simulation : :class:`.Simulation`
+            The simulation to prepare the node for.
         """
         raise NotImplementedError
 
     def wants_ip_stack(self):
-        """! Indicates whether a IP stack shall be installed onto the node.
+        """Indicates whether a IP stack shall be installed onto the node.
 
         Installing is handled by the Channel.
+
+        Returns
+        -------
+        bool
+            `True` indicates that a ns-3 IP stack shall be installed when preparing this node.
         """
         raise NotImplementedError
 
     def execute_command(self, command, user=None):
-        """! Execute a command within the node.
+        """Execute a command within the node.
 
-        @param command The command to execute.
-        @param user If a user (name) is specified, the command is executed
-            as this user. *Warning:* Not all nodes support this feature.
+        Parameters
+        ----------
+        command : str or list of str
+            The command to execute.
+        user : str
+            If a user (name) is specified, the command is executed
+            as this user. **Warning:** Not all nodes support this feature.
         """
         if self.command_executor is None:
             raise NotImplementedError
         self.command_executor.execute(command, user=user)
 
     def go_offline(self):
-        """! Disconnect the node from all channels."""
+        """Disconnect the node from all channels."""
         n_devices = self.ns3_node.GetNDevices()
         logger.debug('Go offline: %s (%d devices)', self.name, n_devices)
         for device_index in range(0, n_devices):
@@ -110,7 +133,7 @@ class Node:
                 phy.SetTxGain(-10000)
 
     def go_online(self):
-        """! Connect the node back to all channels."""
+        """Connect the node back to all channels."""
         n_devices = self.ns3_node.GetNDevices()
         logger.debug('Go online: %s (%d devices)', self.name, n_devices)
         for device_index in range(0, n_devices):

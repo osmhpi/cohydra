@@ -1,4 +1,4 @@
-"""! Nodes are the main components of simulating behaviour."""
+"""Nodes are the main components of simulating behaviour."""
 import logging
 
 from .base import Node

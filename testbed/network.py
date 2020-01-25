@@ -1,3 +1,5 @@
+"""A subnet."""
+
 import logging
 import ipaddress
 from ns import internet, network as ns_net
@@ -24,20 +26,22 @@ def network_address_helper(network):
     raise 'Network version is not IPv4 or IPv6'
 
 class Network:
-    """! A network connects many nodes together and assigns IP addresses.
+    """A network connects many nodes together and assigns IP addresses.
 
     It can be compared to a subnet or so.
     It should also support IPv6 (untested!).
+
+    Parameters
+    ----------
+    network_address : str
+        The network base address (and optional subnet mask).
+        An example for this parameter could be `"10.42.42.0/24"`.
+    netmask : str
+        The networks subnet mask. It can be used to provide a mask
+        if not already given in the `network_address` parameter.
     """
 
     def __init__(self, network_address, netmask=None):
-        """! Create a new network
-
-        @param network_address The network base address (and optional subnet mask).
-            An example for this parameter could be `10.42.42.0/24`.
-        @param netmask The networks subnet mask. It can be used to provide a mask
-            if not already given in the `network_address` parameter.
-        """
         ## All the channels in the network.
         self.channels = list()
         if isinstance(network_address, str):
@@ -55,13 +59,18 @@ class Network:
         self.color = None
 
     def connect(self, *nodes, channel_type=CSMAChannel, **kwargs):
-        """! Connects to or more nodes on a single conection.
+        """Connects to or more nodes on a single conection.
 
         This is comparable to inserting a cable between them.
+        Necessary configuration can be passed to the channel creation with keyword arguments.
 
-        @param nodes The nodes to connect on one physical connection. These must be instances of subclasses of `Node`.
-        @param channel The channel to use.
-            This can be one of `CSMAChannel` or `WIFIChannel`.
+        Parameters
+        ----------
+        nodes : list of :class:`.Node`
+            The nodes to connect on one physical connection. These must be instances of subclasses of `Node`.
+        channel_type : class
+            The channel to use.
+            This can be one of :class:`.CSMAChannel` or :class:`.WiFiChannel`.
         """
         if len(nodes) < 2:
             raise ValueError('Please specify at least two nodes to connect.')
@@ -69,12 +78,16 @@ class Network:
         self.channels.append(channel)
 
     def prepare(self, simulation, network_index):
-        """! Prepares the network by building the docker containers.
+        """Prepares the network by building the docker containers.
 
         *Warning:* Don't call this function manually.
 
-        @param simulation The simulation to prepare the network for.
-        @param The index of the network (needed for coloring).
+        Parameters
+        ----------
+        simulation : :class:`.Simulation`
+            The simulation to prepare the network for.
+        network_index : int
+            The index of the network (needed for coloring).
         """
         logger.info('Preparing network (base IP: %s)', self.network)
 
