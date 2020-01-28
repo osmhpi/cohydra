@@ -80,10 +80,13 @@ class DockerNode(Node):
     exposed_ports : dict
         A dictionary of port mappings. The key is the container internal port and the value can
         be an exposed port or a list of ports.
+    environment_variables : dict or list
+        A dictonary of environment variables or a list of environment variables.
+        If a list is specified each item should be in the form :code:`'KEY=VALUE'`.
     """
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
-                 cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None):
+                 cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None, environment_variables=None):
 
         super().__init__(name)
         #: The docker image to use.
@@ -104,6 +107,8 @@ class DockerNode(Node):
         self.volumes = dict(map(expand_volume_shorthand, volumes.items())) if volumes else None
         #: Ports to expose on the host.
         self.exposed_ports = exposed_ports if exposed_ports is not None else dict()
+        #: Environment variables in the container.
+        self.environment_variables = environment_variables
 
         #: The container instance.
         self.container = None
@@ -186,6 +191,7 @@ class DockerNode(Node):
             extra_hosts=extra_hosts,
             volumes=self.volumes,
             ports=self.exposed_ports,
+            environment=self.environment_variables,
         )
         defer(f'stop docker container {self.name}', self.stop_docker_container)
 
