@@ -22,7 +22,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.logger_arg = 'logger' if logger is True else logger
 
     def run(self, main):
-        """! Parse the arguments and pass them to a function to be called afterwards
+        """Parse the arguments and pass them to a function to be called afterwards
 
         Parameters
         ----------

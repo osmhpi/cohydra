@@ -1,3 +1,4 @@
+"""Execute commands in docker containers."""
 import logging
 from docker.models.containers import Container
 from docker.utils.socket import frames_iter_no_tty
@@ -6,14 +7,15 @@ from . import util
 from .base import CommandExecutor
 
 class DockerCommandExecutor(CommandExecutor):
-    """! The DockerCommandExecutor runs commands in a Docker container."""
+    """The DockerCommandExecutor runs commands in a Docker container.
+    
+    name : str
+        The name of the command executor.
+    container : str
+        The container to run the commands in.
+    """
 
     def __init__(self, name, container: Container):
-        """! Create a new DockerCommandExecutor.
-
-        @param name The name of the command executor.
-        @param container The container to run the commands in.
-        """
         super().__init__(name)
         ## The container to run the commands in.
         self.container = container

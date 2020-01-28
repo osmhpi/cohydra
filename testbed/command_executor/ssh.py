@@ -1,3 +1,4 @@
+"""Execute commands over SSH."""
 import logging
 import threading
 from paramiko import SSHClient
@@ -11,15 +12,16 @@ def log_file(logger, level, file, logfile):
             log.log(level, line)
 
 class SSHCommandExecutor(CommandExecutor):
-    """! The SSHCommandExecutor runs commands on a SSH remote host."""
+    """The SSHCommandExecutor runs commands on a SSH remote host.
+    name : str
+        The name of the SSHCommandExecutor.
+    client
+        The SSH connection to use.
+    sudo : bool
+        Indicates whether to run commands with `sudo`.
+    """
 
     def __init__(self, name, client: SSHClient, sudo=False):
-        """! Create a new SSHCommandExecutor
-
-        @param name The name of the SSHCommandExecutor.
-        @param client The SSH connection to use.
-        @param sudo Indicates whether to run commands with `sudo`.
-        """
         super().__init__(name)
         ## The SSH connection.
         self.client = client
