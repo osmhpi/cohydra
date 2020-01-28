@@ -1,12 +1,13 @@
+"""Null-Object for dry runs."""
+
 from . import util
 from .base import CommandExecutor
 
 class ConsoleCommandExecutor(CommandExecutor):
-    """! The ConsoleCommandExecutor just prints out the commands to be executed.
+    """The ConsoleCommandExecutor just prints out the commands to be executed.
 
     It resembles some kind of Null-Object, useful for debugging purposes.
     """
-
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):
         logger = self.get_logger()

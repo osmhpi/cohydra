@@ -1,3 +1,4 @@
+"""Wireless channel."""
 import ipaddress
 import logging
 import os
@@ -11,12 +12,35 @@ from ..interface import Interface
 logger = logging.getLogger(__name__)
 
 class WiFiChannel(Channel):
-    """!A WiFiChannel is a physical (but of course wireless) connection
-        between two or more wireless devices.
+    """
+    A WiFiChannel is a physical (but of course wireless) connection
+    between two or more wireless devices.
+
+    Further information can be found reading the
+    `ns-3 source here <https://www.nsnam.org/doxygen/wifi-phy_8cc_source.html>`_.
+
+    Parameters
+    ----------
+    channel : int
+        The WiFi channel to use.
+        This will be **ignored** if frequency is set.
+    frequency : int
+        The frequency of the wireless channel in MHz.
+    channel_width : int
+        The width of the channel in MHz.
+        Valid values are :code:`5`, :code:`10`, :code:`20`, :code:`22`, :code:`40`, :code:`80`, :code:`160`.
+    antennas : int
+        The number of antennas / spatial streams to use.
+    tx_power : float
+        The sending power in dBm.
+    standard : :class:`.WiFiStandard`
+        The WiFi standard to use.
+    data_rate : :class:`.WiFiDataRate`
+        The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.
     """
 
     class WiFiStandard(Enum):
-        """! All available WiFi standards.
+        """All available WiFi standards.
 
         See here for further information: https://en.wikipedia.org/wiki/IEEE_802.11.
         """
@@ -35,7 +59,7 @@ class WiFiChannel(Channel):
         WIFI_802_11ax = wifi.WIFI_PHY_STANDARD_80211ax_2_4GHZ
 
     class WiFiDataRate(Enum):
-        """! All available WiFi data rates.
+        """All available WiFi data rates.
 
         Choosing the correct and best data rate depends on the standard you are using.
         """
@@ -87,37 +111,23 @@ class WiFiChannel(Channel):
     def __init__(self, network, nodes, frequency=None, channel=1, channel_width=40, antennas=1, tx_power=20.0,
                  standard: WiFiStandard = WiFiStandard.WIFI_802_11a,
                  data_rate: WiFiDataRate = WiFiDataRate.OFDM_RATE_6Mbps):
-        """! @inheritDocs
-
-        Further information can be found reading the source
-        here: https://www.nsnam.org/doxygen/wifi-phy_8cc_source.html.
-
-        @param channel The WiFi channel to use.
-            This will be **ignored** if frequency is set.
-        @param frequency The frequency of the wireless channel in MHz.
-        @param channel_width The width of the channel in MHz.
-            Valid values are `5`, `10`, `20`, `22`, `40`, `80`, `160`.
-        @param antennas The number of antennas to use.
-        @param tx_power The sending power in dBm.
-        @param standard The WiFi standard to use.
-        """
         super().__init__(network, nodes)
 
-        ## The channel to use.
+        #: The channel to use.
         self.channel = channel
-        ## The frequency to use.
-        #
-        # This could collide with other WiFi channels.
+        #: The frequency to use.
+        #:
+        #: This could collide with other WiFi channels.
         self.frequency = frequency
-        ## The width of the channel in MHz.
+        #: The width of the channel in MHz.
         self.channel_width = channel_width
-        ## The number of antennas to use.
+        #: The number of antennas to use.
         self.antennas = antennas
-        ## The sending power in dBm.
+        #: The sending power in dBm.
         self.tx_power = tx_power
-        ## The WiFi standard to use.
+        #: The WiFi standard to use.
         self.standard = standard
-        ## The data rate to use.
+        #: The data rate to use.
         self.data_rate = data_rate
 
         logger.debug("Setting up physical layer of WiFi.")
@@ -143,7 +153,7 @@ class WiFiChannel(Channel):
 
         self.wifi_phy_helper.SetChannel(wifi_channel_helper.Create())
 
-        ## Helper for creating the WiFi channel
+        #: Helper for creating the WiFi channel
         self.wifi = wifi.WifiHelper()
         self.wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager",
                                           "DataMode", core.StringValue(self.data_rate.value),
@@ -158,7 +168,7 @@ class WiFiChannel(Channel):
         # Install on all connected nodes.
         logger.debug("Installing the WiFi channel to %d nodes. Mode is %s (data) / %s (control).", len(nodes),
                      self.standard, self.data_rate)
-        ## All ns-3 devices on this channel.
+        #: All ns-3 devices on this channel.
         self.devices_container = self.wifi.Install(self.wifi_phy_helper, wifi_mac_helper, self.ns3_nodes_container)
 
         logger.info('Setting IP addresses on nodes.')
@@ -184,7 +194,6 @@ class WiFiChannel(Channel):
 
 
     def prepare(self, simulation):
-        """! Prepare the channel enabling logging."""
         for interface in self.interfaces:
             pcap_log_path = os.path.join(simulation.log_directory, interface.pcap_file_name)
             self.wifi_phy_helper.EnablePcap(pcap_log_path, interface.ns3_device, True, True)

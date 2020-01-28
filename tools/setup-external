@@ -105,11 +105,11 @@ def main(logger, config, global_iptables, command, nodes):
             format_iptables(rule, **data)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(logger=True)
+    parser = argparse.ArgumentParser()
 
     parser.add_argument('-c', '--config', default='./config/external.yaml', help='config file')
     parser.add_argument('-i', '--iptables', dest='global_iptables', action='store_true', help='select global iptable rules (default: only if nodes = all)')
     parser.add_argument('command', choices=('up', 'down'), help='what should happen')
     parser.add_argument('nodes', metavar='node', nargs='*', help='which node to select (default: all)')
 
-    parser.run(main)
+    parser.run(main, logger_arg='logger')

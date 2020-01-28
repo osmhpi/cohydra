@@ -1,3 +1,5 @@
+"""Physical hosts to connect to via SSH."""
+
 import logging
 import ipaddress
 import paramiko
@@ -10,6 +12,15 @@ from .external import ExternalNode
 logger = logging.getLogger(__name__)
 
 def default_ip(ifname):
+    """Calculates the default IP address.
+
+    This takes the subnet and adds 1.
+
+    Parameters
+    ----------
+    ifname : str
+        The name of the interface.
+    """
     ipr = IPRoute()
     index = ipr.link_lookup(ifname=ifname)[0]
     addr = ipr.get_addr(index=index)[0]
@@ -20,15 +31,17 @@ def default_ip(ifname):
     raise TypeError(f'Unable to calculate default node ip in {ifname} ({interface})')
 
 class SSHNode(ExternalNode):
-    """! An SSH node represents an external device reachable via SSH.
+    """An SSH node represents an external device reachable via SSH.
+
+    Parameters
+    ----------
+    username : str
+        The username used to login onto the device.
+    password : str
+        The password for the given user.
     """
 
-    def __init__(self, name, ip=None, bridge=None, username='pi', password='raspberry', ifname='eth0'):
-        """! @copydoc ExternalNode.__init__()
-
-        @param username The username used to login onto the device.
-        @param password the password for the given user.
-        """
+    def __init__(self, name, ip=None, bridge=None, ifname='eth0', username='pi', password='raspberry'):
         super().__init__(name, bridge=bridge, ifname=ifname)
 
         if ip is None:

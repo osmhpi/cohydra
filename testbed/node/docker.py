@@ -1,3 +1,5 @@
+"""Docker containers in the simulation."""
+
 import logging
 import os
 import threading
@@ -12,9 +14,17 @@ from .base import Node
 logger = logging.getLogger(__name__)
 
 def expand_volume_shorthand(key_value):
-    """! Expand a volume string to something the Docker runtime understands.
+    """Expand a volume string to something the Docker runtime understands.
 
-    @return a tuple containing the volume's name / path and a settings dictionary.
+    Parameters
+    ----------
+    key_value : str or dict
+        The volume configuration
+
+    Returns
+    -------
+    tuple
+        Return the volume's name / path and a settings dictionary.
     """
     name_or_path, spec = key_value
     if isinstance(spec, str):
@@ -22,7 +32,19 @@ def expand_volume_shorthand(key_value):
     return (name_or_path, spec)
 
 def log_to_file(container, log_path, stdout=False, stderr=False):
-    """! Log the container's output."""
+    """Log the container's output.
+
+    This opens a stream to the docker container's log output and writes it into a file.
+
+    Parameters
+    ---------
+    log_path : str
+        The file path to the log file.
+    stdout : bool
+        Whether stdout should be logged.
+    stderr : bool
+        Whether stderr should be logged.
+    """
     log = logging.getLogger(container.name)
     log.debug('Write log to %s', log_path)
     with open(log_path, 'wb', 0) as log_file:
@@ -32,80 +54,92 @@ def log_to_file(container, log_path, stdout=False, stderr=False):
         log.debug('Done logging')
 
 class DockerNode(Node):
-    """! A DockerNode represents a docker container.
+    """A DockerNode represents a docker container.
+
+    Parameters
+    ----------
+    name : str
+        The name of the node (and container).
+    docker_image : str
+        The name of the docker image to use. If not specified,
+        `docker_file` and `docker_build_dir` must be set.
+    docker_build_dir : str
+        The context directory (relative path possible) to execute the build in.
+    docker_file : str
+        The (absolute or relative) path to the Dockerfile.
+    cpus : float
+        The number of virtual CPUs to assign (1.0 meaning 1 vCPU).
+    memory : str
+        The amount of memmory to allow the container to use. **Example:** `'128m'`.
+    command : str
+        An optional command to override the standard command on container
+        start specified by the Dockerfile.
+    volumes : list of dict or list of str
+        A dictionary of volumes. Each entry has a name or (absolute) path as key
+        and settings or a absolute path inside the container as value. See :code:`examples/volumes_and_ports.py`.
+    exposed_ports : dict
+        A dictionary of port mappings. The key is the container internal port and the value can
+        be an exposed port or a list of ports.
     """
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
                  cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None):
-        """! Create a new DockerNode.
-
-        @param name The name of the node (and container).
-        @param docker_image The name of the docker image to use. If not specified,
-            a `dockerfile` and `docker_build_dir` must be set.
-        @param docker_build_dir The context (relative path possible) to execute the build in.
-        @param docker_file The (absolute or relative) path to the Dockerfile.
-        @param cpus The number of virtual CPUs to assign (1.0 meaning 1 vCPU).
-        @param memory The amount of memmory to allow the container to use. Example: `'128m'`.
-        @param command An optional command to override the standard command on container
-            start specified by the Dockerfile.
-        @param volumes A dictionary of volumes. Each entry has a name or (absolute) path as key
-            and settings or a absolute path inside the container as value. See `examples/volumes_and_ports.py`.
-        @param exposed_ports: A dictionary of port mappings. The key is the container internal port and the value can
-            be an exposed port or a list of ports.
-        """
 
         super().__init__(name)
-        ## The docker image to use.
+        #: The docker image to use.
         self.docker_image = docker_image
-        ## The context to build the image in.
+        #: The context to build the image in.
         self.docker_build_dir = docker_build_dir
-        ## The path to the Dockerfile.
+        #: The path to the Dockerfile.
         self.dockerfile = dockerfile
 
-        ## The number of vCPUs.
+        #: The number of vCPUs.
         self.cpus = cpus
-        ## The amount of memory for the container.
+        #: The amount of memory for the container.
         self.memory = memory
 
-        ## The startup command.
+        #: The startup command.
         self.command = command
-        ## The volumes for the container.
+        #: The volumes for the container.
         self.volumes = dict(map(expand_volume_shorthand, volumes.items())) if volumes else None
-        ## Ports to expose on the host.
+        #: Ports to expose on the host.
         self.exposed_ports = exposed_ports if exposed_ports is not None else dict()
 
-        ## The container instance.
+        #: The container instance.
         self.container = None
-        ## The PID of the container.
+        #: The PID of the container.
         self.container_pid = None
 
         if docker_build_dir is None and docker_image is None:
             raise Exception('Please specify Docker image or build directory')
 
-        ## The executor for running commands in the container.
-        ## This is useful for scripted Workflows.
+        #: The executor for running commands in the container.
+        #: This is useful for a scripted :class:`.Workflow`.
         self.command_executor = None
 
     @property
     def docker_image_tag(self):
-        """! A tag for the container's image during build time."""
+        """A tag for the container's image during build time.
+
+        Returns
+        -------
+        str
+            The computed tag.
+        """
         return f'ns3-{self.name}'
 
     def wants_ip_stack(self):
         return True
 
     def prepare(self, simulation):
-        """! @copydoc Node.prepare()
-
-        This runs a setup on network interfaces and starts the container.
-        """
+        """This runs a setup on network interfaces and starts the container."""
         logger.info('Preparing node %s', self.name)
         self.build_docker_image()
         self.start_docker_container(simulation.log_directory, simulation.hosts)
         self.setup_host_interfaces()
 
     def build_docker_image(self):
-        """! Build the image for the container"""
+        """Build the image for the container."""
         client = docker.from_env()
         if self.docker_image is None:
             logger.info('Building docker image: %s/%s', self.docker_build_dir, self.dockerfile)
@@ -121,10 +155,16 @@ class DockerNode(Node):
         self.docker_image.tag(self.docker_image_tag)
 
     def start_docker_container(self, log_directory, extra_hosts=None):
-        """! Start the docker container.
+        """Start the docker container.
 
-        @param log_directory The path to the directory to put log files in.
-        @param extra_hosts A dictionary with hostnames as keys and IP addresses as value.
+        All docker containers are labeled with "ns-3" as the creator.
+
+        Parameters
+        ----------
+        log_directory : str
+            The path to the directory to put log files in.
+        extra_hosts : dict
+            A dictionary with hostnames as keys and IP addresses as value.
         """
         logger.info('Starting docker container: %s', self.name)
         client = docker.from_env()
@@ -159,7 +199,7 @@ class DockerNode(Node):
         self.command_executor = DockerCommandExecutor(self.name, self.container)
 
     def stop_docker_container(self):
-        """! Stop the container."""
+        """Stop the container."""
         if self.container is not None:
             logger.info('Stopping docker container: %s', self.container.name)
             self.container.stop(timeout=1)
@@ -168,7 +208,7 @@ class DockerNode(Node):
             self.command_executor = None
 
     def setup_host_interfaces(self):
-        """! Setup the interfaces (bridge, tap, VETH pair) on the host and connect
+        """Setup the interfaces (bridge, tap, VETH pair) on the host and connect
             them to the container."""
         for name, interface in self.interfaces.items():
             interface.setup_bridge()

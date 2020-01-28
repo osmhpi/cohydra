@@ -4,7 +4,7 @@ export SN3T_TAG := ${SN3T_TAG}
 
 docker_build := docker build --build-arg NS3_TAG --build-arg SN3T_TAG
 
-.PHONY: latest ns-3 testbed-base testbed testbed-dev
+.PHONY: latest ns-3 testbed-base testbed testbed-dev docs
 
 all: ns-3 testbed-base testbed testbed-dev
 	#
@@ -47,3 +47,11 @@ save: git-is-clean
 		mgjm/sn3t:latest \
 		mgjm/sn3t:dev-${SN3T_TAG} \
 		mgjm/sn3t:dev
+
+docs:
+	$(RM) -r docs/source/_autosummary
+	cd docs && \
+		$(MAKE) html && \
+		$(MAKE) clean && \
+		$(MAKE) html && \
+		$(MAKE) html

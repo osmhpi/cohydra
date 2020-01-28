@@ -1,3 +1,5 @@
+"""The simulation executable."""
+
 import logging
 import os
 import threading
@@ -24,41 +26,51 @@ core.GlobalValue.Bind("ChecksumEnabled", core.BooleanValue(True))
 # core.LogComponentEnable('Txop', core.LOG_DEBUG)
 
 class Simulation:
-    """! @brief The simulation runs ns-3.
-    The simulation is described by a scenario which also prepares the simulation.
+    """ The simulation runs ns-3.
+    The simulation is described by a :class:`.Scenario` which also prepares the simulation.
     It also takes care of preparing networks and nodes.
+
+    **Do not initialize a simulation yourself.** Use the :class:`.Scenario` instead!
+
+    Example
+    -------
+    .. code-block:: python
+
+        with scenario as simulation:
+            simulation.simulate(simluation_time=60)
+
+    Parameters
+    ----------
+    scenario : :class:`.Scenario`
+        The scenario to run the simulation with.
     """
     def __init__(self, scenario):
-        """! Create a new simulation.
-
-        @param scenario The scenario to run the simulation with.
-        """
         self.__setup()
 
-        ## The scenario describing the simulation.
+        #: The scenario describing the simulation.
         self.scenario = scenario
 
         date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        ## The directory where all log files are stored.
+        #: The directory where all log files are stored.
         self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
         os.makedirs(self.log_directory, exist_ok=True)
 
-        ## A docker runtime client for checking whether there is an
-        ## influxdb running for monitoring purposes.
+        #: A docker runtime client for checking whether there is an
+        #: influxdb running for monitoring purposes.
         self.docker_client = docker.DockerClient()
 
         # Saves IP -> hostname.
-        ## All hosts of the simulation for mapping in nodes.
-        ##
-        ## This can be used to modify the hosts file.
+        #: All hosts of the simulation for mapping in nodes.
+        #:
+        #: This can be used to modify the hosts file.
         self.hosts = None
-        ## NetAnim interface.
+        #: NetAnim interface.
         self.animation_interface = None
-        ## Indicates whether the simulation is started.
+        #: Indicates whether the simulation is started.
         self.started = False
-        ## The workflows in the simulation.
-        #
-        # Determined by the scenario.
+        #: The workflows in the simulation.
+        #:
+        #: Determined by the scenario.
         self.workflows = []
 
     @classmethod
@@ -75,7 +87,7 @@ class Simulation:
 
     @once
     def prepare(self):
-        """! Prepares the simulation by setting up networks and nodes.
+        """Prepares the simulation by setting up networks and nodes.
 
         Iterates over all networks of the scenario and preparing them.
         """
@@ -127,15 +139,19 @@ class Simulation:
         routing_helper.PopulateRoutingTables()
 
     def __stop_workflows(self):
-        """! Stop all running workflows."""
+        """Stop all running workflows."""
         logger.info('Stopping Workflows.')
         for workflow in self.workflows:
             workflow.stop()
 
     def simulate(self, simluation_time=None):
-        """! Simulate the network.
+        """Simulate the network.
 
-        @param simluation_time The simulation timeout in seconds.
+        Parameters
+        ----------
+        simluation_time : float
+            The simulation timeout in seconds.
+            If set to :code:`None` the simulation will continue until being manually aborted.
         """
         if self.started:
             raise Exception('The simulation was already started')
