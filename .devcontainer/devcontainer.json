@@ -21,8 +21,8 @@
 		// run as privileged container
 		"--privileged"
 	],
-	"workspaceMount": "source=${localWorkspaceFolder},target=/root/testbed,type=bind",
-	"workspaceFolder": "/root/testbed",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace/testbed,type=bind",
+	"workspaceFolder": "/workspace/testbed",
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
