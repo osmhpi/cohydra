@@ -35,7 +35,8 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
-    "sphinx_autopackagesummary"
+    "sphinx_autopackagesummary",
+    "sphinx.ext.extlinks"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -74,3 +75,8 @@ autodoc_default_flags = ['members', 'show-inheritance']
 autosummary_generate = True
 
 html_show_sphinx = False
+
+# Link replacement
+extlinks = {
+    'src': ('https://gitlab.hpi.de/robert.schmid/testbed-temp/tree/master/%s', 'src ')
+}

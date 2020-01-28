@@ -1,3 +1,5 @@
+"""SUMO co-simulation."""
+
 import logging
 import os
 import sys
@@ -19,14 +21,17 @@ from .mobility_input import MobilityInput
 logger = logging.getLogger(__name__)
 
 class SUMOMobilityInput(MobilityInput):
-    """! SUMOMobilityInput is an interface to the SUMO simulation environment."""
+    """SUMOMobilityInput is an interface to the SUMO simulation environment."""
 
     def __init__(self, binary_path, config_path, name="SUMO External Simulation", steps=1000):
-        """! Create a new SUMOMobilityInput.
+        """Create a new SUMOMobilityInput.
 
-        @param name The name of the MobilityInput.
-        @param binary_path The path to the `sumo` binary.
-        @param config_path The path to the simulation configuration (.cfg).
+        name : str
+            The name of the MobilityInput.
+        binary_path : str
+            The path to the `sumo` binary.
+        config_path : str
+            The path to the simulation configuration (.cfg).
         """
         super().__init__(name)
         ## The path to the SUMO binary / server.
@@ -39,13 +44,13 @@ class SUMOMobilityInput(MobilityInput):
         self.step_counter = 0
 
     def prepare(self, simulation):
-        """! Start SUMO server."""
+        """Start SUMO server."""
         logger.info('Starting SUMO for %s.', self.name)
         traci.start([self.binary_path, "-c", self.config_path])
         self.step_counter = 0
 
     def start(self):
-        """! Start a thread stepping through the sumo simulation."""
+        """Start a thread stepping through the sumo simulation."""
         logger.info('Starting SUMO stepping for %s.', self.name)
         def run_sumo():
             try:
@@ -82,7 +87,7 @@ class SUMOMobilityInput(MobilityInput):
                 print("Unknown type " + str(self.node_mapping[node][1]))
 
     def destroy(self):
-        """! Stop SUMO."""
+        """Stop SUMO."""
         logger.info('Trying to close SUMO for %s.', self.name)
         # Trigger abort of loop.
         self.step_counter = self.steps

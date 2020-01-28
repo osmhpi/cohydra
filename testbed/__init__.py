@@ -1,4 +1,4 @@
-"""! testbed is a testbed for writing scenarios with the ns-3 network simulator."""
+"""testbed is a testbed for writing scenarios with the ns-3 network simulator."""
 
 from .channel import CSMAChannel, WiFiChannel
 from .network import Network

@@ -103,7 +103,6 @@ class DeferredItem:
         The keyword arguments to be passed to the function.
     """
     def __init__(self, ctx: Context, name: str, func: callable, args, kwargs):
-        """! Create a new DeferredItem."""
         ## The context to execute this item in.
         self.ctx = ctx
         ## The name of the item (and description).

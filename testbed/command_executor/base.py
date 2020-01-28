@@ -55,9 +55,6 @@ class ExitCode(Exception):
     """
 
     def __init__(self, code: int, command: str):
-        """! Create a new ExitCode.
-        
-        """
         super().__init__(code)
         self.code = code
         self.command = command
