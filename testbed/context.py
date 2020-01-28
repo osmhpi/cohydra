@@ -52,11 +52,11 @@ class Context:
         self.fails = 0
 
     def defer(self, item):
-        """Store a :class:`DeferredItem` for running it later.
+        """Store a :class:`.DeferredItem` for running it later.
 
         Parameters
         ----------
-        item : :class:`DeferredItem``
+        item : :class:`.DeferredItem`
             The function to execute later.
         """
         raise NotImplementedError
@@ -66,7 +66,7 @@ class Context:
 
         Parameters
         ----------
-        item : :class:`DeferredItem``
+        item : :class:`.DeferredItem`
             The function to cancel.
         """
         raise NotImplementedError

@@ -99,7 +99,7 @@ class Node:
         Returns
         -------
         bool
-            `True` indicates that a ns-3 IP stack shall be installed when preparing this node.
+            :code:`True` indicates that a ns-3 IP stack shall be installed when preparing this node.
         """
         raise NotImplementedError
 

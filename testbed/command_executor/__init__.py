@@ -1,5 +1,5 @@
-"""A :mod:`CommandExecutor` can be used to run commands during
-the simulation and is thereful useful in combination with a :class:`Workflow`.
+"""A :class:`.CommandExecutor` can be used to run commands during
+the simulation and is thereful useful in combination with a :class:`.Workflow`.
 """
 
 from .base import CommandExecutor

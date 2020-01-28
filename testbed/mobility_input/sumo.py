@@ -29,7 +29,7 @@ class SUMOMobilityInput(MobilityInput):
         name : str
             The name of the MobilityInput.
         binary_path : str
-            The path to the `sumo` binary.
+            The path to the :code:`sumo` binary.
         config_path : str
             The path to the simulation configuration (.cfg).
         """

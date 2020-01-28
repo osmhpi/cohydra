@@ -88,9 +88,9 @@ class Workflow:
         expected_result
             The value to compare againt.
         global_variables
-            In order to work properly, you need to pass the global variable space with `globals()`.
+            In order to work properly, you need to pass the global variable space with :code:`globals()`.
         local_variables
-            In order to work properly, you need to pass the global variable space with `locals()`.
+            In order to work properly, you need to pass the global variable space with :code:`locals()`.
         """
         logger.debug('Waiting for condition.')
         wait_event = threading.Event()
@@ -114,9 +114,9 @@ class Workflow:
             **Warning:** not all expressions are supported.
             See https://github.com/active-expressions/active-expressions-static-python for further infos.
         global_variables
-            In order to work properly, you need to pass the global variable space with `globals()`.
+            In order to work properly, you need to pass the global variable space with :code:`globals()`.
         local_variables
-            In order to work properly, you need to pass the global variable space with `locals()`.
+            In order to work properly, you need to pass the global variable space with :code:`locals()`.
         """
         logger.debug('Waiting for condition to come true.')
         self.wait_until(expression, True, global_variables, local_variables)

@@ -35,10 +35,10 @@ class Network:
     ----------
     network_address : str
         The network base address (and optional subnet mask).
-        An example for this parameter could be `"10.42.42.0/24"`.
+        An example for this parameter could be :code:`"10.42.42.0/24"`.
     netmask : str
         The networks subnet mask. It can be used to provide a mask
-        if not already given in the `network_address` parameter.
+        if not already given in the :code:`network_address` parameter.
     """
 
     def __init__(self, network_address, netmask=None):
@@ -67,7 +67,7 @@ class Network:
         Parameters
         ----------
         nodes : list of :class:`.Node`
-            The nodes to connect on one physical connection. These must be instances of subclasses of `Node`.
+            The nodes to connect on one physical connection. These must be instances of subclasses of :class:`.Node`.
         channel_type : class
             The channel to use.
             This can be one of :class:`.CSMAChannel` or :class:`.WiFiChannel`.

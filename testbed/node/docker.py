@@ -76,7 +76,7 @@ class DockerNode(Node):
         start specified by the Dockerfile.
     volumes : list of dict or list of str
         A dictionary of volumes. Each entry has a name or (absolute) path as key
-        and settings or a absolute path inside the container as value. See `examples/volumes_and_ports.py`.
+        and settings or a absolute path inside the container as value. See :code:`examples/volumes_and_ports.py`.
     exposed_ports : dict
         A dictionary of port mappings. The key is the container internal port and the value can
         be an exposed port or a list of ports.

@@ -14,13 +14,13 @@ class ExternalNode(Node):
     To use this kind of node you need to setup the network before.
     This includes setting up network bridges that route packages to the
     real hardware / external devices.
-    Please consider the `setup-external.py` script.
+    Please consider the :code:`setup-external.py` script.
 
     Parameters
     ----------
     bridge : str
         The name of the bridge (that alread exists) to connect the simulation node to.
-        If not specified, `ns3-{name}` is used.
+        If not specified, :code:`ns3-{name}` is used.
     ifname : str
         The name of the interface **on the remote device**.
     """

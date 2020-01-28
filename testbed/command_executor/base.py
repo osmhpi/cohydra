@@ -37,7 +37,7 @@ class CommandExecutor:
         user : str
             The user to run the command as.
         shell : str
-            The type of shell to use (`sh`, `bash`, ...).
+            The type of shell to use (:code:`sh`, :code:`bash`, ...).
         stdout_logfile : str
             The path to the log file to append the stdout output.
         stderr_logfile : str

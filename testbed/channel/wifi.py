@@ -28,7 +28,7 @@ class WiFiChannel(Channel):
         The frequency of the wireless channel in MHz.
     channel_width : int
         The width of the channel in MHz.
-        Valid values are `5`, `10`, `20`, `22`, `40`, `80`, `160`.
+        Valid values are :code:`5`, :code:`10`, :code:`20`, :code:`22`, :code:`40`, :code:`80`, :code:`160`.
     antennas : int
         The number of antennas / spatial streams to use.
     tx_power : float
@@ -36,7 +36,7 @@ class WiFiChannel(Channel):
     standard : :class:`.WiFiStandard`
         The WiFi standard to use.
     data_rate : :class:`.WiFiDataRate`
-        The WiFi data rate to use. Please make sure to pick a valid data rate for your `standard`.
+        The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.
     """
 
     class WiFiStandard(Enum):

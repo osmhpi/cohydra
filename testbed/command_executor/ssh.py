@@ -18,14 +18,14 @@ class SSHCommandExecutor(CommandExecutor):
     client
         The SSH connection to use.
     sudo : bool
-        Indicates whether to run commands with `sudo`.
+        Indicates whether to run commands with :code:`sudo`.
     """
 
     def __init__(self, name, client: SSHClient, sudo=False):
         super().__init__(name)
         ## The SSH connection.
         self.client = client
-        ## Indicates whether to run commands with `sudo`.
+        ## Indicates whether to run commands with :code:`sudo`.
         self.sudo = sudo
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):

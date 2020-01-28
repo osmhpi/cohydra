@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class Interface:
     """The Interface resembles a network card.
 
-    *Warning:* The interface is controlled by the a `Channel`. Do not instantiate
+    *Warning:* The interface is controlled by the a :class:`.Channel`. Do not instantiate
     an Interface by yourself.
 
     Parameters
@@ -21,7 +21,7 @@ class Interface:
     address : str
         An IP address.
     mac_address : str
-        An MAC address. If `None`, a random MAC address will be assigned internally.
+        An MAC address. If :code:`None`, a random MAC address will be assigned internally.
         **Warning:** You may need to set the MAC address in order to reach your nodes correctly.
         If you have any constraints on MAC addresses used externally, set it here.
     """
@@ -32,13 +32,13 @@ class Interface:
         self.number = Interface.__counter
         Interface.__counter += 1
 
-        ## The node to connect the interface to.
+        """The node to connect the interface to."""
         self.node = node
         ## The ns-3 equivalent of the interface.
         self.ns3_device = ns3_device
         ## The interface's IP
         self.address = address
-        ## The name of the interface. This will be set by in `Node.add_interface(...)`.
+        ## The name of the interface. This will be set by in :func:`.Node.add_interface()`.
         self.ifname = None
         ## The MAC address of this interface.
         self.mac_address = mac_address

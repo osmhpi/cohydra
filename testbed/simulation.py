@@ -151,7 +151,7 @@ class Simulation:
         ----------
         simluation_time : float
             The simulation timeout in seconds.
-            If set to `None` the simulation will continue until being manually aborted.
+            If set to :code:`None` the simulation will continue until being manually aborted.
         """
         if self.started:
             raise Exception('The simulation was already started')

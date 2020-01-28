@@ -32,7 +32,7 @@ class CSMAChannel(Channel):
         self.delay = delay
         ## The channel's speed for transmitting and receiving.
         #
-        # Valid values e.g. are `'100Mbps'` or `'64kbps'`.
+        # Valid values e.g. are :code:`'100Mbps'` or :code:`'64kbps'`.
         self.speed = speed
 
         ## A helper for connecting nodes via CSMA.
