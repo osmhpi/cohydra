@@ -86,35 +86,35 @@ class DockerNode(Node):
                  cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None):
 
         super().__init__(name)
-        ## The docker image to use.
+        #: The docker image to use.
         self.docker_image = docker_image
-        ## The context to build the image in.
+        #: The context to build the image in.
         self.docker_build_dir = docker_build_dir
-        ## The path to the Dockerfile.
+        #: The path to the Dockerfile.
         self.dockerfile = dockerfile
 
-        ## The number of vCPUs.
+        #: The number of vCPUs.
         self.cpus = cpus
-        ## The amount of memory for the container.
+        #: The amount of memory for the container.
         self.memory = memory
 
-        ## The startup command.
+        #: The startup command.
         self.command = command
-        ## The volumes for the container.
+        #: The volumes for the container.
         self.volumes = dict(map(expand_volume_shorthand, volumes.items())) if volumes else None
-        ## Ports to expose on the host.
+        #: Ports to expose on the host.
         self.exposed_ports = exposed_ports if exposed_ports is not None else dict()
 
-        ## The container instance.
+        #: The container instance.
         self.container = None
-        ## The PID of the container.
+        #: The PID of the container.
         self.container_pid = None
 
         if docker_build_dir is None and docker_image is None:
             raise Exception('Please specify Docker image or build directory')
 
-        ## The executor for running commands in the container.
-        ## This is useful for scripted Workflows.
+        #: The executor for running commands in the container.
+        #: This is useful for a scripted :class:`.Workflow`.
         self.command_executor = None
 
     @property

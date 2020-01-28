@@ -113,21 +113,21 @@ class WiFiChannel(Channel):
                  data_rate: WiFiDataRate = WiFiDataRate.OFDM_RATE_6Mbps):
         super().__init__(network, nodes)
 
-        ## The channel to use.
+        #: The channel to use.
         self.channel = channel
-        ## The frequency to use.
-        #
-        # This could collide with other WiFi channels.
+        #: The frequency to use.
+        #:
+        #: This could collide with other WiFi channels.
         self.frequency = frequency
-        ## The width of the channel in MHz.
+        #: The width of the channel in MHz.
         self.channel_width = channel_width
-        ## The number of antennas to use.
+        #: The number of antennas to use.
         self.antennas = antennas
-        ## The sending power in dBm.
+        #: The sending power in dBm.
         self.tx_power = tx_power
-        ## The WiFi standard to use.
+        #: The WiFi standard to use.
         self.standard = standard
-        ## The data rate to use.
+        #: The data rate to use.
         self.data_rate = data_rate
 
         logger.debug("Setting up physical layer of WiFi.")
@@ -153,7 +153,7 @@ class WiFiChannel(Channel):
 
         self.wifi_phy_helper.SetChannel(wifi_channel_helper.Create())
 
-        ## Helper for creating the WiFi channel
+        #: Helper for creating the WiFi channel
         self.wifi = wifi.WifiHelper()
         self.wifi.SetRemoteStationManager("ns3::ConstantRateWifiManager",
                                           "DataMode", core.StringValue(self.data_rate.value),
@@ -168,7 +168,7 @@ class WiFiChannel(Channel):
         # Install on all connected nodes.
         logger.debug("Installing the WiFi channel to %d nodes. Mode is %s (data) / %s (control).", len(nodes),
                      self.standard, self.data_rate)
-        ## All ns-3 devices on this channel.
+        #: All ns-3 devices on this channel.
         self.devices_container = self.wifi.Install(self.wifi_phy_helper, wifi_mac_helper, self.ns3_nodes_container)
 
         logger.info('Setting IP addresses on nodes.')

@@ -42,7 +42,7 @@ class Network:
     """
 
     def __init__(self, network_address, netmask=None):
-        ## All the channels in the network.
+        #: All the channels in the network.
         self.channels = list()
         if isinstance(network_address, str):
             if '/' in network_address:
@@ -51,11 +51,11 @@ class Network:
                 if netmask is None:
                     netmask = DEFAULT_PREFIX[ipaddress.ip_address(network_address).version]
                 network_address = ipaddress.ip_network(f'{network_address}/{netmask}')
-        ## The network's address (containing the subnet mask).
+        #: The network's address (containing the subnet mask).
         self.network = network_address
-        ## A helper used to generate the neccessary IP addresses.
+        #: A helper used to generate the neccessary IP addresses.
         self.address_helper = network_address_helper(network_address)
-        ## The color of the network's nodes in NetAnim.
+        #: The color of the network's nodes in NetAnim.
         self.color = None
 
     def connect(self, *nodes, channel_type=CSMAChannel, **kwargs):

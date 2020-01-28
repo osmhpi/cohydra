@@ -30,13 +30,13 @@ class ExternalNode(Node):
 
         if bridge is None:
             bridge = f'ns3-{name}'
-        ## The name of the bridge the external node is connected to.
+        #: The name of the bridge the external node is connected to.
         self.bridge = bridge
-        ## The interface name on the remote device.
+        #: The interface name on the remote device.
         self.ifname = ifname
 
-        ## The executor for running commands on the external device.
-        ## This is useful for scripted Workflows.
+        #: The executor for running commands on the external device.
+        #: This is useful for a scripted :class:`Workflow`.
         self.command_executor = ConsoleCommandExecutor(self.name)
 
     def wants_ip_stack(self):

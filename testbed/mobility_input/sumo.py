@@ -34,11 +34,11 @@ class SUMOMobilityInput(MobilityInput):
             The path to the simulation configuration (.cfg).
         """
         super().__init__(name)
-        ## The path to the SUMO binary / server.
+        #: The path to the SUMO binary / server.
         self.binary_path = binary_path
-        ## The path to the simulation scenarion configuration.
+        #: The path to the simulation scenarion configuration.
         self.config_path = config_path
-        ## The number of steps to simulate.
+        #: The number of steps to simulate.
         self.steps = steps
 
         self.step_counter = 0

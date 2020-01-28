@@ -48,7 +48,7 @@ class Context:
         return Context.__stack.top()
 
     def __init__(self):
-        ## The number of failed cleanups.
+        #: The number of failed cleanups.
         self.fails = 0
 
     def defer(self, item):
@@ -103,15 +103,15 @@ class DeferredItem:
         The keyword arguments to be passed to the function.
     """
     def __init__(self, ctx: Context, name: str, func: callable, args, kwargs):
-        ## The context to execute this item in.
+        #: The context to execute this item in.
         self.ctx = ctx
-        ## The name of the item (and description).
+        #: The name of the item (and description).
         self.name = name
-        ## The callable.
+        #: The callable.
         self.func = func
-        ## (Positional) Arguments to be passed to the callable.
+        #: (Positional) Arguments to be passed to the callable.
         self.args = args
-        ## Keyword arguments to be passed to the callable.
+        #: Keyword arguments to be passed to the callable.
         self.kwargs = kwargs
 
     def cancel(self):

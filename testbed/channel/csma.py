@@ -28,21 +28,21 @@ class CSMAChannel(Channel):
     def __init__(self, network, nodes, delay="0ms", speed="100Mbps"):
         super().__init__(network, nodes)
 
-        ## The channel's delay.
+        #: The channel's delay.
         self.delay = delay
-        ## The channel's speed for transmitting and receiving.
-        #
-        # Valid values e.g. are :code:`'100Mbps'` or :code:`'64kbps'`.
+        #: The channel's speed for transmitting and receiving.
+        #:
+        #: Valid values e.g. are :code:`'100Mbps'` or :code:`'64kbps'`.
         self.speed = speed
 
-        ## A helper for connecting nodes via CSMA.
+        #: A helper for connecting nodes via CSMA.
         self.csma_helper = csma.CsmaHelper()
 
         logger.info('Install connection between nodes')
         self.csma_helper.SetChannelAttribute("DataRate", core.StringValue(self.speed))
         self.csma_helper.SetChannelAttribute("Delay", core.StringValue(self.delay))
 
-        ## All ns-3 devices on this channel.
+        #: All ns-3 devices on this channel.
         self.devices_container = self.csma_helper.Install(self.ns3_nodes_container)
 
         logger.info('Set IP addresses on nodes')

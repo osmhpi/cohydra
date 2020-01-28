@@ -30,17 +30,17 @@ class Scenario:
     """
 
     def __init__(self, netanim_node_size: float = 4):
-        ## All networks belonging to the scenario.
+        #: All networks belonging to the scenario.
         self.networks = set()
-        ## The workflows to be executed.
+        #: The workflows to be executed.
         self.workflows = set()
-        ## A reference to a simulation (if running).
+        #: A reference to a simulation (if running).
         self.simulation = None
-        ## The Context is e.g.\ used for teardowns.
-        ##
-        ## It is created on simulation start.
+        #: The Context is e.g.\ used for teardowns.
+        #:
+        #: It is created on simulation start.
         self.context = None
-        ## The size of a node (a circle) in NetAnim.
+        #: The size of a node (a circle) in NetAnim.
         self.netanim_node_size = netanim_node_size
         self.mobility_inputs = []
 

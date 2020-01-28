@@ -13,6 +13,10 @@ class Workflow:
     This is based on the work of Arne Boockmeyer's
     `dasylab-testbed <https://gitlab.hpi.de/arne.boockmeyer/dasylab-testbed/>`_.
 
+    Note
+    ----
+    Every :class:`Workflow` creates a thread.
+
     Example
     -------
     Please use it with a decorator provided by the :class:`.Scenario`:
@@ -31,8 +35,11 @@ class Workflow:
         The function to be executed in the workflow.
     """
     def __init__(self, task):
+        #: An event indicating when to stop the workflow thread.
         self.stop_event = threading.Event()
+        #: These events are waiting on some condition to come true.
         self.current_waiting_events = []
+        #: The function being executed by the workflow thread.
         self.task = task
 
     def stop(self):

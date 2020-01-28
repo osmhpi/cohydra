@@ -8,7 +8,7 @@ from .base import CommandExecutor
 
 class DockerCommandExecutor(CommandExecutor):
     """The DockerCommandExecutor runs commands in a Docker container.
-    
+
     name : str
         The name of the command executor.
     container : str
@@ -17,7 +17,7 @@ class DockerCommandExecutor(CommandExecutor):
 
     def __init__(self, name, container: Container):
         super().__init__(name)
-        ## The container to run the commands in.
+        #:The container to run the commands in.
         self.container = container
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):

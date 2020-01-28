@@ -23,14 +23,14 @@ class Channel:
     """
 
     def __init__(self, network, nodes):
-        ## The network the channel belongs to.
+        #: The network the channel belongs to.
         self.network = network
 
-        ## All Interfaces (~network cards) on this channel.
+        #: All Interfaces (~network cards) on this channel.
         self.interfaces = []
 
         logger.debug('Creating container with %d nodes', len(nodes))
-        ## A container with all ns-3 internal nodes.
+        #: A container with all ns-3 internal nodes.
         self.ns3_nodes_container = ns_net.NodeContainer()
         for node in nodes:
             self.ns3_nodes_container.Add(node.ns3_node)

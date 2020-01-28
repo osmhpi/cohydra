@@ -7,18 +7,17 @@ logger = logging.getLogger(__name__)
 class CommandExecutor:
     """The CommandExecutor abstracts away the code for running
         code on a Node.
-    
+
     Parameters
     ----------
     name : str
         You can specify a name for logging purposes.
     """
-        
 
     def __init__(self, name='unnamed'):
-        ## The name of the CommandExecutor.
+        #: The name of the CommandExecutor.
         self.name = name
-        ## A counter for loggers.
+        #: A counter for loggers.
         self.counter = 0
 
     def get_logger(self):
@@ -47,7 +46,9 @@ class CommandExecutor:
 
 class ExitCode(Exception):
     """An ExitCode is a container for storing a commands exit code.
-    
+
+    Parameters
+    ----------
     code
         The exit code.
     command

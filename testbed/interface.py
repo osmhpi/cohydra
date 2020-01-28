@@ -32,15 +32,15 @@ class Interface:
         self.number = Interface.__counter
         Interface.__counter += 1
 
-        """The node to connect the interface to."""
+        #: The node to connect the interface to.
         self.node = node
-        ## The ns-3 equivalent of the interface.
+        #: The ns-3 equivalent of the interface.
         self.ns3_device = ns3_device
-        ## The interface's IP
+        #: The interface's IP
         self.address = address
-        ## The name of the interface. This will be set by in :func:`.Node.add_interface()`.
+        #: The name of the interface. This will be set by in :func:`.Node.add_interface()`.
         self.ifname = None
-        ## The MAC address of this interface.
+        #: The MAC address of this interface.
         self.mac_address = mac_address
         if self.mac_address is None:
             allocated_mac = ns_net.Mac48Address.Allocate()

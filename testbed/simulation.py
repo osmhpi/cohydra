@@ -47,30 +47,30 @@ class Simulation:
     def __init__(self, scenario):
         self.__setup()
 
-        ## The scenario describing the simulation.
+        #: The scenario describing the simulation.
         self.scenario = scenario
 
         date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        ## The directory where all log files are stored.
+        #: The directory where all log files are stored.
         self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
         os.makedirs(self.log_directory, exist_ok=True)
 
-        ## A docker runtime client for checking whether there is an
-        ## influxdb running for monitoring purposes.
+        #: A docker runtime client for checking whether there is an
+        #: influxdb running for monitoring purposes.
         self.docker_client = docker.DockerClient()
 
         # Saves IP -> hostname.
-        ## All hosts of the simulation for mapping in nodes.
-        ##
-        ## This can be used to modify the hosts file.
+        #: All hosts of the simulation for mapping in nodes.
+        #:
+        #: This can be used to modify the hosts file.
         self.hosts = None
-        ## NetAnim interface.
+        #: NetAnim interface.
         self.animation_interface = None
-        ## Indicates whether the simulation is started.
+        #: Indicates whether the simulation is started.
         self.started = False
-        ## The workflows in the simulation.
-        #
-        # Determined by the scenario.
+        #: The workflows in the simulation.
+        #:
+        #: Determined by the scenario.
         self.workflows = []
 
     @classmethod

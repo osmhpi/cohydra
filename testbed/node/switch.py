@@ -17,7 +17,7 @@ class SwitchNode(Node):
     def __init__(self, name):
         super().__init__(name)
         bridge_helper = bridge.BridgeHelper()
-        # The ns-3 internal device to route packages.
+        #: The ns-3 internal device to route packages.
         self.bridge_device = bridge_helper.Install(self.name, network.NetDeviceContainer()).Get(0)
 
     def add_interface(self, interface, *args, **kwargs): # pylint: disable=arguments-differ

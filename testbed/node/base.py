@@ -20,22 +20,22 @@ class Node:
         for char in name:
             if not (char.isalnum() or char == '-'):
                 raise ValueError('Please only supply alphanumeric names and "-"')
-        ## The cannels the node is connected to.
+        #: The cannels the node is connected to.
         self.channels = list()
-        ## The name of the node.
+        #: The name of the node.
         self.name = name
 
-        ## The ns-3 internal node.
+        #: The ns-3 internal node.
         self.ns3_node = network.Node()
         core.Names.Add(self.name, self.ns3_node)
 
         self.set_position(random.randint(10, 100), random.randint(10, 100))
-        ## The color of the node used in NetAnim.
+        #: The color of the node used in NetAnim.
         self.color = None
 
-        ## The interfaces (~network cards) of this node.
+        #: The interfaces (~network cards) of this node.
         self.interfaces = dict()
-        ## The command executor for running (shell) commands.
+        #: The command executor for running (shell) commands.
         self.command_executor = None
 
     def set_position(self, x, y, z=0): # pylint: disable=invalid-name

@@ -16,22 +16,22 @@ class ArgumentParser(argparse.ArgumentParser):
     logger : str
         The name of the logger argument to pass to the main function.
     """
-    def __init__(self, *args, logger=None, **kvargs):
-        super().__init__(*args, **kvargs)
-        self.setup_logging = True
-        self.logger_arg = 'logger' if logger is True else logger
 
-    def run(self, main):
+    def run(self, main, setup_logging=True, logger_arg=None):
         """Parse the arguments and pass them to a function to be called afterwards
 
         Parameters
         ----------
         main : callable
             The function to call and to pass the arguments to.
+        setup_logging : bool
+            Whether to set up logging with the default python logger and parse log levels.
+        logger_arg : string
+            The name of the argument to pass the logger to the :code:`main` function.
         """
         testbed_name = __name__.rsplit('.', 1)[0]
 
-        if self.setup_logging:
+        if setup_logging:
             default = 'INFO'
             self.add_argument('-v', '--verbose', action='store_const', const='DEBUG', default=default,
                               help=f'enable verbose logging for the {testbed_name} logger', dest='log_level')
@@ -40,7 +40,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
         args = vars(self.parse_args())
 
-        if self.setup_logging:
+        if setup_logging:
             log_level = args.pop('log_level')
             global_log_level = args.pop('global_log_level')
 
@@ -50,8 +50,8 @@ class ArgumentParser(argparse.ArgumentParser):
 
             logging.getLogger(__name__).debug('log_level=%s, global_log_level=%s', log_level, global_log_level)
 
-            if self.logger_arg:
-                args[self.logger_arg] = logging.getLogger(self.prog)
-                args[self.logger_arg].setLevel(log_level)
+            if logger_arg:
+                args[logger_arg] = logging.getLogger(self.prog)
+                args[logger_arg].setLevel(log_level)
 
         main(**args)

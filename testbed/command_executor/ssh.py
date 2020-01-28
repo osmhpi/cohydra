@@ -23,9 +23,9 @@ class SSHCommandExecutor(CommandExecutor):
 
     def __init__(self, name, client: SSHClient, sudo=False):
         super().__init__(name)
-        ## The SSH connection.
+        #: The SSH connection.
         self.client = client
-        ## Indicates whether to run commands with :code:`sudo`.
+        #: Indicates whether to run commands with :code:`sudo`.
         self.sudo = sudo
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):

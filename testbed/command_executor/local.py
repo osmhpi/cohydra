@@ -13,7 +13,7 @@ def log_file(logger, level, file, logfile):
 
 class LocalCommandExecutor(CommandExecutor):
     """The LocalCommandExecutor runs commands on the simulation host.
-    
+
     *Warning:* This raises an execption if something goes wrong.
     Be sure to catch it or the simulation will stop.
     """

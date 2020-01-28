@@ -63,7 +63,7 @@ html_show_sourcelink = True
 html_static_path = ['_static']
 
 napoleon_google_docstring = False
-napoleon_use_param = True
+napoleon_use_param = False
 napoleon_use_ivar = True
 
 ## Include Python objects as they appear in source files

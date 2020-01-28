@@ -9,7 +9,6 @@ class ConsoleCommandExecutor(CommandExecutor):
     It resembles some kind of Null-Object, useful for debugging purposes.
     """
 
-
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):
         logger = self.get_logger()
         msg = 'Execute the following command'
