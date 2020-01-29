@@ -8,5 +8,6 @@ RUN pip3 install --no-cache-dir \
 	&& true
 
 WORKDIR /root/testbed
-ENV PATH=${PATH}:/root/testbed/tools
+ENV PATH=${PATH}:/root/testbed/tools \
+	PYLXD_WARNINGS=
 RUN ln -s /root/testbed/testbed $PYTHONPATH/testbed

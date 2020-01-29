@@ -26,4 +26,5 @@ ENV COLOREDLOGS_DATE_FORMAT="%H:%M:%S" \
 	COLOREDLOGS_LOG_FORMAT="%(asctime)s %(name)-32s %(levelname)-8s %(message)s" \
 	COLOREDLOGS_LOG_LEVEL="DEBUG" \
 	COLOREDLOGS_LEVEL_STYLES="debug=cyan;warning=yellow;error=red;critical=red,bold" \
-	COLOREDLOGS_AUTO_INSTALL="true"
+	COLOREDLOGS_AUTO_INSTALL="true" \
+	PYLXD_WARNINGS="none"
