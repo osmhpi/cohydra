@@ -191,6 +191,11 @@ class Interface:
         ipr = IPRoute()
 
         logger.debug('Bind veth %s to %s at %s', self.veth_name, ifname, self.address)
+        links = ipr.get_links()
+
+        for link in links:
+            name = link.IFLA_IFNAME.value
+            logger.error(name)
         index = ipr.link_lookup(ifname=ifname)[0]
         ipr.addr('add', index=index, address=str(self.address.ip), mask=self.address.network.prefixlen)
         ipr.link('set', index=index, state='up')

@@ -17,6 +17,7 @@ RUN pip3 install --no-cache-dir \
 	docker \
 	nsenter \
 	paramiko \
+	pylxd \
 	pyroute2 \
 	pyyaml \
 	git+https://github.com/active-expressions/active-expressions-static-python
