@@ -47,6 +47,8 @@ class ArgumentParser(argparse.ArgumentParser):
             logging.basicConfig(level=global_log_level)
             logging.getLogger().setLevel(global_log_level)
             logging.getLogger(testbed_name).setLevel(log_level)
+            # Otherwise pylxd websockets would be a little verbose.
+            logging.getLogger('ws4py').setLevel(logging.WARNING)
 
             logging.getLogger(__name__).debug('log_level=%s, global_log_level=%s', log_level, global_log_level)
 

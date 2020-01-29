@@ -113,7 +113,7 @@ class LXDNode(Node):
         })
         self.container.save(wait=True)
 
-    def start_container(self, log_directory, extra_hosts=None):
+    def start_container(self, log_directory, hosts=None):
         """Start the LXC container.
 
         All docker containers are labeled with "ns-3" as the creator.
@@ -122,13 +122,18 @@ class LXDNode(Node):
         ----------
         log_directory : str
             The path to the directory to put log files in.
-        extra_hosts : dict
-            A dictionary with hostnames as keys and IP addresses as value.
+        hosts : dict
+            A dictionary with hostnames as keys and IP addresses (a list) as value.
         """
         logger.info('Starting LXC container: %s', self.name)
 
         defer(f'stop and delete LXD container {self.name}', self.delete_container)
         self.container.start(wait=True)
+
+        # Add extra_hosts to hosts file.
+        hosts_file_content = self.container.files.get('/etc/hosts').decode()
+        extra_hosts = '\n'.join(f'{address}\t{name}' for name, addresses in hosts.items() for address in addresses)
+        self.container.files.put('/etc/hosts', f'{hosts_file_content}\n{extra_hosts}\n'.encode())
 
         # for stream in ('stdout', 'stderr'):
         #     log_file_path = os.path.join(log_directory, f'{self.name}.{stream}.log')
