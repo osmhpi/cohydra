@@ -135,10 +135,6 @@ class LXDNode(Node):
         extra_hosts = '\n'.join(f'{address}\t{name}' for name, addresses in hosts.items() for address in addresses)
         self.container.files.put('/etc/hosts', f'{hosts_file_content}\n{extra_hosts}\n'.encode())
 
-        # for stream in ('stdout', 'stderr'):
-        #     log_file_path = os.path.join(log_directory, f'{self.name}.{stream}.log')
-        #     threading.Thread(target=log_to_file, args=(self.container, log_file_path), kwargs={stream: True}).start()
-
         self.command_executor = LXDCommandExecutor(self.name, self.container)
 
     def delete_container(self):
