@@ -9,7 +9,25 @@ def stringify_shell_arguments(command):
     return ' '.join(map(shlex.quote, command))
 
 def split_shell_arguments(command):
+    if isinstance(command, list):
+        return command
+
     return shlex.split(command)
+
+def apply_user_and_shell(command, user=None, shell=None, sudo=False):
+    if user is None:
+        if shell is not None:
+            return [shell, '-c', stringify_shell_arguments(command)]
+        return command
+
+    prefix = [user]
+    if shell is not None:
+        prefix.extend(['-s', shell])
+
+    if sudo:
+        return ['sudo', '-u', *prefix, *split_shell_arguments(command)]
+    else:
+        return ['su', *prefix, '-c', stringify_shell_arguments(command)]
 
 class LogFile:
     """The logfile helps by prepending timestamps to log lines."""

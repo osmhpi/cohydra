@@ -6,7 +6,7 @@ from nsenter import Namespace
 import pylxd
 
 from ..context import defer
-from ..command_executor import DockerCommandExecutor
+from ..command_executor import LXDCommandExecutor
 from .base import Node
 
 logger = logging.getLogger(__name__)
@@ -134,7 +134,7 @@ class LXDNode(Node):
         #     log_file_path = os.path.join(log_directory, f'{self.name}.{stream}.log')
         #     threading.Thread(target=log_to_file, args=(self.container, log_file_path), kwargs={stream: True}).start()
 
-        # self.command_executor = DockerCommandExecutor(self.name, self.container)
+        self.command_executor = LXDCommandExecutor(self.name, self.container)
 
     def delete_container(self):
         """Delete the container."""

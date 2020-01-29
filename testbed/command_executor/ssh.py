@@ -29,22 +29,9 @@ class SSHCommandExecutor(CommandExecutor):
         self.sudo = sudo
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):
+        command = util.apply_user_and_shell(command, user=user, shell=shell, sudo=self.sudo)
         command = util.stringify_shell_arguments(command)
-        if user is None:
-            if shell is not None:
-                command = [shell, '-c', command]
-        else:
-            if self.sudo:
-                command_end = util.split_shell_arguments(command)
-                command = ['sudo', '-u', user]
-            else:
-                command_end = ['-c', command]
-                command = ['su', user]
-            if shell is not None:
-                command.extend(['-s', shell])
-            command.extend(command_end)
-
-        command = util.stringify_shell_arguments(command)
+        
         logger = self.get_logger()
         logger.debug('%s', command)
         (stdin, stdout, stderr) = self.client.exec_command(command)

@@ -22,10 +22,12 @@ class LocalCommandExecutor(CommandExecutor):
         super().__init__(name)
 
     def execute(self, command, user=None, shell=None, stdout_logfile=None, stderr_logfile=None):
-        if user is not None:
-            raise ValueError(f'LocalCommandExecutor does not implement user argument')
         if stdout_logfile is not None or stderr_logfile is not None:
             raise ValueError(f'LocalCommandExecutor does not implement logfiles')
+
+        if user is not None:
+            command = util.apply_user_and_shell(command, user=user, shell=shell)
+            shell = None
 
         logger = self.get_logger()
         logger.debug('%s', command)
