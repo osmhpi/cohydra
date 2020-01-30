@@ -41,7 +41,8 @@ class Node:
     def set_position(self, x, y, z=0): # pylint: disable=invalid-name
         """Set the position of the node in NetAnim.
 
-        Parameters:
+        Parameters
+        ----------
         x : float
             The x-position.
         y : float
