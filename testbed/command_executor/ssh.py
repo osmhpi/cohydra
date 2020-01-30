@@ -13,6 +13,9 @@ def log_file(logger, level, file, logfile):
 
 class SSHCommandExecutor(CommandExecutor):
     """The SSHCommandExecutor runs commands on a SSH remote host.
+
+    Parameters
+    ----------
     name : str
         The name of the SSHCommandExecutor.
     client
