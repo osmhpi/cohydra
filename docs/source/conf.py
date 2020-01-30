@@ -31,12 +31,15 @@ release = '0.2.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "sphinx_autopackagesummary",
     "sphinx_rtd_theme",
     "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
-    "sphinx_autopackagesummary",
-    "sphinx.ext.extlinks"
+    "sphinx.ext.coverage",
+    "sphinx.ext.extlinks",
+    "sphinx.ext.inheritance_diagram",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -60,17 +63,16 @@ html_show_sourcelink = True
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 napoleon_google_docstring = False
 napoleon_use_param = False
 napoleon_use_ivar = True
 
-## Include Python objects as they appear in source files
-## Default: alphabetically ('alphabetical')
-autodoc_member_order = 'bysource'
-## Default flags used by autodoc directives
-autodoc_default_flags = ['members', 'show-inheritance']
+autodoc_default_options = {
+    'member-order': 'bysource', # Include Python objects as they appear in source files
+    'show-inheritance': True,
+}
 ## Generate autodoc stubs with summaries from code
 autosummary_generate = True
 
@@ -80,3 +82,6 @@ html_show_sphinx = False
 extlinks = {
     'src': ('https://gitlab.hpi.de/robert.schmid/testbed-temp/tree/master/%s', 'src ')
 }
+
+# Inheritance diagram design
+inheritance_graph_attrs = dict(rankdir="LR", fontsize=18)
