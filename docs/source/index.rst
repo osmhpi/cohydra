@@ -13,6 +13,7 @@ Contents:
 
     installation
     getting-started
+    sumo
     api
 
 Indices and tables
