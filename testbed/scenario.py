@@ -23,7 +23,6 @@ class Scenario:
 
     Parameters
     ----------
-
     netanim_node_size : float
         This determines the size of a node for displaying in NetAnim.
 

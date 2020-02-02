@@ -20,6 +20,8 @@ class MobilityInput:
     def prepare(self, simulation):
         """Prepare the external simulation if neccessary.
 
+        Parameters
+        ----------
         simulation : :class:`.Simulation`
             The simulation that is going to run.
         """
