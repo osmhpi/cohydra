@@ -23,21 +23,28 @@ logger = logging.getLogger(__name__)
 class SUMOMobilityInput(MobilityInput):
     """SUMOMobilityInput is an interface to the SUMO simulation environment."""
 
-    def __init__(self, binary_path, config_path, name="SUMO External Simulation", steps=1000):
+    def __init__(self, binary_path, config_path, name="SUMO External Simulation", steplength=1, steps=1000):
         """Create a new SUMOMobilityInput.
 
+        Parameters:
         name : str
             The name of the MobilityInput.
         binary_path : str
             The path to the :code:`sumo` binary.
         config_path : str
             The path to the simulation configuration (.cfg).
+        steplength : float
+            The length of each simulation step in seconds (default: 1)
+        steps : int
+            The amount of steps (default: 1000)
         """
         super().__init__(name)
         #: The path to the SUMO binary / server.
         self.binary_path = binary_path
         #: The path to the simulation scenarion configuration.
         self.config_path = config_path
+        #: The length of every simulation step
+        self.steplength = steplength
         #: The number of steps to simulate.
         self.steps = steps
 
@@ -46,7 +53,7 @@ class SUMOMobilityInput(MobilityInput):
     def prepare(self, simulation):
         """Start SUMO server."""
         logger.info('Starting SUMO for %s.', self.name)
-        traci.start([self.binary_path, "-c", self.config_path])
+        traci.start([self.binary_path, "--step-length", str(self.steplength), "-c", self.config_path])
         self.step_counter = 0
 
     def start(self):
