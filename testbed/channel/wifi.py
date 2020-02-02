@@ -3,7 +3,7 @@ import ipaddress
 import logging
 import os
 
-from enum import Enum
+from enum import Enum, unique
 from ns import core, internet, network as ns_net, wifi, wave
 
 from .channel import Channel
@@ -38,6 +38,8 @@ class WiFiChannel(Channel):
     data_rate : :class:`.WiFiDataRate`
         The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.
     """
+
+    @unique
     class WiFiStandard(Enum):
         """All available WiFi standards.
 
@@ -59,10 +61,14 @@ class WiFiChannel(Channel):
         ## Wireless Access in Vehicular Environments (WAVE).
         WIFI_802_11p = wifi.WIFI_PHY_STANDARD_80211_10MHZ
 
+    @unique
     class WiFiDataRate(Enum):
         """All available WiFi data rates.
 
         Choosing the correct and best data rate depends on the standard you are using.
+        The data rate list is incomplete. Please consider reading the ns-3 source
+        `here <https://gitlab.com/nsnam/ns-3-dev/blob/master/src/wifi/model/wifi-phy.cc>`_.
+        You can pass another valid string to the channel, too.
         """
         ## Use with WiFiStandard.WIFI_802_11a.
         OFDM_RATE_6Mbps = "OfdmRate6Mbps"
@@ -80,33 +86,33 @@ class WiFiChannel(Channel):
         OFDM_RATE_48Mbps = "OfdmRate48Mbps"
         ## Use with WiFiStandard.WIFI_802_11a.
         OFDM_RATE_54Mbps = "OfdmRate54Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g
+        # or WiFiStandard.WIFI_802_11ax.
         DSSS_RATE_1Mbps = "DsssRate1Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g
+        # or WiFiStandard.WIFI_802_11ax.
         DSSS_RATE_2Mbps = "DsssRate2Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g
+        # or WiFiStandard.WIFI_802_11ax.
         DSSS_RATE_5_5Mbps = "DsssRate5_5Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g
+        # or WiFiStandard.WIFI_802_11ax.
         DSSS_RATE_11Mbps = "DsssRate11Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_6Mbps = "ErpOfdmRate6Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_9Mbps = "ErpOfdmRate9Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_12Mbps = "ErpOfdmRate12Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_18Mbps = "ErpOfdmRate18Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_24Mbps = "ErpOfdmRate24Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_36Mbps = "ErpOfdmRate36Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_48Mbps = "ErpOfdmRate48Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        ## Use with WiFiStandard.WIFI_802_11g or WiFiStandard.WIFI_802_11ax.
         ERP_OFDM_RATE_54Mbps = "ErpOfdmRate54Mbps"
         #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
         OFDM_RATE_BW_3Mbps = "OfdmRate3MbpsBW10MHz"
@@ -126,8 +132,8 @@ class WiFiChannel(Channel):
         OFDM_RATE_BW_27Mbps = "OfdmRate27MbpsBW10MHz"
 
     def __init__(self, network, nodes, frequency=None, channel=1, channel_width=40, antennas=1, tx_power=20.0,
-                 standard: WiFiStandard = WiFiStandard.WIFI_802_11a,
-                 data_rate: WiFiDataRate = WiFiDataRate.OFDM_RATE_6Mbps):
+                 standard: WiFiStandard = WiFiStandard.WIFI_802_11b,
+                 data_rate: WiFiDataRate = WiFiDataRate.DSSS_RATE_11Mbps):
         super().__init__(network, nodes)
 
         #: The channel to use.
