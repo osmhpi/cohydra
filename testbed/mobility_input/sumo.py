@@ -21,18 +21,19 @@ from .mobility_input import MobilityInput
 logger = logging.getLogger(__name__)
 
 class SUMOMobilityInput(MobilityInput):
-    """SUMOMobilityInput is an interface to the SUMO simulation environment."""
+    """SUMOMobilityInput is an interface to the SUMO simulation environment.
+
+    Parameters
+    ----------
+    name : str
+        The name of the MobilityInput.
+    binary_path : str
+        The path to the :code:`sumo` binary.
+    config_path : str
+        The path to the simulation configuration (.cfg).
+    """
 
     def __init__(self, binary_path, config_path, name="SUMO External Simulation", steps=1000):
-        """Create a new SUMOMobilityInput.
-
-        name : str
-            The name of the MobilityInput.
-        binary_path : str
-            The path to the :code:`sumo` binary.
-        config_path : str
-            The path to the simulation configuration (.cfg).
-        """
         super().__init__(name)
         #: The path to the SUMO binary / server.
         self.binary_path = binary_path

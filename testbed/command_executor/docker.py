@@ -9,6 +9,8 @@ from .base import CommandExecutor
 class DockerCommandExecutor(CommandExecutor):
     """The DockerCommandExecutor runs commands in a Docker container.
 
+    Parameters
+    ----------
     name : str
         The name of the command executor.
     container : str

@@ -1,7 +1,9 @@
 {{ fullname | escape | underline }}
 
+
 .. automodule:: {{ fullname }}
     :members:
+    :inherited-members:
 
     {% block functions %}
     {% if functions %}
@@ -36,6 +38,16 @@
     {% endif %}
     {% endblock %}
 
-    .. autopackagesummary:: {{ fullname }}
-        :toctree: .
-        :template: autosummary/package.rst
+{% block inheritance %}
+{% if classes %}
+
+Inheritance Diagramm
+********************
+.. inheritance-diagram:: {{ fullname }}
+
+{% endif %}
+{% endblock %}
+
+.. autopackagesummary:: {{ fullname }}
+    :toctree: .
+    :template: autosummary/package.rst

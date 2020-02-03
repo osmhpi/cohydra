@@ -44,18 +44,19 @@ class WiFiChannel(Channel):
 
         See here for further information: https://en.wikipedia.org/wiki/IEEE_802.11.
         """
-        ## The first WiFi standard from 1999.
+        #: The first WiFi standard from 1999.
         WIFI_802_11a = wifi.WIFI_PHY_STANDARD_80211a
-        ## Standard with maximum raw data rate of 11 Mbit/s.
+        #: Standard with maximum raw data rate of 11 Mbit/s.
         WIFI_802_11b = wifi.WIFI_PHY_STANDARD_80211b
-        ## Standard with maximum raw bitrate of 54 Mbit/s in 2.4GHz band.
+        #: Standard with maximum raw bitrate of 54 Mbit/s in 2.4GHz band.
         WIFI_802_11g = wifi.WIFI_PHY_STANDARD_80211g
-        ## Standard from 2009.
+        #: Standard from 2009 in 2.4GHz band.
         WIFI_802_11n = wifi.WIFI_PHY_STANDARD_80211n_2_4GHZ
+        #: Standard from 2009 in 5GHz band.
         WIFI_802_11n_5G = wifi.WIFI_PHY_STANDARD_80211n_5GHZ
-        ## Standard from 2013.
+        #: Standard from 2013.
         WIFI_802_11ac = wifi.WIFI_PHY_STANDARD_80211ac
-        ## "WiFi 6".
+        #: "WiFi 6".
         WIFI_802_11ax = wifi.WIFI_PHY_STANDARD_80211ax_2_4GHZ
 
     class WiFiDataRate(Enum):
@@ -63,49 +64,57 @@ class WiFiChannel(Channel):
 
         Choosing the correct and best data rate depends on the standard you are using.
         """
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_6Mbps = "OfdmRate6Mbps"
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_9Mbps = "OfdmRate9Mbps"
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_12Mbps = "OfdmRate12Mbps"
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_18Mbps = "OfdmRate18Mbps"
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_24Mbps = "OfdmRate24Mbps"
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_36Mbps = "OfdmRate36Mbps"
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_48Mbps = "OfdmRate48Mbps"
-        ## Use with WiFiStandard.WIFI_802_11a.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11a`.
         OFDM_RATE_54Mbps = "OfdmRate54Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,
+        #: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.
         DSSS_RATE_1Mbps = "DsssRate1Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,
+        #: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.
         DSSS_RATE_2Mbps = "DsssRate2Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
-        DSSS_RATE_5_5Mbps = "DsssRate5_%Mbps"
-        ## Use with WiFiStandard.WIFI_802_11b, WiFiStandard.WIFI_802_11g,
-        # WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,
+        #: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.
+        DSSS_RATE_5_5Mbps = "DsssRate5_5Mbps"
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,
+        #: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.
         DSSS_RATE_11Mbps = "DsssRate11Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_6Mbps = "ErpOfdmRate6Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_9Mbps = "ErpOfdmRate9Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_12Mbps = "ErpOfdmRate12Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_18Mbps = "ErpOfdmRate18Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_24Mbps = "ErpOfdmRate24Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_36Mbps = "ErpOfdmRate36Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_48Mbps = "ErpOfdmRate48Mbps"
-        ## Use with WiFiStandard.WIFI_802_11g, WiFiStandard.WIFI_802_11ac or WiFiStandard.WIFI_802_11ax.
+        #: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or
+        #: :attr:`.WiFiStandard.WIFI_802_11ax`.
         ERP_OFDM_RATE_54Mbps = "ErpOfdmRate54Mbps"
 
     def __init__(self, network, nodes, frequency=None, channel=1, channel_width=40, antennas=1, tx_power=20.0,
