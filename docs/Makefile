@@ -5,7 +5,8 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
 
-export BUILD_TAG = $(shell git rev-parse --abbrev-ref HEAD)
+BUILD_TAG ?= $(shell git rev-parse --abbrev-ref HEAD)
+export BUILD_TAG := ${BUILD_TAG}
 
 .PHONY: all keep-autosummary clean clean-autosummary Makefile
 

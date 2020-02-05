@@ -60,7 +60,6 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -97,4 +96,5 @@ extlinks = {
 }
 
 # Inheritance diagram design
-inheritance_graph_attrs = dict(rankdir="LR", fontsize=18)
+inheritance_graph_attrs = dict(rankdir='TB', fontsize=18)
+inheritance_edge_attrs = dict(dir='back', arrowtail='empty', arrowsize=1.5)
