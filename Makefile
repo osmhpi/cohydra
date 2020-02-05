@@ -49,9 +49,4 @@ save: git-is-clean
 		mgjm/sn3t:dev
 
 docs:
-	$(RM) -r docs/source/_autosummary
-	cd docs && \
-		$(MAKE) html && \
-		$(MAKE) clean && \
-		$(MAKE) html && \
-		$(MAKE) html
+	$(MAKE) -C docs

@@ -13,7 +13,7 @@ Contents:
 
     installation
     getting-started
-    modules
+    api
 
 Indices and tables
 ==================
