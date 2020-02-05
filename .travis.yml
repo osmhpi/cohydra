@@ -10,4 +10,5 @@ python: 3.8
 jobs:
   include:
     - stage: docs
+      if: type != pull_request
       script: .travis-scripts/docs.sh
