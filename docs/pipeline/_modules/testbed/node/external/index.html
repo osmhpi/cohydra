@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>testbed.node.external &mdash; testbed 0.2.0 - docs/pipeline documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../" class="icon icon-home"> testbed
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - docs/pipeline
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">testbed</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../">Module code</a> &raquo;</li>
+        
+      <li>testbed.node.external</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for testbed.node.external</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Physical Nodes that are connected to the simulation host.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">..context</span> <span class="kn">import</span> <span class="n">defer</span>
+<span class="kn">from</span> <span class="nn">..command_executor</span> <span class="kn">import</span> <span class="n">ConsoleCommandExecutor</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">Node</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExternalNode"><a class="viewcode-back" href="../../../../api/testbed.node.external/#testbed.node.external.ExternalNode">[docs]</a><span class="k">class</span> <span class="nc">ExternalNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An ExternalNode represents an external device.</span>
+
+<span class="sd">    To use this kind of node you need to setup the network before.</span>
+<span class="sd">    This includes setting up network bridges that route packages to the</span>
+<span class="sd">    real hardware / external devices.</span>
+<span class="sd">    Please consider the :code:`setup-external.py` script.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bridge : str</span>
+<span class="sd">        The name of the bridge (that alread exists) to connect the simulation node to.</span>
+<span class="sd">        If not specified, :code:`ns3-{name}` is used.</span>
+<span class="sd">    ifname : str</span>
+<span class="sd">        The name of the interface **on the remote device**.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bridge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ifname</span><span class="o">=</span><span class="s1">&#39;eth0&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bridge</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bridge</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ns3-</span><span class="si">{name}</span><span class="s1">&#39;</span>
+        <span class="c1">#: The name of the bridge the external node is connected to.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bridge</span> <span class="o">=</span> <span class="n">bridge</span>
+        <span class="c1">#: The interface name on the remote device.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ifname</span> <span class="o">=</span> <span class="n">ifname</span>
+
+        <span class="c1">#: The executor for running commands on the external device.</span>
+        <span class="c1">#: This is useful for a scripted :class:`Workflow`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command_executor</span> <span class="o">=</span> <span class="n">ConsoleCommandExecutor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExternalNode.wants_ip_stack"><a class="viewcode-back" href="../../../../api/testbed.node.external/#testbed.node.external.ExternalNode.wants_ip_stack">[docs]</a>    <span class="k">def</span> <span class="nf">wants_ip_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ExternalNode.prepare"><a class="viewcode-back" href="../../../../api/testbed.node.external/#testbed.node.external.ExternalNode.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This also runs setup on the remote device by setting the IP address</span>
+<span class="sd">        the device is assigned during simulation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">interface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interfaces</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">interface</span><span class="o">.</span><span class="n">connect_tap_to_bridge</span><span class="p">(</span><span class="n">bridge_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bridge</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_remote_address</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExternalNode.setup_remote_address"><a class="viewcode-back" href="../../../../api/testbed.node.external/#testbed.node.external.ExternalNode.setup_remote_address">[docs]</a>    <span class="k">def</span> <span class="nf">setup_remote_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add the simulation IP address to the remote device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        address : str</span>
+<span class="sd">            The address to assign to the external node in simulation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">([</span><span class="s1">&#39;ip&#39;</span><span class="p">,</span> <span class="s1">&#39;addr&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">address</span><span class="p">),</span> <span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ifname</span><span class="p">],</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">)</span>
+        <span class="n">defer</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;remove remote ip </span><span class="si">{address}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_remote_address</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExternalNode.remove_remote_address"><a class="viewcode-back" href="../../../../api/testbed.node.external/#testbed.node.external.ExternalNode.remove_remote_address">[docs]</a>    <span class="k">def</span> <span class="nf">remove_remote_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove the simulation IP address from the remote device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        address : str</span>
+<span class="sd">            The address to remove from the external node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">([</span><span class="s1">&#39;ip&#39;</span><span class="p">,</span> <span class="s1">&#39;addr&#39;</span><span class="p">,</span> <span class="s1">&#39;del&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">address</span><span class="p">),</span> <span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ifname</span><span class="p">],</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference &mdash; testbed 0.2.0 - docs/pipeline documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="testbed.argparse" href="testbed.argparse/" />
+    <link rel="prev" title="Getting Started" href="../getting-started/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home"> testbed
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - docs/pipeline
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-testbed">testbed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testbed.argparse/">testbed.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.channel/">testbed.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.command_executor/">testbed.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.context/">testbed.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.events/">testbed.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.interface/">testbed.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.mobility_input/">testbed.mobility_input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.network/">testbed.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.node/">testbed.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.scenario/">testbed.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.simulation/">testbed.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.util/">testbed.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testbed.workflow/">testbed.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">testbed</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../">Docs</a> &raquo;</li>
+        
+      <li>API Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-testbed">
+<span id="testbed"></span><h2>testbed<a class="headerlink" href="#module-testbed" title="Permalink to this headline">¶</a></h2>
+<p>testbed is a testbed for writing scenarios with the ns-3 network simulator.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="testbed.argparse/#module-testbed.argparse" title="testbed.argparse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.argparse</span></code></a></p></td>
+<td><p>Argument parsing for the simulation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="testbed.channel/#module-testbed.channel" title="testbed.channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.channel</span></code></a></p></td>
+<td><p>Channels are used to connect nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="testbed.command_executor/#module-testbed.command_executor" title="testbed.command_executor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.command_executor</span></code></a></p></td>
+<td><p>A <a class="reference internal" href="testbed.command_executor.base/#testbed.command_executor.base.CommandExecutor" title="testbed.command_executor.base.CommandExecutor"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommandExecutor</span></code></a> can be used to run commands during the simulation and is thereful useful in combination with a <a class="reference internal" href="testbed.workflow/#testbed.workflow.Workflow" title="testbed.workflow.Workflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">Workflow</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="testbed.context/#module-testbed.context" title="testbed.context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.context</span></code></a></p></td>
+<td><p>Contexts to tear down the simulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="testbed.events/#module-testbed.events" title="testbed.events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.events</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="testbed.interface/#module-testbed.interface" title="testbed.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.interface</span></code></a></p></td>
+<td><p>Internal network card.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="testbed.mobility_input/#module-testbed.mobility_input" title="testbed.mobility_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.mobility_input</span></code></a></p></td>
+<td><p>MobilityInputs describe how external simulation interfaces move nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="testbed.network/#module-testbed.network" title="testbed.network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.network</span></code></a></p></td>
+<td><p>A subnet.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="testbed.node/#module-testbed.node" title="testbed.node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.node</span></code></a></p></td>
+<td><p>Nodes are the main components of simulating behaviour.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="testbed.scenario/#module-testbed.scenario" title="testbed.scenario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.scenario</span></code></a></p></td>
+<td><p>The blueprint for a simulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="testbed.simulation/#module-testbed.simulation" title="testbed.simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.simulation</span></code></a></p></td>
+<td><p>The simulation executable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="testbed.util/#module-testbed.util" title="testbed.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.util</span></code></a></p></td>
+<td><p>Internal utility functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="testbed.workflow/#module-testbed.workflow" title="testbed.workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testbed.workflow</span></code></a></p></td>
+<td><p>Allow fault-injection by executing a sequence of instructions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="testbed.argparse/" class="btn btn-neutral float-right" title="testbed.argparse" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../getting-started/" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

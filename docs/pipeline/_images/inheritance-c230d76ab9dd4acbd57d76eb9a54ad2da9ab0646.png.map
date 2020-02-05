@@ -1,0 +1,4 @@
+<map id="inheritanceb3912b59bf" name="inheritanceb3912b59bf">
+<area shape="rect" id="node1" href="../testbed.node.base/#testbed.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="44,5,224,31"/>
+<area shape="rect" id="node2" href="#testbed.node.external.ExternalNode" target="_top" title="An ExternalNode represents an external device." alt="" coords="5,79,263,104"/>
+</map>
