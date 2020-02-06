@@ -25,5 +25,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${pull_request.body}\n\n---\n[Documentation of `${head.ref}`](https://${context.repo.owner}.github.io/${context.repo.repo}/${head.ref})`
+              body: `${pull_request.body}\n\n---\n[Documentation of \`${head.ref}\`](https://${context.repo.owner}.github.io/${context.repo.repo}/${head.ref})`
             });
