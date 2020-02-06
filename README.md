@@ -21,7 +21,7 @@ Otherwise, you can build the [Dockerfile](./Dockerfile) in the project's root di
 `PYTHONPATH`. But you need to make sure, that you run the container with privileges to access the host network in order to have access to the host's network interfaces. You of course need to modify the volume mount to allow cohydra access to your scenarios.
 
 ```sh
-docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged mgjm/sn3t:latest
+docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
 ```
 
 The main image is based on the images in the [container-images](./container-images) directory.  

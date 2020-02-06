@@ -1,14 +1,14 @@
-export NS3_TAG ?= 3.30-python3
-SN3T_TAG ?= $(shell if [ -z "`git status --porcelain`" ]; then git rev-parse --short HEAD; else echo dirty; fi)
-export SN3T_TAG := ${SN3T_TAG}
+export NS3_TAG ?= 3.30
+COHYDRA_TAG ?= $(shell if [ -z "`git status --porcelain`" ]; then git rev-parse --short HEAD; else echo dirty; fi)
+export COHYDRA_TAG := ${COHYDRA_TAG}
 
-docker_build := docker build --build-arg NS3_TAG --build-arg SN3T_TAG
+docker_build := docker build --build-arg NS3_TAG --build-arg COHYDRA_TAG
 
 .PHONY: latest ns-3 cohydra-base cohydra cohydra-dev docs
 
 all: ns-3 cohydra-base cohydra cohydra-dev
 	#
-	# build tag ${SN3T_TAG}
+	# build tag ${COHYDRA_TAG}
 	#
 
 git-is-clean:
@@ -20,33 +20,33 @@ endif
 	
 
 latest: git-is-clean all
-	docker tag mgjm/ns-3:${NS3_TAG} mgjm/ns-3:latest
-	docker tag mgjm/sn3t:base-${SN3T_TAG} mgjm/sn3t:base
-	docker tag mgjm/sn3t:${SN3T_TAG} mgjm/sn3t:latest
-	docker tag mgjm/sn3t:dev-${SN3T_TAG} mgjm/sn3t:dev
+	docker tag osmhpi/ns-3:${NS3_TAG} osmhpi/ns-3:latest
+	docker tag osmhpi/cohydra:base-${COHYDRA_TAG} osmhpi/cohydra:base
+	docker tag osmhpi/cohydra:${COHYDRA_TAG} osmhpi/cohydra:latest
+	docker tag osmhpi/cohydra:dev-${COHYDRA_TAG} osmhpi/cohydra:dev
 
 ns-3:
-	${docker_build} -t mgjm/ns-3:${NS3_TAG} container-images/ns-3
+	${docker_build} -t osmhpi/ns-3:${NS3_TAG} container-images/ns-3
 
 cohydra-base:
-	${docker_build} -t mgjm/sn3t:base-${SN3T_TAG} container-images/cohydra-base
+	${docker_build} -t osmhpi/cohydra:base-${COHYDRA_TAG} container-images/cohydra-base
 
 cohydra:
-	${docker_build} -t mgjm/sn3t:${SN3T_TAG} .
+	${docker_build} -t osmhpi/cohydra:${COHYDRA_TAG} .
 
 cohydra-dev:
-	${docker_build} -t mgjm/sn3t:dev-${SN3T_TAG} container-images/cohydra-dev
+	${docker_build} -t osmhpi/cohydra:dev-${COHYDRA_TAG} container-images/cohydra-dev
 
 save: git-is-clean
 	docker save \
-		mgjm/ns-3:${NS3_TAG} \
-		mgjm/ns-3:latest \
-		mgjm/sn3t:base-${SN3T_TAG} \
-		mgjm/sn3t:base \
-		mgjm/sn3t:${SN3T_TAG} \
-		mgjm/sn3t:latest \
-		mgjm/sn3t:dev-${SN3T_TAG} \
-		mgjm/sn3t:dev
+		osmhpi/ns-3:${NS3_TAG} \
+		osmhpi/ns-3:latest \
+		osmhpi/cohydra:base-${COHYDRA_TAG} \
+		osmhpi/cohydra:base \
+		osmhpi/cohydra:${COHYDRA_TAG} \
+		osmhpi/cohydra:latest \
+		osmhpi/cohydra:dev-${COHYDRA_TAG} \
+		osmhpi/cohydra:dev
 
 docs:
 	$(MAKE) -C docs

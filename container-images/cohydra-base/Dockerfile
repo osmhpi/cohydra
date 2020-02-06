@@ -1,6 +1,6 @@
-ARG NS3_TAG=3.30-python3
+ARG NS3_TAG=3.30
 
-FROM mgjm/ns-3:$NS3_TAG
+FROM osmhpi/ns-3:$NS3_TAG
 
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends \

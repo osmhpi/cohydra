@@ -1,6 +1,6 @@
-ARG SN3T_TAG=
+ARG COHYDRA_TAG=
 
-FROM mgjm/sn3t:base${SN3T_TAG:+-$SN3T_TAG}
+FROM osmhpi/cohydra:base${COHYDRA_TAG:+-$COHYDRA_TAG}
 
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends \
