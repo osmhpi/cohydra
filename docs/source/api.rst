@@ -2,14 +2,14 @@
 API Reference
 =============
 
-testbed
+cohydra
 =======
 
-.. automodule:: testbed
+.. automodule:: cohydra
     :members:
     :undoc-members:
     :inherited-members:
 
-    .. autopackagesummary:: testbed
+    .. autopackagesummary:: cohydra
         :toctree: api
         :template: autosummary/package.rst

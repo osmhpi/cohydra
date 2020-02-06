@@ -21,7 +21,7 @@ import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = 'testbed'
+project = 'cohydra'
 author = 'Arne Boockmeyer, Martin Michaelis, Felix Gohla'
 copyright = f'{datetime.utcnow().year}, {author}'
 
