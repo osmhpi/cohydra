@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from testbed import ArgumentParser, Network, DockerNode, Scenario
+from cohydra import ArgumentParser, Network, DockerNode, Scenario
 
 def main():
     scenario = Scenario()

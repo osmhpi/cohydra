@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from testbed import ArgumentParser, Network, DockerNode, Scenario, WifiChannel
-from testbed.mobility_input import SUMOMobilityInput
+from cohydra import ArgumentParser, Network, DockerNode, Scenario, WifiChannel
+from cohydra.mobility_input import SUMOMobilityInput
 
 def main():
     scenario = Scenario()
