@@ -4,9 +4,9 @@ export SN3T_TAG := ${SN3T_TAG}
 
 docker_build := docker build --build-arg NS3_TAG --build-arg SN3T_TAG
 
-.PHONY: latest ns-3 testbed-base testbed testbed-dev docs
+.PHONY: latest ns-3 cohydra-base cohydra cohydra-dev docs
 
-all: ns-3 testbed-base testbed testbed-dev
+all: ns-3 cohydra-base cohydra cohydra-dev
 	#
 	# build tag ${SN3T_TAG}
 	#
@@ -28,14 +28,14 @@ latest: git-is-clean all
 ns-3:
 	${docker_build} -t mgjm/ns-3:${NS3_TAG} container-images/ns-3
 
-testbed-base:
-	${docker_build} -t mgjm/sn3t:base-${SN3T_TAG} container-images/testbed-base
+cohydra-base:
+	${docker_build} -t mgjm/sn3t:base-${SN3T_TAG} container-images/cohydra-base
 
-testbed:
+cohydra:
 	${docker_build} -t mgjm/sn3t:${SN3T_TAG} .
 
-testbed-dev:
-	${docker_build} -t mgjm/sn3t:dev-${SN3T_TAG} container-images/testbed-dev
+cohydra-dev:
+	${docker_build} -t mgjm/sn3t:dev-${SN3T_TAG} container-images/cohydra-dev
 
 save: git-is-clean
 	docker save \

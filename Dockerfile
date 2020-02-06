@@ -3,4 +3,4 @@ ARG SN3T_TAG=
 FROM mgjm/sn3t:base${SN3T_TAG:+-$SN3T_TAG}
 
 COPY tools /usr/local/bin
-COPY testbed $PYTHONPATH/testbed
+COPY cohydra $PYTHONPATH/cohydra

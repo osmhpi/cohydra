@@ -2,7 +2,7 @@
 
 from pyroute2 import IPRoute
 import docker
-from testbed import argparse
+from cohydra import argparse
 
 def main(logger, dry_run, images, all_images):
     ipr = IPRoute()
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-d', '--dry-run', action='store_true', help='do not execute any commands')
-    parser.add_argument('-i', '--images', action='store_true', help='remove all images build by testbed')
-    parser.add_argument('-a', '--all-images', action='store_true', help='remove all images used by testbed')
+    parser.add_argument('-i', '--images', action='store_true', help='remove all images build by cohydra')
+    parser.add_argument('-a', '--all-images', action='store_true', help='remove all images used by cohydra')
 
     parser.run(main, logger_arg='logger')
