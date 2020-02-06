@@ -1,5 +1,0 @@
-<map id="inheritance3bd9410550" name="inheritance3bd9410550">
-<area shape="rect" id="node1" href="../testbed.node.base/#testbed.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="44,5,224,31"/>
-<area shape="rect" id="node2" href="../testbed.node.external/#testbed.node.external.ExternalNode" target="_top" title="An ExternalNode represents an external device." alt="" coords="5,79,263,104"/>
-<area shape="rect" id="node3" href="#testbed.node.ssh.SSHNode" target="_top" title="An SSH node represents an external device reachable via SSH." alt="" coords="35,152,233,177"/>
-</map>
