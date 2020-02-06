@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; testbed 0.2.0 - rename-to-cohydra documentation</title>
+  <title>Installation &mdash; cohydra 0.2.0 - rename-to-cohydra documentation</title>
   
 
   
@@ -38,7 +38,7 @@
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
     <link rel="next" title="Getting Started" href="../getting-started/" />
-    <link rel="prev" title="testbed - It’s A Testbed! :)" href="../" /> 
+    <link rel="prev" title="cohydra - It’s A Testbed! :)" href="../" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../" class="icon icon-home"> testbed
+            <a href="../" class="icon icon-home"> cohydra
           
 
           
@@ -108,7 +108,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../">testbed</a>
+          <a href="../">cohydra</a>
         
       </nav>
 
@@ -158,30 +158,30 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Running the testbed requires some dependencies. We therefore recommend using the Docker images provided below.</p>
+<p>Running cohydra requires some dependencies. We therefore recommend using the Docker images provided below.</p>
 <div class="section" id="installation-with-docker">
 <h2>Installation With Docker<a class="headerlink" href="#installation-with-docker" title="Permalink to this headline">¶</a></h2>
-<p>The testbed can be obtained via docker.
+<p>Cohydra can be obtained via docker.
 The easiest solution is using the VSCode <em>Remote - Containers</em> extension.
 After cloning the repository and opening it in the container, your scenarios will by executing them with <code class="code docutils literal notranslate"><span class="pre">python3</span></code>.</p>
 <p>Otherwise, you can build the [Dockerfile](./Dockerfile) in the project’s root directory yourself by running <code class="code docutils literal notranslate"><span class="pre">make</span></code>.
-In the container, the testbed will be added to your <code class="code docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>.
+In the container, cohydra will be added to your <code class="code docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>.
 But you need to make sure, that you run the container with privileges to access the host network in order to have access to the host’s network interfaces.
 The Docker socket is mounted into the container to enable creating new containers from within the simulation.
-You of course need to modify the volume mount to allow the testbed access to your scenarios:</p>
+You of course need to modify the volume mount to allow cohydra access to your scenarios:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged mgjm/sn3t:latest
 </pre></div>
 </div>
 <p>The main image is based on the images in the <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images">container-images</a> directory.
 The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/ns-3/Dockerfile">ns-3</a> image is just an installation of ns-3 (currently <em>ns-3.30</em>) on top of a Debian Buster.
-The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/testbed-base/Dockerfile">testbed-base</a> installs all neccessary dependencies for the testbed,
-<a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/testbed-dev/Dockerfile">testbed-dev</a> is for development purposes (docker-cli in the container).</p>
+The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/cohydra-base/Dockerfile">cohydra-base</a> installs all neccessary dependencies for cohydra,
+<a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/cohydra-dev/Dockerfile">cohydra-dev</a> is for development purposes (docker-cli in the container).</p>
 </div>
 <div class="section" id="local-installation-without-docker">
 <h2>Local Installation Without Docker<a class="headerlink" href="#local-installation-without-docker" title="Permalink to this headline">¶</a></h2>
 <p>In the case you do not want to use the prebuilt docker, a normal ns-3 installation with <em>NetAnim</em> Python bindings will work, too.
 The Python libraries / directory provided by ns-3 has to be in your <code class="code docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>, though.
-The testbed so far has only been tested with <strong>Debian 10 Buster</strong>, <strong>Ubuntu 18.04 Bionic Beaver</strong> and <strong>ns-3.30</strong>.</p>
+Cohydra so far has only been tested with <strong>Debian 10 Buster</strong>, <strong>Ubuntu 18.04 Bionic Beaver</strong> and <strong>ns-3.30</strong>.</p>
 <p>There is no installation via <code class="code docutils literal notranslate"><span class="pre">pip</span></code>.</p>
 </div>
 </div>
@@ -197,7 +197,7 @@ The testbed so far has only been tested with <strong>Debian 10 Buster</strong>, 
         <a href="../getting-started/" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../" class="btn btn-neutral float-left" title="testbed - It’s A Testbed! :)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../" class="btn btn-neutral float-left" title="cohydra - It’s A Testbed! :)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

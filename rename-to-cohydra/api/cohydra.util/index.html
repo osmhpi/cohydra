@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.util &mdash; cohydra 0.2.0 - rename-to-cohydra documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script type="text/javascript" src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.workflow" href="../cohydra.workflow/" />
+    <link rel="prev" title="cohydra.simulation" href="../cohydra.simulation/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - rename-to-cohydra
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+      <li>cohydra.util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.util">
+<span id="cohydra-util"></span><h1>cohydra.util<a class="headerlink" href="#module-cohydra.util" title="Permalink to this headline">¶</a></h1>
+<p>Internal utility functions.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.util.network_color_for" title="cohydra.util.network_color_for"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_color_for</span></code></a></p></td>
+<td><p>Calculates a color on the hue-spectrum for a specific network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cohydra.util.once" title="cohydra.util.once"><code class="xref py py-obj docutils literal notranslate"><span class="pre">once</span></code></a></p></td>
+<td><p>Runs a method (successfully) only once per instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.util.unique" title="cohydra.util.unique"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unique</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cohydra.util.unique_generator" title="cohydra.util.unique_generator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unique_generator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="function">
+<dt id="cohydra.util.once">
+<code class="sig-prename descclassname">cohydra.util.</code><code class="sig-name descname">once</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/util/#once"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.util.once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a method (successfully) only once per instance.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cohydra.util.network_color_for">
+<code class="sig-prename descclassname">cohydra.util.</code><code class="sig-name descname">network_color_for</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">number_of_networks</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/util/#network_color_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.util.network_color_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a color on the hue-spectrum for a specific network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<em>int</em>) – The 0-based index of the network.</p></li>
+<li><p><strong>number_of_networks</strong> (<em>int</em>) – The overall number of networks available.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>r</strong> (<em>int</em>) – The red value (0-255).</p></li>
+<li><p><strong>g</strong> (<em>int</em>) – The green value (0-255).</p></li>
+<li><p><strong>b</strong> (<em>int</em>) – The blue value (0-255).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cohydra.util.unique">
+<code class="sig-prename descclassname">cohydra.util.</code><code class="sig-name descname">unique</code><span class="sig-paren">(</span><em class="sig-param">iterable</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/util/#unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.util.unique" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cohydra.util.unique_generator">
+<code class="sig-prename descclassname">cohydra.util.</code><code class="sig-name descname">unique_generator</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/util/#unique_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.util.unique_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.workflow/" class="btn btn-neutral float-right" title="cohydra.workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.simulation/" class="btn btn-neutral float-left" title="cohydra.simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
