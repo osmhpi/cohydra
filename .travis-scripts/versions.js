@@ -35,7 +35,7 @@ window.addEventListener('load', function() {
 
     createElement(currentVersionContainer, 'span', {
         'class': 'fa fa-book',
-    }, 'Other Versions');
+    }, ' Other Versions');
     currentVersionContainer.appendChild(document.createTextNode(release + ' '))
     createElement(currentVersionContainer, 'span', {
         'class': 'fa fa-caret-down',
