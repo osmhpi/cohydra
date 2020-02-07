@@ -15,17 +15,24 @@ You can install SUMO directly onto the simulation host. On Debian-based machines
 
     sudo apt-get install sumo sumo-tools sumo-docs
 
+**Important:** testbed relies on the TraCI Python library.
+If you use testbed *without Docker*, you need to ensure that testbed can find the library.
+Set the ``SUMO_HOME``environment variable accordingly: ::
+
+    export SUMO_HOME="/usr/share/sumo"
+
+Run in server mode
+==================
 
 After that you can start the simulation and load your configuration files.
 You have to provide a port for TraCI: ::
 
     sumo-gui --remote-port 8813 -c /path/to/configuration
 
-**Important:** testbed relies on the TraCI Python library.
-If you use testbed *without Docker*, you need to ensure that testbed can find the library.
-Set the :code:`PYTHONPATH` environment variable accordingly: ::
+Run in embedded mode
+====================
 
-    export PYTHONPATH="/usr/share/sumo/tools:$PYTHONPATH"
+Or testbed can start the SUMO simulation for you. You can just specify the ``config_path`` in the :class:`.SUMOMobilityInput`.
 
 
 Using Docker
