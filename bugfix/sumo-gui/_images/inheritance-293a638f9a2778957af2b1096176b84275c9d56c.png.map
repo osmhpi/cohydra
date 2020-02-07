@@ -1,0 +1,4 @@
+<map id="inheritanceea2d18a3cd" name="inheritanceea2d18a3cd">
+<area shape="rect" id="node1" href="../testbed.channel.channel/#testbed.channel.channel.Channel" target="_top" title="The Channel resembles a physical connection of nodes." alt="" coords="15,5,254,31"/>
+<area shape="rect" id="node2" href="#testbed.channel.csma.CSMAChannel" target="_top" title="The Channel resembles a physical connection of nodes." alt="" coords="5,79,264,104"/>
+</map>
