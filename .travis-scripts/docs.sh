@@ -28,13 +28,13 @@ done
 run git status
 
 run cd "$TRAVIS_BUILD_DIR"
-run docker run --rm -i -v "$TRAVIS_BUILD_DIR:/app" -w /app mgjm/sn3t:base << EOF
+run docker run --rm -i -v "$TRAVIS_BUILD_DIR:/app" -w /app osmhpi/cohydra:base << EOF
 apt-get update
 apt-get install -y make graphviz
 
 pip3 install -r docs/requirements.txt
 
-ln -s /app/testbed "\$PYTHONPATH/testbed"
+ln -s /app/cohydra "\$PYTHONPATH/cohydra"
 
 export VERSIONS_JS_URL=https://osmhpi.github.io/cohydra/versions.js
 

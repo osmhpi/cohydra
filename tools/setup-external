@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from testbed import argparse
-from testbed.command_executor import util, LocalCommandExecutor
+from cohydra import argparse
+from cohydra.command_executor import util, LocalCommandExecutor
 from pyroute2 import IPRoute
 import yaml
 import shlex

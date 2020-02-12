@@ -1,7 +1,7 @@
-testbed - It's A Testbed! :)
+cohydra - It's A Testbed! :)
 ============================
 
-testbed is a hybrid testbed for simulating networks and fault-injection.
+cohydra is a hybrid testbed for simulating networks and fault-injection.
 
 It uses the `ns-3 <https://www.nsnam.org>`_ simulator and connects containers and external hardware to the simulated network.
 By its fault-injection-API, the simulation can be manipulated in scenarios.
