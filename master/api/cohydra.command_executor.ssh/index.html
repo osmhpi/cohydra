@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.command_executor.ssh &mdash; cohydra 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.command_executor.util" href="../cohydra.command_executor.util/" />
+    <link rel="prev" title="cohydra.command_executor.local" href="../cohydra.command_executor.local/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.base/">cohydra.command_executor.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.console/">cohydra.command_executor.console</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.docker/">cohydra.command_executor.docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.local/">cohydra.command_executor.local</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.command_executor.ssh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.util/">cohydra.command_executor.util</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+          <li><a href="../cohydra.command_executor/">cohydra.command_executor</a> &raquo;</li>
+        
+      <li>cohydra.command_executor.ssh</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.command_executor.ssh">
+<span id="cohydra-command-executor-ssh"></span><h1>cohydra.command_executor.ssh<a class="headerlink" href="#module-cohydra.command_executor.ssh" title="Permalink to this headline">¶</a></h1>
+<p>Execute commands over SSH.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.command_executor.ssh.log_file" title="cohydra.command_executor.ssh.log_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_file</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.command_executor.ssh.SSHCommandExecutor" title="cohydra.command_executor.ssh.SSHCommandExecutor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHCommandExecutor</span></code></a></p></td>
+<td><p>The SSHCommandExecutor runs commands on a SSH remote host.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="function">
+<dt id="cohydra.command_executor.ssh.log_file">
+<code class="sig-prename descclassname">cohydra.command_executor.ssh.</code><code class="sig-name descname">log_file</code><span class="sig-paren">(</span><em class="sig-param">logger</em>, <em class="sig-param">level</em>, <em class="sig-param">file</em>, <em class="sig-param">logfile</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/ssh/#log_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.ssh.log_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="cohydra.command_executor.ssh.SSHCommandExecutor">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.command_executor.ssh.</code><code class="sig-name descname">SSHCommandExecutor</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">client: paramiko.client.SSHClient</em>, <em class="sig-param">sudo=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/ssh/#SSHCommandExecutor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.ssh.SSHCommandExecutor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../cohydra.command_executor.base/#cohydra.command_executor.base.CommandExecutor" title="cohydra.command_executor.base.CommandExecutor"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.command_executor.base.CommandExecutor</span></code></a></p>
+<p>The SSHCommandExecutor runs commands on a SSH remote host.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the SSHCommandExecutor.</p></li>
+<li><p><strong>client</strong> – The SSH connection to use.</p></li>
+<li><p><strong>sudo</strong> (<em>bool</em>) – Indicates whether to run commands with <code class="code docutils literal notranslate"><span class="pre">sudo</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="cohydra.command_executor.ssh.SSHCommandExecutor.client">
+<code class="sig-name descname">client</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.command_executor.ssh.SSHCommandExecutor.client" title="Permalink to this definition">¶</a></dt>
+<dd><p>The SSH connection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.command_executor.ssh.SSHCommandExecutor.sudo">
+<code class="sig-name descname">sudo</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.command_executor.ssh.SSHCommandExecutor.sudo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether to run commands with <code class="code docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.command_executor.ssh.SSHCommandExecutor.execute">
+<code class="sig-name descname">execute</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">user=None</em>, <em class="sig-param">shell=None</em>, <em class="sig-param">stdout_logfile=None</em>, <em class="sig-param">stderr_logfile=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/ssh/#SSHCommandExecutor.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.ssh.SSHCommandExecutor.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str</em>) – The command to run.</p></li>
+<li><p><strong>user</strong> (<em>str</em>) – The user to run the command as.</p></li>
+<li><p><strong>shell</strong> (<em>str</em>) – The type of shell to use (<code class="code docutils literal notranslate"><span class="pre">sh</span></code>, <code class="code docutils literal notranslate"><span class="pre">bash</span></code>, …).</p></li>
+<li><p><strong>stdout_logfile</strong> (<em>str</em>) – The path to the log file to append the stdout output.</p></li>
+<li><p><strong>stderr_logfile</strong> (<em>str</em>) – The path to the log file to append the stderr output.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.command_executor.ssh.SSHCommandExecutor.get_logger">
+<code class="sig-name descname">get_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.command_executor.ssh.SSHCommandExecutor.get_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the logger for this command executor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-aad97d15b57548755061a1dc5c12f4ba974385eb.png" alt="Inheritance diagram of cohydra.command_executor.ssh" usemap="#inheritanced04bb7eddd" class="inheritance graphviz" /></div>
+<map id="inheritanced04bb7eddd" name="inheritanced04bb7eddd">
+<area shape="rect" id="node1" href="../cohydra.command_executor.base/#cohydra.command_executor.base.CommandExecutor" target="_top" title="The CommandExecutor abstracts away the code for running" alt="" coords="14,5,383,31"/>
+<area shape="rect" id="node2" href="#cohydra.command_executor.ssh.SSHCommandExecutor" target="_top" title="The SSHCommandExecutor runs commands on a SSH remote host." alt="" coords="5,79,392,104"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.command_executor.util/" class="btn btn-neutral float-right" title="cohydra.command_executor.util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.command_executor.local/" class="btn btn-neutral float-left" title="cohydra.command_executor.local" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

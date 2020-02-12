@@ -1,4 +1,0 @@
-<map id="inheritanceb079ef0f1d" name="inheritanceb079ef0f1d">
-<area shape="rect" id="node1" href="../testbed.command_executor.base/#testbed.command_executor.base.CommandExecutor" target="_top" title="The CommandExecutor abstracts away the code for running" alt="" coords="13,5,380,31"/>
-<area shape="rect" id="node2" href="#testbed.command_executor.ssh.SSHCommandExecutor" target="_top" title="The SSHCommandExecutor runs commands on a SSH remote host." alt="" coords="5,79,388,104"/>
-</map>

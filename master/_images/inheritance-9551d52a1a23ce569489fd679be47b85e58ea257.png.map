@@ -1,7 +1,0 @@
-<map id="inheritancedba5fb7b1f" name="inheritancedba5fb7b1f">
-<area shape="rect" id="node1" href="#testbed.context.Context" target="_top" title="A context can be used for deferring function calls." alt="" coords="123,5,290,29"/>
-<area shape="rect" id="node3" href="#testbed.context.NoContext" target="_top" title="The NoContext is a Null&#45;Object and therefore **does nothing**." alt="" coords="5,73,189,97"/>
-<area shape="rect" id="node4" href="#testbed.context.SimpleContext" target="_top" title="The simple context executes deferred items like it is intented." alt="" coords="212,73,421,97"/>
-<area shape="rect" id="node2" href="#testbed.context.DeferredItem" target="_top" title="A DeferredItem is used for storing functions calls that need to be executed later on." alt="" coords="313,5,513,29"/>
-<area shape="rect" id="node5" href="#testbed.context.ThreadLocalStack" target="_top" title="testbed.context.ThreadLocalStack" alt="" coords="536,5,763,29"/>
-</map>
