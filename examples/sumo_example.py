@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cohydra import ArgumentParser, Network, DockerNode, Scenario, WifiChannel
+from cohydra import ArgumentParser, Network, DockerNode, Scenario, WiFiChannel
 from cohydra.mobility_input import SUMOMobilityInput
 
 def main():
