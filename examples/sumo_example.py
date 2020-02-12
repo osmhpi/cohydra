@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from testbed import ArgumentParser, Network, DockerNode, Scenario, WifiChannel
+from testbed import ArgumentParser, Network, DockerNode, Scenario, WiFiChannel
 from testbed.mobility_input import SUMOMobilityInput
 
 def main():
