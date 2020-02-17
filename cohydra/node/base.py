@@ -14,12 +14,9 @@ class Node:
     Parameters
     ----------
     name : str
-        A unique name for this node consisting only of alphanumeric characters.
+        A unique name for this node.
     """
     def __init__(self, name):
-        for char in name:
-            if not (char.isalnum() or char == '-'):
-                raise ValueError('Please only supply alphanumeric names and "-"')
         #: The cannels the node is connected to.
         self.channels = list()
         #: The name of the node.
