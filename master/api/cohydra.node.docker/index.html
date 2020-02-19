@@ -36,9 +36,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex/" />
-    <link rel="search" title="Search" href="../../search/" />
-    <link rel="next" title="cohydra.node.external" href="../cohydra.node.external/" />
-    <link rel="prev" title="cohydra.node.base" href="../cohydra.node.base/" /> 
+    <link rel="search" title="Search" href="../../search/" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,34 +84,10 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../cohydra.node/">cohydra.node</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.base/">cohydra.node.base</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.node.docker</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.external/">cohydra.node.external</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.ssh/">cohydra.node.ssh</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.switch/">cohydra.node.switch</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../">API Reference</a></li>
 </ul>
 
             
@@ -158,10 +132,6 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="../../">Docs</a> &raquo;</li>
-        
-          <li><a href="../">API Reference</a> &raquo;</li>
-        
-          <li><a href="../cohydra.node/">cohydra.node</a> &raquo;</li>
         
       <li>cohydra.node.docker</li>
     
@@ -262,7 +232,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – The name of the node (and container).</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the node (and container).
+It must consist only of <em>alphanumeric characters</em> and <code class="code docutils literal notranslate"><span class="pre">-</span></code>, <code class="code docutils literal notranslate"><span class="pre">_</span></code> and <code class="code docutils literal notranslate"><span class="pre">.</span></code>.</p></li>
 <li><p><strong>docker_image</strong> (<em>str</em>) – The name of the docker image to use. If not specified,
 <cite>docker_file</cite> and <cite>docker_build_dir</cite> must be set.</p></li>
 <li><p><strong>docker_build_dir</strong> (<em>str</em>) – The context directory (relative path possible) to execute the build in.</p></li>
@@ -501,15 +472,6 @@ as this user. <strong>Warning:</strong> Not all nodes support this feature.</p><
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../cohydra.node.external/" class="btn btn-neutral float-right" title="cohydra.node.external" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../cohydra.node.base/" class="btn btn-neutral float-left" title="cohydra.node.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

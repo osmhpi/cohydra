@@ -51,7 +51,7 @@ window.addEventListener('load', function() {
     var branchesContainer = createElement(otherVersionsContainer, 'dl');
     createElement(branchesContainer, 'dt', {}, 'Branches');
 
-    var branches = ["master", "bugfix/sumo-gui", "enhancement/docker-container-names-chracters", "feature/lxd-nodes", "feature/non-root-user", "feature/sumo/step-length", "feature/wifi_802_11p", "gh-pages"];
+    var branches = ["master", "bugfix/sumo-gui", "feature/lxd-nodes", "feature/non-root-user", "feature/sumo/step-length", "feature/wifi_802_11p", "gh-pages"];
     for (var i = 0; i < branches.length; i++) {
         var branch = branches[i];
         var container = branchesContainer;
