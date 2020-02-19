@@ -92,15 +92,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
 </ul>
@@ -202,12 +197,12 @@
 <em class="property">class </em><code class="sig-prename descclassname">cohydra.interface.</code><code class="sig-name descname">Interface</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">ns3_device</em>, <em class="sig-param">address</em>, <em class="sig-param">mac_address=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/interface/#Interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.interface.Interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>The Interface resembles a network card.</p>
-<p><em>Warning:</em> The interface is controlled by the a <a class="reference internal" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" title="cohydra.channel.channel.Channel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Channel</span></code></a>. Do not instantiate
+<p><em>Warning:</em> The interface is controlled by the a <code class="xref py py-class docutils literal notranslate"><span class="pre">Channel</span></code>. Do not instantiate
 an Interface by yourself.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>node</strong> (<a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>) – The node to connect the interface to.</p></li>
+<li><p><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code>) – The node to connect the interface to.</p></li>
 <li><p><strong>ns3_device</strong> – The ns-3 equivalent of the interface.</p></li>
 <li><p><strong>address</strong> (<em>str</em>) – An IP address.</p></li>
 <li><p><strong>mac_address</strong> (<em>str</em>) – An MAC address. If <code class="code docutils literal notranslate"><span class="pre">None</span></code>, a random MAC address will be assigned internally.
@@ -339,7 +334,7 @@ If you have any constraints on MAC addresses used externally, set it here.</p></
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>peer</strong> (<em>dict</em>) – Options for the internal side of the VETH pair.
-This can e.g. contain the network namespace (see <a class="reference internal" href="../cohydra.node.docker/#cohydra.node.docker.DockerNode" title="cohydra.node.docker.DockerNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">DockerNode</span></code></a> for example).</p>
+This can e.g. contain the network namespace (see <code class="xref py py-class docutils literal notranslate"><span class="pre">DockerNode</span></code> for example).</p>
 </dd>
 </dl>
 </dd></dl>

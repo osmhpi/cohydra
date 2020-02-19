@@ -190,7 +190,7 @@
 <span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        with scenario as simulation:</span>
-<span class="sd">            simulation.simulate(simluation_time=60)</span>
+<span class="sd">            simulation.simulate(simulation_time=60)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -304,7 +304,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        simluation_time : float</span>
+<span class="sd">        simulation_time : float</span>
 <span class="sd">            The simulation timeout in seconds.</span>
 <span class="sd">            If set to :code:`None` the simulation will continue until being manually aborted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -320,7 +320,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        simluation_time : float</span>
+<span class="sd">        simulation_time : float</span>
 <span class="sd">            The simulation timeout in seconds.</span>
 <span class="sd">            If set to :code:`None` the simulation will continue until being manually aborted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -339,14 +339,14 @@
             <span class="n">mobility_input</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
             <span class="n">defer</span><span class="p">(</span><span class="s1">&#39;stop mobility input&#39;</span><span class="p">,</span> <span class="n">mobility_input</span><span class="o">.</span><span class="n">destroy</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">simluation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Simulating for </span><span class="si">%.4f</span><span class="s1">s&#39;</span><span class="p">,</span> <span class="n">simluation_time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">simulation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Simulating for </span><span class="si">%.4f</span><span class="s1">s&#39;</span><span class="p">,</span> <span class="n">simulation_time</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Simulating until process gets stopped&#39;</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">run_simulation</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">simluation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">core</span><span class="o">.</span><span class="n">Simulator</span><span class="o">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">Seconds</span><span class="p">(</span><span class="n">simluation_time</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">simulation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">Simulator</span><span class="o">.</span><span class="n">Stop</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">Seconds</span><span class="p">(</span><span class="n">simulation_time</span><span class="p">))</span>
             <span class="n">core</span><span class="o">.</span><span class="n">Simulator</span><span class="o">.</span><span class="n">Run</span><span class="p">()</span>
             <span class="n">core</span><span class="o">.</span><span class="n">Simulator</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
 

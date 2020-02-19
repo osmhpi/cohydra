@@ -91,15 +91,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.workflow</a></li>
 </ul>
@@ -208,7 +203,7 @@
 <p>Every <a class="reference internal" href="#cohydra.workflow.Workflow" title="cohydra.workflow.Workflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">Workflow</span></code></a> creates a thread.</p>
 </div>
 <p class="rubric">Example</p>
-<p>Please use it with a decorator provided by the <a class="reference internal" href="../cohydra.scenario/#cohydra.scenario.Scenario" title="cohydra.scenario.Scenario"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scenario</span></code></a>:</p>
+<p>Please use it with a decorator provided by the <code class="xref py py-class docutils literal notranslate"><span class="pre">Scenario</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@scenario</span><span class="o">.</span><span class="n">workflow</span>
 <span class="k">def</span> <span class="nf">workflow_function_name</span><span class="p">(</span><span class="n">workflow</span><span class="p">):</span>
     <span class="n">do_something</span><span class="p">()</span>
@@ -243,14 +238,14 @@
 <dt id="cohydra.workflow.Workflow.stop">
 <code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stop the workflow.</p>
-<p><strong>Warning:</strong> Do not call this manually. This is done by the <a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p>
+<p><strong>Warning:</strong> Do not call this manually. This is done by the <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cohydra.workflow.Workflow.start">
 <code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow.start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start the workflow.</p>
-<p><strong>Warning:</strong> Do not call this manually. This is done by the <a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p>
+<p><strong>Warning:</strong> Do not call this manually. This is done by the <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
