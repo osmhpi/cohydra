@@ -21,8 +21,8 @@ def main():
     scenario.add_mobility_input(sumo)
 
     with scenario as sim:
-        # To simulate forever, just do not specifiy the simluation_time parameter.
-        sim.simulate(simluation_time=30)
+        # To simulate forever, just do not specifiy the simulation_time parameter.
+        sim.simulate(simulation_time=30)
 
 if __name__ == "__main__":
     parser = ArgumentParser()

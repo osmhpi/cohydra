@@ -15,6 +15,7 @@ def main():
     scenario.add_network(net)
 
     with scenario as sim:
+        # To simulate forever, just do not specifiy the simulation_time parameter.
         sim.simulate()
 
 if __name__ == "__main__":

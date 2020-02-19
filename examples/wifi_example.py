@@ -29,8 +29,8 @@ def main():
             workflow.sleep(2)
 
     with scenario as sim:
-        # To simulate forever, just do not specifiy the simluation_time parameter.
-        sim.simulate(simluation_time=180)
+        # To simulate forever, just do not specifiy the simulation_time parameter.
+        sim.simulate(simulation_time=180)
 
 if __name__ == "__main__":
     parser = ArgumentParser()
