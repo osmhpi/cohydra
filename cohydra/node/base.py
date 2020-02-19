@@ -21,7 +21,7 @@ class Node:
         # The names are restricted to this set of characters because
         # the name is used for generating the log file names.
         for char in name:
-            if not (char.isalnum() or char in ['-', '_', '.']):
+            if not (char.isalnum() or char in '-_.'):
                 raise ValueError('Please only supply alphanumeric names and "-", "_" and ".".')
 
         #: The cannels the node is connected to.
