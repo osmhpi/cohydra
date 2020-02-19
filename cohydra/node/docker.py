@@ -88,9 +88,6 @@ class DockerNode(Node):
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
                  cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None, environment_variables=None):
-        for char in name:
-            if not (char.isalnum() or char in ['-', '_', '.']):
-                raise ValueError('Please only supply alphanumeric names and "-", "_" and ".".')
         super().__init__(name)
         #: The docker image to use.
         self.docker_image = docker_image

@@ -17,6 +17,13 @@ class Node:
         A unique name for this node.
     """
     def __init__(self, name):
+        # Check the name.
+        # The names are restricted to this set of characters because
+        # the name is used for generating the log file names.
+        for char in name:
+            if not (char.isalnum() or char in ['-', '_', '.']):
+                raise ValueError('Please only supply alphanumeric names and "-", "_" and ".".')
+
         #: The cannels the node is connected to.
         self.channels = list()
         #: The name of the node.
