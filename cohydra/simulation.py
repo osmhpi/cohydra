@@ -37,7 +37,7 @@ class Simulation:
     .. code-block:: python
 
         with scenario as simulation:
-            simulation.simulate(simluation_time=60)
+            simulation.simulate(simulation_time=60)
 
     Parameters
     ----------
@@ -144,12 +144,30 @@ class Simulation:
         for workflow in self.workflows:
             workflow.stop()
 
-    def simulate(self, simluation_time=None):
+    def simulate(self, simulation_time=None):
         """Simulate the network.
+
+        Aborting the simulation with :kbd:`ctrl` + :kbd:`C` will be catched.
 
         Parameters
         ----------
-        simluation_time : float
+        simulation_time : float
+            The simulation timeout in seconds.
+            If set to :code:`None` the simulation will continue until being manually aborted.
+        """
+        try:
+            self.__simulate(simulation_time)
+        except KeyboardInterrupt:
+            pass
+
+    def __simulate(self, simulation_time=None):
+        """Simulate the network.
+
+        *Warning:* This method does not catch Keyboard errors.
+
+        Parameters
+        ----------
+        simulation_time : float
             The simulation timeout in seconds.
             If set to :code:`None` the simulation will continue until being manually aborted.
         """
@@ -168,14 +186,14 @@ class Simulation:
             mobility_input.start()
             defer('stop mobility input', mobility_input.destroy)
 
-        if simluation_time is not None:
-            logger.info('Simulating for %.4fs', simluation_time)
+        if simulation_time is not None:
+            logger.info('Simulating for %.4fs', simulation_time)
         else:
             logger.info('Simulating until process gets stopped')
 
         def run_simulation():
-            if simluation_time is not None:
-                core.Simulator.Stop(core.Seconds(simluation_time))
+            if simulation_time is not None:
+                core.Simulator.Stop(core.Seconds(simulation_time))
             core.Simulator.Run()
             core.Simulator.Destroy()
 
