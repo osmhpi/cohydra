@@ -60,6 +60,7 @@ class DockerNode(Node):
     ----------
     name : str
         The name of the node (and container).
+        It must consist only of *alphanumeric characters* and :code:`-`, :code:`_` and :code:`.`.
     docker_image : str
         The name of the docker image to use. If not specified,
         `docker_file` and `docker_build_dir` must be set.
@@ -87,6 +88,7 @@ class DockerNode(Node):
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
                  cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None, environment_variables=None, login=None):
+
 
         super().__init__(name)
         #: The docker image to use.
