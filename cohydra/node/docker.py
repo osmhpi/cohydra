@@ -149,7 +149,7 @@ class DockerNode(Node):
         """create and configure docker client"""
         client = docker.from_env()
         if self.login is not None:
-            client.login(username='techuser-stage-stk40', password='AKCp5btAnmRDH8yQnNdfvawtQ1gYPujQ8vkcbk5cnGBJf36fvoZZu8mDiW9jFfsH2eXy8puHR', registry='stk40-docker-stage-dev-local.bahnhub.tech.rz.db.de')
+            client.login(username=self.login.username, password=self.login.password, registry=self.login.registry)
         return client
 
     def build_docker_image(self):
