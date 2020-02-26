@@ -6,3 +6,4 @@ from .switch import SwitchNode
 from .docker import DockerNode
 from .external import ExternalNode
 from .ssh import SSHNode
+from .login import Login

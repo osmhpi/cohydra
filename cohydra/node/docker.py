@@ -10,7 +10,7 @@ import docker
 from ..context import defer
 from ..command_executor import DockerCommandExecutor
 from .base import Node
-
+from .login import Login
 logger = logging.getLogger(__name__)
 
 def expand_volume_shorthand(key_value):
@@ -86,7 +86,7 @@ class DockerNode(Node):
     """
 
     def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
-                 cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None, environment_variables=None):
+                 cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None, environment_variables=None, login=None):
 
         super().__init__(name)
         #: The docker image to use.
@@ -109,6 +109,8 @@ class DockerNode(Node):
         self.exposed_ports = exposed_ports if exposed_ports is not None else dict()
         #: Environment variables in the container.
         self.environment_variables = environment_variables
+        #: login parameter for authenticate with a registry
+        self.login = login
 
         #: The container instance.
         self.container = None
@@ -143,9 +145,16 @@ class DockerNode(Node):
         self.start_docker_container(simulation.log_directory, simulation.hosts)
         self.setup_host_interfaces()
 
+    def create_docker_client(self):
+        """create and configure docker client"""
+        client = docker.from_env()
+        if self.login is not None:
+            client.login(username='techuser-stage-stk40', password='AKCp5btAnmRDH8yQnNdfvawtQ1gYPujQ8vkcbk5cnGBJf36fvoZZu8mDiW9jFfsH2eXy8puHR', registry='stk40-docker-stage-dev-local.bahnhub.tech.rz.db.de')
+        return client
+
     def build_docker_image(self):
         """Build the image for the container."""
-        client = docker.from_env()
+        client = self.create_docker_client()
         if self.docker_image is None:
             logger.info('Building docker image: %s/%s', self.docker_build_dir, self.dockerfile)
             self.docker_image = client.images.build(
@@ -172,7 +181,7 @@ class DockerNode(Node):
             A dictionary with hostnames as keys and IP addresses as value.
         """
         logger.info('Starting docker container: %s', self.name)
-        client = docker.from_env()
+        client = self.create_docker_client()
         self.container = client.containers.run(
             self.docker_image_tag,
             name=self.name,
