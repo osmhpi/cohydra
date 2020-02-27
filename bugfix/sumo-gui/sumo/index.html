@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using SUMO With testbed &mdash; testbed 0.2.0 - bugfix/sumo-gui documentation</title>
+  <title>Using SUMO With testbed &mdash; cohydra 0.2.0 - bugfix/sumo-gui documentation</title>
   
 
   
@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script type="text/javascript" src="https://osmhpi.github.io/cohydra/versions.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../" class="icon icon-home"> testbed
+            <a href="../" class="icon icon-home"> cohydra
           
 
           
@@ -116,7 +116,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../">testbed</a>
+          <a href="../">cohydra</a>
         
       </nav>
 
@@ -192,7 +192,7 @@ You have to provide a port for TraCI:</p>
 </div>
 <div class="section" id="run-in-embedded-mode">
 <h3>Run in embedded mode<a class="headerlink" href="#run-in-embedded-mode" title="Permalink to this headline">¶</a></h3>
-<p>Or testbed can start the SUMO simulation for you. You can just specify the <code class="docutils literal notranslate"><span class="pre">config_path</span></code> in the <a class="reference internal" href="../api/testbed.mobility_input.sumo/#testbed.mobility_input.sumo.SUMOMobilityInput" title="testbed.mobility_input.sumo.SUMOMobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code></a>.</p>
+<p>Or testbed can start the SUMO simulation for you. You can just specify the <code class="docutils literal notranslate"><span class="pre">config_path</span></code> in the <code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code>.</p>
 </div>
 </div>
 <div class="section" id="using-docker">
@@ -226,7 +226,7 @@ Make sure to properly setup your volume mounts.</p>
 </div>
 <div class="section" id="writing-a-scenario-with-testbed">
 <h3>Writing A Scenario With Testbed<a class="headerlink" href="#writing-a-scenario-with-testbed" title="Permalink to this headline">¶</a></h3>
-<p>The simulation can now be configured to use SUMO with the <a class="reference internal" href="../api/testbed.mobility_input.sumo/#testbed.mobility_input.sumo.SUMOMobilityInput" title="testbed.mobility_input.sumo.SUMOMobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code></a> class.
+<p>The simulation can now be configured to use SUMO with the <code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code> class.
 Please configure the port and host accordingly.
 Furthermore, nodes have to be mapped to SUMO IDs in order to be moved by the co-simulation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">testbed.mobility_input</span> <span class="kn">import</span> <span class="n">SUMOMobilityInput</span>

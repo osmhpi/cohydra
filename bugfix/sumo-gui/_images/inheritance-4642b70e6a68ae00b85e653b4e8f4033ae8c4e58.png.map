@@ -1,4 +1,0 @@
-<map id="inheritanceb7d8092685" name="inheritanceb7d8092685">
-<area shape="rect" id="node1" href="../testbed.node.base/#testbed.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="33,5,213,31"/>
-<area shape="rect" id="node2" href="#testbed.node.switch.SwitchNode" target="_top" title="This is representing a switch between other nodes." alt="" coords="5,79,240,104"/>
-</map>

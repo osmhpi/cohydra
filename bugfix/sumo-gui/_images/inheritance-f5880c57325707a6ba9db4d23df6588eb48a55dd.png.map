@@ -1,4 +1,0 @@
-<map id="inheritance3aa6e7838c" name="inheritance3aa6e7838c">
-<area shape="rect" id="node1" href="../testbed.mobility_input.mobility_input/#testbed.mobility_input.mobility_input.MobilityInput" target="_top" title="A MobilityInput can be used to control multiple node&#39;s positions via an external positional simulation." alt="" coords="5,5,361,31"/>
-<area shape="rect" id="node2" href="#testbed.mobility_input.sumo.SUMOMobilityInput" target="_top" title="SUMOMobilityInput is an interface to the SUMO simulation environment." alt="" coords="15,79,352,104"/>
-</map>
