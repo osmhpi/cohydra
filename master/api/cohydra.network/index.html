@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex/" />
     <link rel="search" title="Search" href="../../search/" />
-    <link rel="next" title="cohydra.util" href="../cohydra.util/" />
+    <link rel="next" title="cohydra.node" href="../cohydra.node/" />
     <link rel="prev" title="cohydra.interface" href="../cohydra.interface/" /> 
 </head>
 
@@ -92,10 +92,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
 </ul>
@@ -259,9 +264,9 @@ Necessary configuration can be passed to the channel creation with keyword argum
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nodes</strong> (list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code>) – The nodes to connect on one physical connection. These must be instances of subclasses of <code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code>.</p></li>
+<li><p><strong>nodes</strong> (list of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>) – The nodes to connect on one physical connection. These must be instances of subclasses of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>.</p></li>
 <li><p><strong>channel_type</strong> (<em>class</em>) – The channel to use.
-This can be one of <code class="xref py py-class docutils literal notranslate"><span class="pre">CSMAChannel</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">WiFiChannel</span></code>.</p></li>
+This can be one of <a class="reference internal" href="../cohydra.channel.csma/#cohydra.channel.csma.CSMAChannel" title="cohydra.channel.csma.CSMAChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSMAChannel</span></code></a> or <a class="reference internal" href="../cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel" title="cohydra.channel.wifi.WiFiChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WiFiChannel</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -275,7 +280,7 @@ This can be one of <code class="xref py py-class docutils literal notranslate"><
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>simulation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code>) – The simulation to prepare the network for.</p></li>
+<li><p><strong>simulation</strong> (<a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>) – The simulation to prepare the network for.</p></li>
 <li><p><strong>network_index</strong> (<em>int</em>) – The index of the network (needed for coloring).</p></li>
 </ul>
 </dd>
@@ -301,7 +306,7 @@ This can be one of <code class="xref py py-class docutils literal notranslate"><
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cohydra.util/" class="btn btn-neutral float-right" title="cohydra.util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cohydra.node/" class="btn btn-neutral float-right" title="cohydra.node" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../cohydra.interface/" class="btn btn-neutral float-left" title="cohydra.interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
