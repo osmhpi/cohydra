@@ -238,7 +238,8 @@ Furthermore, nodes have to be mapped to SUMO IDs in order to be moved by the co-
 <div class="section" id="connect-to-a-sumo-remote-mode-instance">
 <h3>Connect To A SUMO Remote Mode Instance<a class="headerlink" href="#connect-to-a-sumo-remote-mode-instance" title="Permalink to this headline">¶</a></h3>
 <p>This example explains how to use cohydra with a SUMO server.</p>
-<p><em>Note</em> If you are using cohydra</p>
+<p><em>Note:</em> If you are using cohydra with Docker, you can access a SUMO Remote Mode Instance running on the Docker host with <cite>localhost</cite>.
+The container must be in the same network namespace, though. Please have a look at <a class="reference internal" href="../installation/#installation-with-docker"><span class="std std-ref">Installation With Docker</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cohydra.mobility_input</span> <span class="kn">import</span> <span class="n">SUMOMobilityInput</span>
 <span class="c1">#...</span>
 <span class="c1"># Scenario creation</span>
