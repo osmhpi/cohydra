@@ -25,9 +25,12 @@ class SUMOMobilityInput(MobilityInput):
 
     * | **Remote Mode**: In this mode the testbed connects to an external already running SUMO instance.
       | You configure the host and port where the SUMO server is running via the ``sumo_host`` and ``sumo_port`` argument.
-    * | **Embedded Mode**: In this mode the testbed starts an embedded version of SUMO.
+    * | **Local Mode**: In this mode the testbed starts a locally installed version of SUMO.
       | You configure the simulation via the ``config_path`` argument.
         If SUMO is not installed globally you need to set the ``SUMO_HOME`` environment variable.
+      | **Warning: This does not work when using cohydra in the prebuilt docker containers.**
+        For instructions on how to use cohydra without Docker,
+        please refer to :ref:`Local Installation Without Docker` and :ref:`Install SUMO On Simulation Host`.
 
     Parameters
     ----------
