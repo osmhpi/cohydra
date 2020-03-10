@@ -2,19 +2,17 @@ language: python
 
 if: branch != gh-pages
 
-services:
-- docker
-
 git:
   submodules: false
-
-python: 3.8
 
 jobs:
   include:
     - stage: docs
       if: type != pull_request
+      python: 3.8
       script: .travis-scripts/docs.sh
     - stage: docker-test
+      services:
+      - docker
       script: .travis-scripts/docker_build.sh
     - script: .travis-scripts/docker_basic_example.sh
