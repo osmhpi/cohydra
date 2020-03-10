@@ -68,6 +68,8 @@ class DockerNode(Node):
         The context directory (relative path possible) to execute the build in.
     docker_file : str
         The (absolute or relative) path to the Dockerfile.
+    pull: bool
+        Whether to always pull the image specified in `docker_image`.
     cpus : float
         The number of virtual CPUs to assign (1.0 meaning 1 vCPU).
     memory : str
@@ -86,7 +88,7 @@ class DockerNode(Node):
         If a list is specified each item should be in the form :code:`'KEY=VALUE'`.
     """
 
-    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile',
+    def __init__(self, name, docker_image=None, docker_build_dir=None, dockerfile='Dockerfile', pull=False,
                  cpus=0.0, memory=None, command=None, volumes=None, exposed_ports=None, environment_variables=None):
         super().__init__(name)
         #: The docker image to use.
@@ -95,6 +97,8 @@ class DockerNode(Node):
         self.docker_build_dir = docker_build_dir
         #: The path to the Dockerfile.
         self.dockerfile = dockerfile
+        #: Enforce pulling the image from a registry
+        self.pull = pull
 
         #: The number of vCPUs.
         self.cpus = cpus
@@ -155,8 +159,17 @@ class DockerNode(Node):
                 nocache=False,
             )[0]
         elif isinstance(self.docker_image, str):
-            logger.info('Pulling docker image: %s', self.docker_image)
-            self.docker_image = client.images.pull(self.docker_image)
+            pull_image = self.pull
+
+            try:
+                self.docker_image = client.images.get(self.docker_image)
+            except docker.errors.ImageNotFound:
+                pull_image = True
+
+            if pull_image:
+                logger.info('Pulling docker image: %s', self.docker_image)
+                self.docker_image = client.images.pull(self.docker_image)
+
         self.docker_image.tag(self.docker_image_tag)
 
     def start_docker_container(self, log_directory, extra_hosts=None):
