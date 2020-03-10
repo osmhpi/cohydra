@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.command_executor.util &mdash; cohydra 0.2.0 - travis-basic-example documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - travis-basic-example
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+      <li>cohydra.command_executor.util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.command_executor.util">
+<span id="cohydra-command-executor-util"></span><h1>cohydra.command_executor.util<a class="headerlink" href="#module-cohydra.command_executor.util" title="Permalink to this headline">¶</a></h1>
+<p>Internal utility functions.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.command_executor.util.split_shell_arguments" title="cohydra.command_executor.util.split_shell_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_shell_arguments</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cohydra.command_executor.util.stringify_shell_arguments" title="cohydra.command_executor.util.stringify_shell_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stringify_shell_arguments</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.command_executor.util.LogFile" title="cohydra.command_executor.util.LogFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LogFile</span></code></a></p></td>
+<td><p>The logfile helps by prepending timestamps to log lines.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="function">
+<dt id="cohydra.command_executor.util.stringify_shell_arguments">
+<code class="sig-prename descclassname">cohydra.command_executor.util.</code><code class="sig-name descname">stringify_shell_arguments</code><span class="sig-paren">(</span><em class="sig-param">command</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/util/#stringify_shell_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.util.stringify_shell_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cohydra.command_executor.util.split_shell_arguments">
+<code class="sig-prename descclassname">cohydra.command_executor.util.</code><code class="sig-name descname">split_shell_arguments</code><span class="sig-paren">(</span><em class="sig-param">command</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/util/#split_shell_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.util.split_shell_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="cohydra.command_executor.util.LogFile">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.command_executor.util.</code><code class="sig-name descname">LogFile</code><span class="sig-paren">(</span><em class="sig-param">logger</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/util/#LogFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.util.LogFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The logfile helps by prepending timestamps to log lines.</p>
+<dl class="method">
+<dt id="cohydra.command_executor.util.LogFile.log">
+<code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">line</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/util/#LogFile.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.util.LogFile.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-74d0ccb29dcbfd4a819bd24847c92c1e7589626a.png" alt="Inheritance diagram of cohydra.command_executor.util" usemap="#inheritance9c0f254c1e" class="inheritance graphviz" /></div>
+<map id="inheritance9c0f254c1e" name="inheritance9c0f254c1e">
+<area shape="rect" id="node1" href="#cohydra.command_executor.util.LogFile" target="_top" title="The logfile helps by prepending timestamps to log lines." alt="" coords="5,5,285,31"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
