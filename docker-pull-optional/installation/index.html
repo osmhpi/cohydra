@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; cohydra 0.2.0 - docker-pull-optional documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Getting Started" href="../getting-started/" />
+    <link rel="prev" title="cohydra - It’s A Testbed! :)" href="../" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - docker-pull-optional
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-with-docker">Installation With Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-installation-without-docker">Local Installation Without Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Running cohydra requires some dependencies. We therefore recommend using the Docker images provided below.</p>
+<div class="section" id="installation-with-docker">
+<h2>Installation With Docker<a class="headerlink" href="#installation-with-docker" title="Permalink to this headline">¶</a></h2>
+<p>Cohydra can be obtained via docker.
+The easiest solution is using the VSCode <em>Remote - Containers</em> extension.
+After cloning the repository and opening it in the container, your scenarios will by executing them with <code class="code docutils literal notranslate"><span class="pre">python3</span></code>.</p>
+<p>Otherwise, you can build the [Dockerfile](./Dockerfile) in the project’s root directory yourself by running <code class="code docutils literal notranslate"><span class="pre">make</span></code>.
+In the container, cohydra will be added to your <code class="code docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>.
+But you need to make sure, that you run the container with privileges to access the host network in order to have access to the host’s network interfaces.
+The Docker socket is mounted into the container to enable creating new containers from within the simulation.
+You of course need to modify the volume mount to allow cohydra access to your scenarios:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
+</pre></div>
+</div>
+<p>The main image is based on the images in the <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images">container-images</a> directory.
+The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/ns-3/Dockerfile">ns-3</a> image is just an installation of ns-3 (currently <em>ns-3.30</em>) on top of a Debian Buster.
+The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/cohydra-base/Dockerfile">cohydra-base</a> installs all neccessary dependencies for cohydra,
+<a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/cohydra-dev/Dockerfile">cohydra-dev</a> is for development purposes (docker-cli in the container).</p>
+</div>
+<div class="section" id="local-installation-without-docker">
+<h2>Local Installation Without Docker<a class="headerlink" href="#local-installation-without-docker" title="Permalink to this headline">¶</a></h2>
+<p>In the case you do not want to use the prebuilt docker, a normal ns-3 installation with <em>NetAnim</em> Python bindings will work, too.
+The Python libraries / directory provided by ns-3 has to be in your <code class="code docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>, though.
+Cohydra so far has only been tested with <strong>Debian 10 Buster</strong>, <strong>Ubuntu 18.04 Bionic Beaver</strong> and <strong>ns-3.30</strong>.</p>
+<p>There is no installation via <code class="code docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../getting-started/" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../" class="btn btn-neutral float-left" title="cohydra - It’s A Testbed! :)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
