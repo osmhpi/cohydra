@@ -159,16 +159,17 @@ class DockerNode(Node):
                 nocache=False,
             )[0]
         elif isinstance(self.docker_image, str):
-            pull_image = self.pull
+            if not self.pull:
+                try:
+                    self.docker_image = client.images.get(self.docker_image)
+                except docker.errors.ImageNotFound:
+                    pass
 
-            try:
-                self.docker_image = client.images.get(self.docker_image)
-            except docker.errors.ImageNotFound:
-                pull_image = True
-
-            if pull_image:
-                logger.info('Pulling docker image: %s', self.docker_image)
-                self.docker_image = client.images.pull(self.docker_image)
+            if isinstance(self.docker_image, str):
+                repo, *tag = self.docker_image.split(':')
+                tag = tag[0] if len(tag) else 'latest'
+                logger.info('Pulling docker image: %s, tag %s', repo, tag)
+                self.docker_image = client.images.pull(self.docker_image, tag=tag)
 
         self.docker_image.tag(self.docker_image_tag)
 
