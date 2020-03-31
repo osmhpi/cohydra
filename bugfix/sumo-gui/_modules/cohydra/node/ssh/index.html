@@ -182,7 +182,7 @@
     <span class="n">addr</span> <span class="o">=</span> <span class="n">interface</span><span class="o">.</span><span class="n">ip</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="n">addr</span> <span class="ow">in</span> <span class="n">interface</span><span class="o">.</span><span class="n">network</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to calculate default node ip in </span><span class="si">{ifname}</span><span class="s1"> (</span><span class="si">{interface}</span><span class="s1">)&#39;</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to calculate default node ip in </span><span class="si">{</span><span class="n">ifname</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">interface</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SSHNode"><a class="viewcode-back" href="../../../../api/cohydra.node.ssh/#cohydra.node.ssh.SSHNode">[docs]</a><span class="k">class</span> <span class="nc">SSHNode</span><span class="p">(</span><span class="n">ExternalNode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An SSH node represents an external device reachable via SSH.</span>

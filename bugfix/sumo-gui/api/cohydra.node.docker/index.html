@@ -257,7 +257,7 @@
 
 <dl class="class">
 <dt id="cohydra.node.docker.DockerNode">
-<em class="property">class </em><code class="sig-prename descclassname">cohydra.node.docker.</code><code class="sig-name descname">DockerNode</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">docker_image=None</em>, <em class="sig-param">docker_build_dir=None</em>, <em class="sig-param">dockerfile='Dockerfile'</em>, <em class="sig-param">cpus=0.0</em>, <em class="sig-param">memory=None</em>, <em class="sig-param">command=None</em>, <em class="sig-param">volumes=None</em>, <em class="sig-param">exposed_ports=None</em>, <em class="sig-param">environment_variables=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/docker/#DockerNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.docker.DockerNode" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.node.docker.</code><code class="sig-name descname">DockerNode</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">docker_image=None</em>, <em class="sig-param">docker_build_dir=None</em>, <em class="sig-param">dockerfile='Dockerfile'</em>, <em class="sig-param">pull=False</em>, <em class="sig-param">cpus=0.0</em>, <em class="sig-param">memory=None</em>, <em class="sig-param">command=None</em>, <em class="sig-param">volumes=None</em>, <em class="sig-param">exposed_ports=None</em>, <em class="sig-param">environment_variables=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/docker/#DockerNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.docker.DockerNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.node.base.Node</span></code></a></p>
 <p>A DockerNode represents a docker container.</p>
 <dl class="field-list simple">
@@ -269,6 +269,7 @@ It must consist only of <em>alphanumeric characters</em> and <code class="code d
 <cite>docker_file</cite> and <cite>docker_build_dir</cite> must be set.</p></li>
 <li><p><strong>docker_build_dir</strong> (<em>str</em>) – The context directory (relative path possible) to execute the build in.</p></li>
 <li><p><strong>docker_file</strong> (<em>str</em>) – The (absolute or relative) path to the Dockerfile.</p></li>
+<li><p><strong>pull</strong> (<em>bool</em>) – Whether to always pull the image specified in <cite>docker_image</cite>.</p></li>
 <li><p><strong>cpus</strong> (<em>float</em>) – The number of virtual CPUs to assign (1.0 meaning 1 vCPU).</p></li>
 <li><p><strong>memory</strong> (<em>str</em>) – The amount of memmory to allow the container to use. <strong>Example:</strong> <cite>‘128m’</cite>.</p></li>
 <li><p><strong>command</strong> (<em>str</em>) – An optional command to override the standard command on container
@@ -298,6 +299,12 @@ If a list is specified each item should be in the form <code class="code docutil
 <dt id="cohydra.node.docker.DockerNode.dockerfile">
 <code class="sig-name descname">dockerfile</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.docker.DockerNode.dockerfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to the Dockerfile.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.node.docker.DockerNode.pull">
+<code class="sig-name descname">pull</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.docker.DockerNode.pull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enforce pulling the image from a registry</p>
 </dd></dl>
 
 <dl class="attribute">

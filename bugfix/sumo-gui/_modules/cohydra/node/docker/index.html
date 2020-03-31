@@ -222,6 +222,8 @@
 <span class="sd">        The context directory (relative path possible) to execute the build in.</span>
 <span class="sd">    docker_file : str</span>
 <span class="sd">        The (absolute or relative) path to the Dockerfile.</span>
+<span class="sd">    pull: bool</span>
+<span class="sd">        Whether to always pull the image specified in `docker_image`.</span>
 <span class="sd">    cpus : float</span>
 <span class="sd">        The number of virtual CPUs to assign (1.0 meaning 1 vCPU).</span>
 <span class="sd">    memory : str</span>
@@ -240,7 +242,7 @@
 <span class="sd">        If a list is specified each item should be in the form :code:`&#39;KEY=VALUE&#39;`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">docker_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docker_build_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dockerfile</span><span class="o">=</span><span class="s1">&#39;Dockerfile&#39;</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">docker_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docker_build_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dockerfile</span><span class="o">=</span><span class="s1">&#39;Dockerfile&#39;</span><span class="p">,</span> <span class="n">pull</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">cpus</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">volumes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exposed_ports</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">environment_variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="c1">#: The docker image to use.</span>
@@ -249,6 +251,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">docker_build_dir</span> <span class="o">=</span> <span class="n">docker_build_dir</span>
         <span class="c1">#: The path to the Dockerfile.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dockerfile</span> <span class="o">=</span> <span class="n">dockerfile</span>
+        <span class="c1">#: Enforce pulling the image from a registry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pull</span> <span class="o">=</span> <span class="n">pull</span>
 
         <span class="c1">#: The number of vCPUs.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="n">cpus</span>
@@ -285,7 +289,7 @@
 <span class="sd">        str</span>
 <span class="sd">            The computed tag.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;ns3-</span><span class="si">{self.name}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;ns3-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
 
 <div class="viewcode-block" id="DockerNode.wants_ip_stack"><a class="viewcode-back" href="../../../../api/cohydra.node.docker/#cohydra.node.docker.DockerNode.wants_ip_stack">[docs]</a>    <span class="k">def</span> <span class="nf">wants_ip_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span></div>
@@ -309,8 +313,18 @@
                 <span class="n">nocache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pulling docker image: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pull</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">docker</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">ImageNotFound</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">repo</span><span class="p">,</span> <span class="o">*</span><span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                <span class="n">tag</span> <span class="o">=</span> <span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;latest&#39;</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pulling docker image: </span><span class="si">%s</span><span class="s1">, tag </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_image_tag</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DockerNode.start_docker_container"><a class="viewcode-back" href="../../../../api/cohydra.node.docker/#cohydra.node.docker.DockerNode.start_docker_container">[docs]</a>    <span class="k">def</span> <span class="nf">start_docker_container</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_directory</span><span class="p">,</span> <span class="n">extra_hosts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -347,10 +361,10 @@
             <span class="n">ports</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exposed_ports</span><span class="p">,</span>
             <span class="n">environment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">environment_variables</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">defer</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;stop docker container </span><span class="si">{self.name}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_docker_container</span><span class="p">)</span>
+        <span class="n">defer</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;stop docker container </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_docker_container</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;stdout&#39;</span><span class="p">,</span> <span class="s1">&#39;stderr&#39;</span><span class="p">):</span>
-            <span class="n">log_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{self.name}</span><span class="s1">.</span><span class="si">{stream}</span><span class="s1">.log&#39;</span><span class="p">)</span>
+            <span class="n">log_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_directory</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">stream</span><span class="si">}</span><span class="s1">.log&#39;</span><span class="p">)</span>
             <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">log_to_file</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">,</span> <span class="n">log_file_path</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="n">stream</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
         <span class="n">low_level_client</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">APIClient</span><span class="p">()</span>
@@ -375,7 +389,7 @@
             <span class="n">interface</span><span class="o">.</span><span class="n">connect_tap_to_bridge</span><span class="p">()</span>
             <span class="n">interface</span><span class="o">.</span><span class="n">setup_veth_pair</span><span class="p">({</span>
                 <span class="s1">&#39;ifname&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-                <span class="s2">&quot;net_ns_fd&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;/proc/</span><span class="si">{self.container_pid}</span><span class="s2">/ns/net&quot;</span>
+                <span class="s2">&quot;net_ns_fd&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;/proc/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">container_pid</span><span class="si">}</span><span class="s2">/ns/net&quot;</span>
             <span class="p">})</span>
 
             <span class="c1"># Get container&#39;s namespace and setup the interface in the container</span>
