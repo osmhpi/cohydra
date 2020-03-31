@@ -20,10 +20,9 @@ You of course need to modify the volume mount to allow cohydra access to your sc
 
     $ docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
 
-The main image is based on the images in the :src:`container-images <container-images>` directory.  
-The :src:`ns-3 <container-images/ns-3/Dockerfile>` image is just an installation of ns-3 (currently *ns-3.30*) on top of a Debian Buster.
-The :src:`cohydra-base <container-images/cohydra-base/Dockerfile>` installs all neccessary dependencies for cohydra,
-:src:`cohydra-dev <container-images/cohydra-dev/Dockerfile>` is for development purposes (docker-cli in the container).
+The main image is based on the images in the :src:`docker <docker>` directory.
+The :src:`cohydra-base <docker/cohydra-base/Dockerfile>` installs all neccessary dependencies for cohydra,
+:src:`cohydra-dev <docker/cohydra-dev/Dockerfile>` is for development purposes (docker-cli in the container).
 
 Local Installation Without Docker
 *********************************
