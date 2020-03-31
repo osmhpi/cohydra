@@ -6,6 +6,7 @@ RUN apt-get update && \
 	apt-get install -y --no-install-recommends \
 	graphviz \
 	make \
+	openssh-client \
 	&& \
 	apt-get autoremove -y && \
 	apt-get clean -y && \

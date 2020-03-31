@@ -1,5 +1,6 @@
 # cohydra
 
+[![master](https://api.travis-ci.com/osmhpi/cohydra.svg?branch=master)](https://travis-ci.com/osmhpi/cohydra)
 
 ## Contributors
 
