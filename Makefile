@@ -25,13 +25,13 @@ latest: git-is-clean all
 	docker tag osmhpi/cohydra:dev-${COHYDRA_TAG} osmhpi/cohydra:dev
 
 cohydra-base:
-	${docker_build} -t osmhpi/cohydra:base-${COHYDRA_TAG} container-images/cohydra-base
+	${docker_build} -t osmhpi/cohydra:base-${COHYDRA_TAG} docker/cohydra-base
 
 cohydra:
 	${docker_build} -t osmhpi/cohydra:${COHYDRA_TAG} .
 
 cohydra-dev:
-	${docker_build} -t osmhpi/cohydra:dev-${COHYDRA_TAG} container-images/cohydra-dev
+	${docker_build} -t osmhpi/cohydra:dev-${COHYDRA_TAG} docker/cohydra-dev
 
 save: git-is-clean
 	docker save \

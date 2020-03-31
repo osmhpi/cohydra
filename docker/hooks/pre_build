@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+export COHYDRA_TAG=$DOCKER_TAG
+make -C ../.. cohydra-base
