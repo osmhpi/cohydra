@@ -1,0 +1,4 @@
+<map id="inheritancefd31645bb5" name="inheritancefd31645bb5">
+<area shape="rect" id="node1" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" target="_top" title="The Channel resembles a physical connection of nodes." alt="" coords="16,5,257,31"/>
+<area shape="rect" id="node2" href="#cohydra.channel.csma.CSMAChannel" target="_top" title="The Channel resembles a physical connection of nodes." alt="" coords="5,79,268,104"/>
+</map>
