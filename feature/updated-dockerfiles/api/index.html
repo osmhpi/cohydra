@@ -37,7 +37,6 @@
   <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
-    <link rel="next" title="cohydra.argparse" href="cohydra.argparse/" />
     <link rel="prev" title="Getting Started" href="../getting-started/" /> 
 </head>
 
@@ -90,21 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting Started</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-cohydra">cohydra</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.argparse/">cohydra.argparse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.channel/">cohydra.channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.command_executor/">cohydra.command_executor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.context/">cohydra.context</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.events/">cohydra.events</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.interface/">cohydra.interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.network/">cohydra.network</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.node/">cohydra.node</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.scenario/">cohydra.scenario</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.simulation/">cohydra.simulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.util/">cohydra.util</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cohydra.workflow/">cohydra.workflow</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#cohydra">cohydra</a></li>
 </ul>
 </li>
 </ul>
@@ -171,53 +156,8 @@
             
   <div class="section" id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-cohydra">
-<span id="cohydra"></span><h2>cohydra<a class="headerlink" href="#module-cohydra" title="Permalink to this headline">¶</a></h2>
-<p>Cohydra is a testbed for writing scenarios with the ns-3 network simulator.</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="cohydra.argparse/#module-cohydra.argparse" title="cohydra.argparse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.argparse</span></code></a></p></td>
-<td><p>Argument parsing for the simulation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cohydra.channel/#module-cohydra.channel" title="cohydra.channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.channel</span></code></a></p></td>
-<td><p>Channels are used to connect nodes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cohydra.command_executor/#module-cohydra.command_executor" title="cohydra.command_executor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.command_executor</span></code></a></p></td>
-<td><p>A <a class="reference internal" href="cohydra.command_executor.base/#cohydra.command_executor.base.CommandExecutor" title="cohydra.command_executor.base.CommandExecutor"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommandExecutor</span></code></a> can be used to run commands during the simulation and is thereful useful in combination with a <a class="reference internal" href="cohydra.workflow/#cohydra.workflow.Workflow" title="cohydra.workflow.Workflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">Workflow</span></code></a>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cohydra.context/#module-cohydra.context" title="cohydra.context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.context</span></code></a></p></td>
-<td><p>Contexts to tear down the simulation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cohydra.events/#module-cohydra.events" title="cohydra.events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.events</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cohydra.interface/#module-cohydra.interface" title="cohydra.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.interface</span></code></a></p></td>
-<td><p>Internal network card.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cohydra.network/#module-cohydra.network" title="cohydra.network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.network</span></code></a></p></td>
-<td><p>A subnet.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cohydra.node/#module-cohydra.node" title="cohydra.node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.node</span></code></a></p></td>
-<td><p>Nodes are the main components of simulating behaviour.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cohydra.scenario/#module-cohydra.scenario" title="cohydra.scenario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.scenario</span></code></a></p></td>
-<td><p>The blueprint for a simulation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cohydra.simulation/#module-cohydra.simulation" title="cohydra.simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.simulation</span></code></a></p></td>
-<td><p>The simulation executable.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cohydra.util/#module-cohydra.util" title="cohydra.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.util</span></code></a></p></td>
-<td><p>Internal utility functions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cohydra.workflow/#module-cohydra.workflow" title="cohydra.workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cohydra.workflow</span></code></a></p></td>
-<td><p>Allow fault-injection by executing a sequence of instructions.</p></td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="cohydra">
+<h2>cohydra<a class="headerlink" href="#cohydra" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -228,8 +168,6 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="cohydra.argparse/" class="btn btn-neutral float-right" title="cohydra.argparse" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../getting-started/" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
