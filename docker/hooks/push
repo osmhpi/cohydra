@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+# push all images
+make -C .. push-latest

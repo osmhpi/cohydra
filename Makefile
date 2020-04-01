@@ -28,19 +28,25 @@ cohydra-base:
 	${docker_build} -t osmhpi/cohydra:base-${COHYDRA_TAG} docker/cohydra-base
 
 cohydra:
-	${docker_build} -t osmhpi/cohydra:${COHYDRA_TAG} .
+	${docker_build} -t osmhpi/cohydra:${COHYDRA_TAG} . -f docker/Dockerfile
 
 cohydra-dev:
 	${docker_build} -t osmhpi/cohydra:dev-${COHYDRA_TAG} docker/cohydra-dev
 
-save: git-is-clean
-	docker save \
-		osmhpi/cohydra:base-${COHYDRA_TAG} \
-		osmhpi/cohydra:base \
-		osmhpi/cohydra:${COHYDRA_TAG} \
-		osmhpi/cohydra:latest \
-		osmhpi/cohydra:dev-${COHYDRA_TAG} \
-		osmhpi/cohydra:dev
+pull-latest:
+	docker pull osmhpi/cohydra:base
+	docker pull osmhpi/cohydra:latest
+	docker pull osmhpi/cohydra:dev
+
+push:
+	docker push osmhpi/cohydra:base-${COHYDRA_TAG}
+	docker push osmhpi/cohydra:${COHYDRA_TAG}
+	docker push osmhpi/cohydra:dev-${COHYDRA_TAG}
+
+push-latest: git-is-clean push
+	docker push osmhpi/cohydra:base
+	docker push osmhpi/cohydra:latest
+	docker push osmhpi/cohydra:dev
 
 docs:
 	$(MAKE) -C docs
