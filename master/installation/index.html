@@ -172,10 +172,9 @@ You of course need to modify the volume mount to allow cohydra access to your sc
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
 </pre></div>
 </div>
-<p>The main image is based on the images in the <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images">container-images</a> directory.
-The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/ns-3/Dockerfile">ns-3</a> image is just an installation of ns-3 (currently <em>ns-3.30</em>) on top of a Debian Buster.
-The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/cohydra-base/Dockerfile">cohydra-base</a> installs all neccessary dependencies for cohydra,
-<a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/container-images/cohydra-dev/Dockerfile">cohydra-dev</a> is for development purposes (docker-cli in the container).</p>
+<p>The main image is based on the images in the <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/docker">docker</a> directory.
+The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/docker/cohydra-base/Dockerfile">cohydra-base</a> installs all neccessary dependencies for cohydra,
+<a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/docker/cohydra-dev/Dockerfile">cohydra-dev</a> is for development purposes (docker-cli in the container).</p>
 </div>
 <div class="section" id="local-installation-without-docker">
 <h2>Local Installation Without Docker<a class="headerlink" href="#local-installation-without-docker" title="Permalink to this headline">¶</a></h2>

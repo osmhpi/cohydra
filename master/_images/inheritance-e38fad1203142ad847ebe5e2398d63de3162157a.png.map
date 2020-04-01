@@ -1,4 +1,0 @@
-<map id="inheritanceb04b437707" name="inheritanceb04b437707">
-<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="35,5,217,31"/>
-<area shape="rect" id="node2" href="#cohydra.node.docker.DockerNode" target="_top" title="A DockerNode represents a docker container." alt="" coords="5,79,247,104"/>
-</map>
