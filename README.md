@@ -25,9 +25,9 @@ Otherwise, you can build the [Dockerfile](./Dockerfile) in the project's root di
 docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
 ```
 
-The main image is based on the images in the [docker](./docker) directory.
-The [`cohydra-base`](./docker/cohydra-base/Dockerfile) installs all neccessary dependencies for cohydra,
-[`cohydra-dev`](./docker/cohydra-dev/Dockerfile) is for development purposes (docker-cli in the container).
+The main image [`osmhpi/cohydra`](https://hub.docker.com/r/osmhpi/cohydra) is based on the images in the [docker](./docker) directory.
+The [`osmhpi/cohydra:base`](./docker/cohydra-base/Dockerfile) image installs all neccessary dependencies for cohydra,
+[`osmhpi/cohydra:dev`](./docker/cohydra-dev/Dockerfile) is for development purposes (docker-cli in the container).
 
 ### Installation Without Docker
 
