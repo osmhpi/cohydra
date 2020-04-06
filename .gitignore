@@ -20,7 +20,7 @@ var/*
 *.pcap
 
 # Simulation log files
-/simulation-logs
+simulation-logs
 /docker/sawtooth-pbft/keys
 
 # Generated documentation
