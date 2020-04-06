@@ -158,7 +158,7 @@
 <div class="viewcode-block" id="Visualisation"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation">[docs]</a><span class="k">class</span> <span class="nc">Visualisation</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The Visualisation class is the abstract super class of all visualisations.</span>
 
-<span class="sd">    To set a new visualistion or to get the current visualisation object use:</span>
+<span class="sd">    To set a new visualisation or to get the current visualisation object use:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
@@ -177,19 +177,21 @@
         <span class="k">return</span> <span class="n">Visualisation</span><span class="o">.</span><span class="n">__current_visualisation</span></div>
 
 <div class="viewcode-block" id="Visualisation.set_visualisation"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.set_visualisation">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">set_visualisation</span><span class="p">(</span><span class="n">visualistion</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets a new visualistion.</span>
+    <span class="k">def</span> <span class="nf">set_visualisation</span><span class="p">(</span><span class="n">visualisation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets a new visualisation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        node : :class:`.Visualisation`</span>
 <span class="sd">            The new visualisation object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Visualisation</span><span class="o">.</span><span class="n">__current_visualisation</span> <span class="o">=</span> <span class="n">visualistion</span></div>
+        <span class="n">Visualisation</span><span class="o">.</span><span class="n">__current_visualisation</span> <span class="o">=</span> <span class="n">visualisation</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1">#: The size of each node in the visualisation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_size</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="c1">#: The output directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Visualisation.set_node_size"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.set_node_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_node_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_node_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets a new node size</span>
@@ -201,9 +203,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_size</span> <span class="o">=</span> <span class="n">new_node_size</span></div>
 
+<div class="viewcode-block" id="Visualisation.set_output_directory"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.set_output_directory">[docs]</a>    <span class="k">def</span> <span class="nf">set_output_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets a new output directory</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_output_directory : str</span>
+<span class="sd">            The new output directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span> <span class="o">=</span> <span class="n">new_output_directory</span></div>
+
 <div class="viewcode-block" id="Visualisation.prepare_node"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.prepare_node">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">prepare_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Gives the visualistion the oppertunity to prepare a node</span>
+        <span class="sd">&quot;&quot;&quot;Gives the visualisation the oppertunity to prepare a node</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
