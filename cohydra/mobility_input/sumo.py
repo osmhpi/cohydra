@@ -7,7 +7,7 @@ import threading
 import time
 from math import hypot
 
-if 'SUMO_HOME' is os.environ:
+if 'SUMO_HOME' in os.environ:
     SUMO_HOME = os.environ['SUMO_HOME']
     sys.path.append(os.path.join(SUMO_HOME, 'tools'))
     os.environ['PATH'] += os.pathsep + os.path.join(SUMO_HOME, 'bin')
