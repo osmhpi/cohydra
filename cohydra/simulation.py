@@ -5,7 +5,7 @@ import os
 import threading
 
 from datetime import datetime
-from ns import core, internet, netanim
+from ns import core, internet
 from pyroute2 import IPRoute
 
 import docker
@@ -13,6 +13,7 @@ import docker
 from .util import once
 from .context import defer
 from .workflow import Workflow
+from .visualisation import Visualisation
 
 logger = logging.getLogger(__name__)
 
@@ -64,8 +65,6 @@ class Simulation:
         #:
         #: This can be used to modify the hosts file.
         self.hosts = None
-        #: NetAnim interface.
-        self.animation_interface = None
         #: Indicates whether the simulation is started.
         self.started = False
         #: The workflows in the simulation.
@@ -117,18 +116,9 @@ class Simulation:
         for (i, network) in enumerate(self.scenario.networks):
             network.prepare(self, i)
 
-        animation_file = os.path.join(self.log_directory, "netanim.xml")
-        self.animation_interface = netanim.AnimationInterface(animation_file)
-        self.animation_interface.EnablePacketMetadata(True)
-
-        node_size = self.scenario.netanim_node_size
-
-        logger.info('Preparing nodes for simulation.')
+        logger.info('Preparing nodes for simulation and visualistion.')
         for node in self.scenario.nodes():
-            self.animation_interface.UpdateNodeDescription(node.ns3_node, node.name)
-            if node.color:
-                self.animation_interface.UpdateNodeColor(node.ns3_node, *node.color)
-            self.animation_interface.UpdateNodeSize(node.ns3_node.GetId(), node_size, node_size)
+            Visualisation.get_visualisation().prepare_node(node)
             node.prepare(self)
 
         logger.info('Preparing mobility inputs for simulation.')

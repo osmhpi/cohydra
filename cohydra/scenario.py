@@ -20,15 +20,9 @@ class Scenario:
         ...
         with scenario as simulation:
             simulation.simulate(simulation_time=60)
-
-    Parameters
-    ----------
-    netanim_node_size : float
-        This determines the size of a node for displaying in NetAnim.
-
     """
 
-    def __init__(self, netanim_node_size: float = 4):
+    def __init__(self):
         #: All networks belonging to the scenario.
         self.networks = set()
         #: The workflows to be executed.
@@ -39,8 +33,6 @@ class Scenario:
         #:
         #: It is created on simulation start.
         self.context = None
-        #: The size of a node (a circle) in NetAnim.
-        self.netanim_node_size = netanim_node_size
         self.mobility_inputs = []
 
 
