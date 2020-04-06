@@ -1,0 +1,4 @@
+<map id="inheritance63b7317aed" name="inheritance63b7317aed">
+<area shape="rect" id="node1" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" target="_top" title="The Channel resembles a physical connection of nodes." alt="" coords="5,5,247,31"/>
+<area shape="rect" id="node2" href="#cohydra.channel.wifi.WiFiChannel" target="_top" title="A WiFiChannel is a physical (but of course wireless) connection" alt="" coords="6,79,246,104"/>
+</map>

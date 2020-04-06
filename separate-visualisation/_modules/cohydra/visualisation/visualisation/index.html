@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.visualisation.visualisation &mdash; cohydra 0.2.0 - separate-visualisation documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - separate-visualisation
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../">Module code</a> &raquo;</li>
+        
+      <li>cohydra.visualisation.visualisation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cohydra.visualisation.visualisation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Visualisations to display simulation results.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<div class="viewcode-block" id="Visualisation"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation">[docs]</a><span class="k">class</span> <span class="nc">Visualisation</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The Visualisation class is the abstract super class of all visualisations.</span>
+
+<span class="sd">    To set a new visualistion or to get the current visualisation object use:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from cohydra.visualisation import Visualisation, NoVisualisation</span>
+<span class="sd">        Visualisation.set_visualisation(NoVisualisation())</span>
+<span class="sd">        Visualisation.get_visualisation().set_node_size(5.0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__current_visualisation</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Visualisation.get_visualisation"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.get_visualisation">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_visualisation</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Return the current visualisation. Default is no visualisation&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">Visualisation</span><span class="o">.</span><span class="n">__current_visualisation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Visualisation</span><span class="o">.</span><span class="n">set_visualisation</span><span class="p">(</span><span class="n">NoVisualisation</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">Visualisation</span><span class="o">.</span><span class="n">__current_visualisation</span></div>
+
+<div class="viewcode-block" id="Visualisation.set_visualisation"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.set_visualisation">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">set_visualisation</span><span class="p">(</span><span class="n">visualistion</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets a new visualistion.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : :class:`.Visualisation`</span>
+<span class="sd">            The new visualisation object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Visualisation</span><span class="o">.</span><span class="n">__current_visualisation</span> <span class="o">=</span> <span class="n">visualistion</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#: The size of each node in the visualisation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_size</span> <span class="o">=</span> <span class="mi">4</span>
+
+<div class="viewcode-block" id="Visualisation.set_node_size"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.set_node_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_node_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_node_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets a new node size</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_node_size : float</span>
+<span class="sd">            The new node size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_size</span> <span class="o">=</span> <span class="n">new_node_size</span></div>
+
+<div class="viewcode-block" id="Visualisation.prepare_node"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.prepare_node">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">prepare_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gives the visualistion the oppertunity to prepare a node</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : :class:`.Node`</span>
+<span class="sd">            The related node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Visualisation.set_node_position"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.Visualisation.set_node_position">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">set_node_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the position of the node in the visualisation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : :class:`.Node`</span>
+<span class="sd">            The related node.</span>
+<span class="sd">        x : float</span>
+<span class="sd">            The x-position.</span>
+<span class="sd">        y : float</span>
+<span class="sd">            The y-position.</span>
+<span class="sd">        z : float</span>
+<span class="sd">            The z-position.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="NoVisualisation"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.NoVisualisation">[docs]</a><span class="k">class</span> <span class="nc">NoVisualisation</span><span class="p">(</span><span class="n">Visualisation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The NoContext is a Null-Object and therefore **does nothing**.</span>
+
+<span class="sd">    There is no visualisation at all and all calls to the visualisation class</span>
+<span class="sd">    will be ignored.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NoVisualisation.prepare_node"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.NoVisualisation.prepare_node">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="NoVisualisation.set_node_position"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.visualisation/#cohydra.visualisation.netanimvisualisation.NoVisualisation.set_node_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_node_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

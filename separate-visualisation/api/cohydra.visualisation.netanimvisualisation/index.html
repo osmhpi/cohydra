@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.visualisation.netanimvisualisation &mdash; cohydra 0.2.0 - separate-visualisation documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.visualisation.visualisation" href="../cohydra.visualisation.visualisation/" />
+    <link rel="prev" title="cohydra.visualisation" href="../cohydra.visualisation/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - separate-visualisation
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../cohydra.visualisation/">cohydra.visualisation</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.visualisation.netanimvisualisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.visualisation.visualisation/">cohydra.visualisation.visualisation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+          <li><a href="../cohydra.visualisation/">cohydra.visualisation</a> &raquo;</li>
+        
+      <li>cohydra.visualisation.netanimvisualisation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.visualisation.netanimvisualisation">
+<span id="cohydra-visualisation-netanimvisualisation"></span><h1>cohydra.visualisation.netanimvisualisation<a class="headerlink" href="#module-cohydra.visualisation.netanimvisualisation" title="Permalink to this headline">¶</a></h1>
+<p>NetAnim Visualisation using the NetAnim format.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation" title="cohydra.visualisation.netanimvisualisation.NetAnimVisualisation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetAnimVisualisation</span></code></a></p></td>
+<td><p>The NetAnimVisualisation class produces a netanim.xml file which contains visualistion details in the NetAnim format.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="class">
+<dt id="cohydra.visualisation.netanimvisualisation.NetAnimVisualisation">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.visualisation.netanimvisualisation.</code><code class="sig-name descname">NetAnimVisualisation</code><a class="reference internal" href="../../_modules/cohydra/visualisation/netanimvisualisation/#NetAnimVisualisation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../cohydra.visualisation.visualisation/#cohydra.visualisation.visualisation.Visualisation" title="cohydra.visualisation.visualisation.Visualisation"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.visualisation.visualisation.Visualisation</span></code></a></p>
+<p>The NetAnimVisualisation class produces a netanim.xml file which
+contains visualistion details in the NetAnim format.</p>
+<p>To create a NetAnim visualisation, use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cohydra.visualisation</span> <span class="kn">import</span> <span class="n">Visualisation</span>
+<span class="kn">from</span> <span class="nn">cohydra.visualisation.netanimvisualisation</span> <span class="kn">import</span> <span class="n">NetAnimVisualisation</span>
+<span class="n">Visualisation</span><span class="o">.</span><span class="n">set_visualisation</span><span class="p">(</span><span class="n">NetAnimVisualisation</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.prepare_node">
+<code class="sig-name descname">prepare_node</code><span class="sig-paren">(</span><em class="sig-param">node</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/visualisation/netanimvisualisation/#NetAnimVisualisation.prepare_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.prepare_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives the visualistion the oppertunity to prepare a node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>) – The related node.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.set_node_position">
+<code class="sig-name descname">set_node_position</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/visualisation/netanimvisualisation/#NetAnimVisualisation.set_node_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.set_node_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the position of the node in the visualisation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>) – The related node.</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – The x-position.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The y-position.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – The z-position.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.get_visualisation">
+<em class="property">static </em><code class="sig-name descname">get_visualisation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.get_visualisation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current visualisation. Default is no visualisation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.set_node_size">
+<code class="sig-name descname">set_node_size</code><span class="sig-paren">(</span><em class="sig-param">new_node_size: float</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.set_node_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a new node size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_node_size</strong> (<em>float</em>) – The new node size.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.set_visualisation">
+<em class="property">static </em><code class="sig-name descname">set_visualisation</code><span class="sig-paren">(</span><em class="sig-param">visualistion</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.set_visualisation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a new visualistion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference internal" href="../cohydra.visualisation.visualisation/#cohydra.visualisation.visualisation.Visualisation" title="cohydra.visualisation.visualisation.Visualisation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visualisation</span></code></a>) – The new visualisation object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-c4af7cf0bfb7c41d954bf2ce235d8bffa62e5782.png" alt="Inheritance diagram of cohydra.visualisation.netanimvisualisation" usemap="#inheritanceab58babf35" class="inheritance graphviz" /></div>
+<map id="inheritanceab58babf35" name="inheritanceab58babf35">
+<area shape="rect" id="node3" href="../cohydra.visualisation.visualisation/#cohydra.visualisation.visualisation.Visualisation" target="_top" title="The Visualisation class is the abstract super class of all visualisations." alt="" coords="61,79,397,104"/>
+<area shape="rect" id="node2" href="#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation" target="_top" title="The NetAnimVisualisation class produces a netanim.xml file which" alt="" coords="5,152,452,177"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.visualisation.visualisation/" class="btn btn-neutral float-right" title="cohydra.visualisation.visualisation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.visualisation/" class="btn btn-neutral float-left" title="cohydra.visualisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
