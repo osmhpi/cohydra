@@ -1,0 +1,7 @@
+<configuration>
+	<input>
+		<net-file value="net.net.xml" />
+		<route-files value="routes.xml" />
+		<additional-files value="reroutes.add.xml" />
+	</input>
+</configuration>
