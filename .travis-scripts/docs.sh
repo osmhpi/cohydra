@@ -34,7 +34,7 @@ apt-get install -y make graphviz
 
 pip3 install -r docs/requirements.txt
 
-ln -s /app/cohydra "\$PYTHONPATH/cohydra"
+ln -s /app/cohydra "/usr/local/lib/python3.7/dist-packages/cohydra"
 
 export VERSIONS_JS_URL=https://osmhpi.github.io/cohydra/versions.js
 

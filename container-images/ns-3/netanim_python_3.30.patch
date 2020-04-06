@@ -1,8 +1,0 @@
---- a/ns-3.30/src/netanim/wscript	2019-11-28 10:06:08.778243830 +0000
-+++ b/ns-3.30/src/netanim/wscript	2019-11-28 10:06:02.410243559 +0000
-@@ -16,4 +16,4 @@
-     headers.source = ['model/animation-interface.h', ]
-     if (bld.env['ENABLE_EXAMPLES']) :
-        bld.recurse('examples')
--
-+    bld.ns3_python_bindings()
