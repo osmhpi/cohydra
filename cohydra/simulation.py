@@ -4,7 +4,6 @@ import logging
 import os
 import threading
 
-from datetime import datetime
 from ns import core, internet
 from pyroute2 import IPRoute
 
@@ -51,10 +50,8 @@ class Simulation:
         #: The scenario describing the simulation.
         self.scenario = scenario
 
-        date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         #: The directory where all log files are stored.
-        self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
-        os.makedirs(self.log_directory, exist_ok=True)
+        self.log_directory = scenario.log_directory
 
         #: A docker runtime client for checking whether there is an
         #: influxdb running for monitoring purposes.
@@ -116,7 +113,7 @@ class Simulation:
         for (i, network) in enumerate(self.scenario.networks):
             network.prepare(self, i)
 
-        logger.info('Preparing nodes for simulation and visualistion.')
+        logger.info('Preparing nodes for simulation and visualisation.')
         for node in self.scenario.nodes():
             Visualisation.get_visualisation().prepare_node(node)
             node.prepare(self)

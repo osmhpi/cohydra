@@ -2,16 +2,13 @@
 
 from cohydra import ArgumentParser, Network, DockerNode, Scenario
 
-from cohydra.visualisation import Visualisation
 from cohydra.visualisation.netanimvisualisation import NetAnimVisualisation
 
 def main():
+
     scenario = Scenario()
 
     net = Network("10.0.0.0", "255.255.255.0")
-
-    Visualisation.set_visualisation(NetAnimVisualisation())
-    Visualisation.set_node_size(5.0)
 
     node1 = DockerNode('ping', docker_build_dir='./docker/ping')
     node1.color = (255, 0, 0)
@@ -20,6 +17,10 @@ def main():
     net.connect(node1, node2, delay='200ms')
 
     scenario.add_network(net)
+
+    visualisation = NetAnimVisualisation()
+    visualisation.set_node_size(5.0)
+    scenario.set_visualisation(visualisation)
 
     with scenario as sim:
         # To simulate forever, just do not specifiy the simulation_time parameter.

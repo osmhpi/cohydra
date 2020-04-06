@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 class Visualisation(ABC):
     """The Visualisation class is the abstract super class of all visualisations.
 
-    To set a new visualistion or to get the current visualisation object use:
+    To set a new visualisation or to get the current visualisation object use:
 
     .. code-block:: python
 
@@ -24,19 +24,21 @@ class Visualisation(ABC):
         return Visualisation.__current_visualisation
 
     @staticmethod
-    def set_visualisation(visualistion):
-        """Sets a new visualistion.
+    def set_visualisation(visualisation):
+        """Sets a new visualisation.
 
         Parameters
         ----------
         node : :class:`.Visualisation`
             The new visualisation object.
         """
-        Visualisation.__current_visualisation = visualistion
+        Visualisation.__current_visualisation = visualisation
 
     def __init__(self):
         #: The size of each node in the visualisation
         self.node_size = 4
+        #: The output directory
+        self.output_directory = None
 
     def set_node_size(self, new_node_size: float):
         """Sets a new node size
@@ -48,9 +50,19 @@ class Visualisation(ABC):
         """
         self.node_size = new_node_size
 
+    def set_output_directory(self, new_output_directory: str):
+        """Sets a new output directory
+
+        Parameters
+        ----------
+        new_output_directory : str
+            The new output directory
+        """
+        self.output_directory = new_output_directory
+
     @abstractmethod
     def prepare_node(self, node):
-        """Gives the visualistion the oppertunity to prepare a node
+        """Gives the visualisation the oppertunity to prepare a node
 
         Parameters
         ----------

@@ -1,9 +1,12 @@
 """The blueprint for a simulation."""
 
 import logging
+import os
+from datetime import datetime
 
 from .simulation import Simulation
 from .context import Context, SimpleContext
+from .visualisation import Visualisation
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +32,14 @@ class Scenario:
         self.workflows = set()
         #: A reference to a simulation (if running).
         self.simulation = None
+        #: The visualisation object
+        self.visualisation = None
+
+        date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        #: The log directory for all logs
+        self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
+        os.makedirs(self.log_directory, exist_ok=True)
+
         #: The Context is e.g.\ used for teardowns.
         #:
         #: It is created on simulation start.
@@ -57,6 +68,22 @@ class Scenario:
             It will get prepared on simulation start.
         """
         self.mobility_inputs.append(mobility_input)
+
+    def set_visualisation(self, visualisation):
+        """Sets the new :class:`.Visualisation`.
+
+        Parameters
+        ----------
+        visualisation : :class:`.Visualisation`
+            The new visualisation object.
+        """
+        self.visualisation = visualisation
+        Visualisation.set_visualisation(self.visualisation)
+        self.visualisation.set_output_directory(self.log_directory)
+
+        # Refresh the position of all nodes for the new object
+        for node in self.nodes():
+            Visualisation.get_visualisation().set_node_position(node, *node.position)
 
     def channels(self):
         """Retrieve all channels.

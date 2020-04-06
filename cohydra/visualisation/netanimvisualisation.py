@@ -1,29 +1,33 @@
 """NetAnim Visualisation using the NetAnim format."""
 
-from .visualisation import Visualisation
-
+import os
 from ns import netanim
+
+from .visualisation import Visualisation
 
 class NetAnimVisualisation(Visualisation):
     """The NetAnimVisualisation class produces a netanim.xml file which
-    contains visualistion details in the NetAnim format.
+    contains visualisation details in the NetAnim format.
 
-    To create a NetAnim visualisation, use:
+    To create a NetAnim visualisation, use the following code and hand the
+    object to the scenario.
 
     .. code-block:: python
 
-        from cohydra.visualisation import Visualisation
         from cohydra.visualisation.netanimvisualisation import NetAnimVisualisation
-        Visualisation.set_visualisation(NetAnimVisualisation())
+        visualisation = NetAnimVisualisation()
+        visualisation.set_node_size(5.0)
+        scenario.set_visualisation(visualisation)
     """
 
     def __init__(self):
         super().__init__()
-        animation_file = os.path.join(self.log_directory, "netanim.xml")
-        self.animation_interface = netanim.AnimationInterface(animation_file)
-        self.animation_interface.EnablePacketMetadata(True)
+
+        #: The netanim animation interface
+        self.animation_interface = None
 
     def prepare_node(self, node):
+        self._prepare()
         self.animation_interface.UpdateNodeDescription(node.ns3_node, node.name)
         if node.color:
             self.animation_interface.UpdateNodeColor(node.ns3_node, *node.color)
@@ -34,4 +38,9 @@ class NetAnimVisualisation(Visualisation):
         )
 
     def set_node_position(self, node, x, y, z=0):
-        self.animation_interface.SetConstantPosition(node.ns3_node, x, y, z)
+        netanim.AnimationInterface.SetConstantPosition(node.ns3_node, x, y, z)
+
+    def _prepare(self):
+        if self.animation_interface is None:
+            self.animation_interface = netanim.AnimationInterface(os.path.join(self.output_directory,"netanim.xml"))
+            self.animation_interface.EnablePacketMetadata(True)
