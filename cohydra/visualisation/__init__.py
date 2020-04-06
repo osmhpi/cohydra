@@ -1,4 +1,4 @@
-"""Visualisation differs multiple visualisations and
+"""Visualisation offers multiple visualisations and
 has an interface for user defined visualisations.
 """
 from .visualisation import Visualisation, NoVisualisation
