@@ -43,14 +43,17 @@ class SUMOMobilityInput(MobilityInput):
     sumo_port : int
         The TraCI port.
     sumo_cmd : str
-         The command to start sumo when using the local mode (default: ``sumo``).
+        The command to start sumo when using the local mode (default: ``sumo``).
     config_path : str
-         The path to the simulation configuration (.cfg).
+        The path to the simulation configuration (.cfg).
+    steplength : float
+        The length of each simulation step in seconds (default: 1).
+        It only has effect in the local mode.
     """
 
     def __init__(self, name="SUMO External Simulation", steps=1000,
                  sumo_host='localhost', sumo_port=8813, sumo_cmd="sumo",
-                 config_path=None):
+                 config_path=None, step_length=1):
         super().__init__(name)
         #: The host on which the SUMO simulation is running.
         #:
@@ -66,6 +69,8 @@ class SUMOMobilityInput(MobilityInput):
         self.config_path = config_path
         #: The number of steps to simulate.
         self.steps = steps
+        #: The length of every simulation step
+        self.step_length = step_length
         #: The number of steps to simulate in SUMO.
         self.step_counter = 0
 
@@ -75,7 +80,7 @@ class SUMOMobilityInput(MobilityInput):
         if self.config_path is None:
             traci.init(host=self.sumo_host, port=self.sumo_port)
         else:
-            traci.start([self.sumo_cmd, '-c', self.config_path])
+            traci.start([self.sumo_cmd, "--step-length", str(self.step_length), '-c', self.config_path])
         self.step_counter = 0
 
     def start(self):
