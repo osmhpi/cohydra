@@ -155,9 +155,8 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">csma</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">wifi</span>
-<span class="kn">from</span> <span class="nn">aexpr</span> <span class="kn">import</span> <span class="n">aexpr</span>
 
-<span class="kn">from</span> <span class="nn">..visualisation</span> <span class="kn">import</span> <span class="n">Visualisation</span>
+<span class="kn">from</span> <span class="nn">..visualization</span> <span class="kn">import</span> <span class="n">Visualization</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -188,17 +187,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ns3_node</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">Node</span><span class="p">()</span>
         <span class="n">core</span><span class="o">.</span><span class="n">Names</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">)</span>
 
-        <span class="c1">#: The position of the node (used by wifi models and visualisation)</span>
+        <span class="c1">#: The position of the node (used by wifi models and visualization)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="c1"># Every change at the position will be forwarded to the visualisation</span>
-        <span class="n">aexpr</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">())</span>\
-        <span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="k">lambda</span> <span class="n">obs</span><span class="p">,</span> <span class="n">oldv</span><span class="p">,</span> <span class="n">newv</span><span class="p">:</span>\
-                    <span class="n">Visualisation</span>\
-                        <span class="o">.</span><span class="n">get_visualisation</span><span class="p">()</span>\
-                        <span class="o">.</span><span class="n">set_node_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">newv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">newv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>\
-        <span class="p">)</span>
-        <span class="n">Visualisation</span><span class="o">.</span><span class="n">get_visualisation</span><span class="p">()</span><span class="o">.</span><span class="n">set_node_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="c1">#: The color of the node used in the visualisation.</span>
+
+        <span class="c1">#: The color of the node used in the visualization.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1">#: The interfaces (~network cards) of this node.</span>
@@ -207,8 +199,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">command_executor</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Node.set_position"><a class="viewcode-back" href="../../../../api/cohydra.node.base/#cohydra.node.base.Node.set_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span> <span class="c1"># pylint: disable=invalid-name</span>
-        <span class="sd">&quot;&quot;&quot;Set the position of the node. It also updates the position in</span>
-<span class="sd">        the visualisation.</span>
+        <span class="sd">&quot;&quot;&quot;Set the position of the node.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

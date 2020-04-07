@@ -1,5 +1,0 @@
-<map id="inheritance59515531f5" name="inheritance59515531f5">
-<area shape="rect" id="node1" title="Helper class that provides a standard way to create an ABC using" alt="" coords="145,5,221,31"/>
-<area shape="rect" id="node3" href="#cohydra.visualisation.visualisation.Visualisation" target="_top" title="The Visualisation class is the abstract super class of all visualisations." alt="" coords="15,79,351,104"/>
-<area shape="rect" id="node2" href="#cohydra.visualisation.visualisation.NoVisualisation" target="_top" title="The NoContext is a Null&#45;Object and therefore **does nothing**." alt="" coords="5,152,360,177"/>
-</map>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cohydra.visualisation.netanimvisualisation &mdash; cohydra 0.2.0 - separate-visualisation documentation</title>
+  <title>cohydra.visualization.netanimvisualization &mdash; cohydra 0.2.0 - separate-visualisation documentation</title>
   
 
   
@@ -135,7 +135,7 @@
         
           <li><a href="../../../">Module code</a> &raquo;</li>
         
-      <li>cohydra.visualisation.netanimvisualisation</li>
+      <li>cohydra.visualization.netanimvisualization</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,27 +150,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for cohydra.visualisation.netanimvisualisation</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;NetAnim Visualisation using the NetAnim format.&quot;&quot;&quot;</span>
+  <h1>Source code for cohydra.visualization.netanimvisualization</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;NetAnim Visualization using the NetAnim format.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">netanim</span>
 
-<span class="kn">from</span> <span class="nn">.visualisation</span> <span class="kn">import</span> <span class="n">Visualisation</span>
+<span class="kn">from</span> <span class="nn">.visualization</span> <span class="kn">import</span> <span class="n">Visualization</span>
 
-<div class="viewcode-block" id="NetAnimVisualisation"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.netanimvisualisation/#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation">[docs]</a><span class="k">class</span> <span class="nc">NetAnimVisualisation</span><span class="p">(</span><span class="n">Visualisation</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The NetAnimVisualisation class produces a netanim.xml file which</span>
-<span class="sd">    contains visualisation details in the NetAnim format.</span>
+<div class="viewcode-block" id="NetAnimVisualization"><a class="viewcode-back" href="../../../../api/cohydra.visualization.netanimvisualization/#cohydra.visualization.netanimvisualization.NetAnimVisualization">[docs]</a><span class="k">class</span> <span class="nc">NetAnimVisualization</span><span class="p">(</span><span class="n">Visualization</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The NetAnimVisualization class produces a netanim.xml file which</span>
+<span class="sd">    contains visualization details in the NetAnim format.</span>
 
-<span class="sd">    To create a NetAnim visualisation, use the following code and hand the</span>
+<span class="sd">    To create a NetAnim visualization, use the following code and hand the</span>
 <span class="sd">    object to the scenario.</span>
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        from cohydra.visualisation.netanimvisualisation import NetAnimVisualisation</span>
-<span class="sd">        visualisation = NetAnimVisualisation()</span>
-<span class="sd">        visualisation.set_node_size(5.0)</span>
-<span class="sd">        scenario.set_visualisation(visualisation)</span>
+<span class="sd">        from cohydra.visualization.netanimvisualization import NetAnimVisualization</span>
+<span class="sd">        visualization = NetAnimVisualization()</span>
+<span class="sd">        visualization.set_node_size(5.0)</span>
+<span class="sd">        scenario.set_visualization(visualization)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -179,7 +179,8 @@
         <span class="c1">#: The netanim animation interface</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="NetAnimVisualisation.prepare_node"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.netanimvisualisation/#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.prepare_node">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<div class="viewcode-block" id="NetAnimVisualization.prepare_node"><a class="viewcode-back" href="../../../../api/cohydra.visualization.netanimvisualization/#cohydra.visualization.netanimvisualization.NetAnimVisualization.prepare_node">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prepare</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span><span class="o">.</span><span class="n">UpdateNodeDescription</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">color</span><span class="p">:</span>
@@ -190,7 +191,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">node_size</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="NetAnimVisualisation.set_node_position"><a class="viewcode-back" href="../../../../api/cohydra.visualisation.netanimvisualisation/#cohydra.visualisation.netanimvisualisation.NetAnimVisualisation.set_node_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_node_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="NetAnimVisualization.set_node_position"><a class="viewcode-back" href="../../../../api/cohydra.visualization.netanimvisualization/#cohydra.visualization.netanimvisualization.NetAnimVisualization.set_node_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_node_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">netanim</span><span class="o">.</span><span class="n">AnimationInterface</span><span class="o">.</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
