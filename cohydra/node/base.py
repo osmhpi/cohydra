@@ -2,7 +2,6 @@
 import logging
 
 from ns import core, csma, network, wifi
-from aexpr import aexpr
 
 from ..visualization import Visualization
 
@@ -37,14 +36,7 @@ class Node:
 
         #: The position of the node (used by wifi models and visualization)
         self.position = (0, 0, 0)
-        # Every change at the position will be forwarded to the visualization
-        aexpr(lambda: self.position, globals(), locals())\
-        .on_change(lambda obs, oldv, newv:\
-                    Visualization\
-                        .get_visualization()\
-                        .set_node_position(self, newv[0], newv[1], newv[2])\
-        )
-        Visualization.get_visualization().set_node_position(self, 0, 0, 0)
+
         #: The color of the node used in the visualization.
         self.color = None
 
@@ -54,8 +46,7 @@ class Node:
         self.command_executor = None
 
     def set_position(self, x, y, z=0): # pylint: disable=invalid-name
-        """Set the position of the node. It also updates the position in
-        the visualization.
+        """Set the position of the node.
 
         Parameters
         ----------

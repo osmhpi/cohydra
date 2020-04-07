@@ -27,6 +27,7 @@ class NetAnimVisualization(Visualization):
         self.animation_interface = None
 
     def prepare_node(self, node):
+        super().prepare_node(node)
         self._prepare()
         self.animation_interface.UpdateNodeDescription(node.ns3_node, node.name)
         if node.color:

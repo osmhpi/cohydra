@@ -1,6 +1,7 @@
 """Visualizations to display simulation results."""
 
 from abc import ABC, abstractmethod
+from aexpr import aexpr
 
 class Visualization(ABC):
     """The Visualization class is the abstract super class of all visualizations.
@@ -69,7 +70,9 @@ class Visualization(ABC):
         node : :class:`.Node`
             The related node.
         """
-        pass
+        # Every change at the position of node will be recognized
+        aexpr(lambda: node.position, globals(), locals())\
+        .on_change(lambda obs, oldv, newv: self.set_node_position(node, *newv))
 
     @abstractmethod
     def set_node_position(self, node, x, y, z=0):
