@@ -93,8 +93,8 @@ class SUMOMobilityInput(MobilityInput):
 
                     # Update positions:
                     for node in self.node_mapping:
-                        x, y = self.__get_position_of_node(node)
-                        node.set_position(x, y, 0)
+                        x, y, z = self.__get_position_of_node(node)
+                        node.set_position(x, y, z)
 
                     self.step_counter = self.step_counter + 1
                     time.sleep(traci.simulation.getDeltaT())
@@ -112,11 +112,13 @@ class SUMOMobilityInput(MobilityInput):
             print("Unknown node "+str(node.name))
         else:
             if self.node_mapping[node][1] == "person":
-                return traci.person.getPosition(self.node_mapping[node][0])
+                return traci.person.getPosition3D(self.node_mapping[node][0])
             elif self.node_mapping[node][1] == "vehicle":
-                return traci.vehicle.getPosition(self.node_mapping[node][0])
+                return traci.vehicle.getPosition3D(self.node_mapping[node][0])
             elif self.node_mapping[node][1] == "junction":
-                return traci.junction.getPosition(self.node_mapping[node][0])
+                # Junction has no support for 3D positions
+                x, y = traci.junction.getPosition(self.node_mapping[node][0])
+                return x, y, 0.0
             else:
                 print("Unknown type " + str(self.node_mapping[node][1]))
 
