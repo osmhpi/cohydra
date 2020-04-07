@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Mi 11 Sep 2019 14:09:26 CEST by Eclipse SUMO netedit Version v1_2_0+0803-e2fd7b8a96
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="/home/arne/Masterarbeit/SUMO/scenario3/net1.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/arne/Masterarbeit/SUMO/scenario3/net2.net.xml"/>
+    </output>
+
+    <processing>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.5"/>
+        <rectangular-lane-cut value="false"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="false"/>
+    </pedestrian>
+
+</configuration>
+-->
+
+<net version="1.3" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-250.00,0.00,250.00,150.00" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
+
+    <edge id=":n0_0" function="internal">
+        <lane id=":n0_0_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="110.00" length="0.10" shape="0.00,-1.60 0.00,-1.60"/>
+    </edge>
+    <edge id=":n1_0" function="internal">
+        <lane id=":n1_0_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="4.74" length="6.53" shape="250.00,-1.60 252.22,-1.41 253.09,-0.86 252.63,0.07 250.82,1.37"/>
+    </edge>
+    <edge id=":n2_0" function="internal">
+        <lane id=":n2_0_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="4.97" length="1.74" shape="0.82,151.37 0.41,151.56 0.00,151.62 -0.41,151.56 -0.82,151.37"/>
+    </edge>
+    <edge id=":n3_0" function="internal">
+        <lane id=":n3_0_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="4.74" length="6.53" shape="-250.82,1.37 -252.63,0.07 -253.09,-0.86 -252.22,-1.41 -250.00,-1.60"/>
+    </edge>
+
+    <edge id="r0" from="n0" to="n1" priority="-1">
+        <lane id="r0_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="110.00" length="250.00" shape="0.00,-1.60 250.00,-1.60"/>
+    </edge>
+    <edge id="r1" from="n1" to="n2" priority="-1">
+        <lane id="r1_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="110.00" length="291.55" shape="250.82,1.37 0.82,151.37"/>
+    </edge>
+    <edge id="r2" from="n2" to="n3" priority="-1">
+        <lane id="r2_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="110.00" length="291.55" shape="-0.82,151.37 -250.82,1.37"/>
+    </edge>
+    <edge id="r3" from="n3" to="n0" priority="-1">
+        <lane id="r3_0" index="0" allow="tram rail_urban rail rail_electric rail_fast" speed="110.00" length="250.00" shape="-250.00,-1.60 0.00,-1.60"/>
+    </edge>
+
+    <junction id="n0" type="priority" x="0.00" y="0.00" incLanes="r3_0" intLanes=":n0_0_0" shape="0.00,0.00 0.00,-3.20 0.00,0.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="n1" type="priority" x="500.00" y="0.00" incLanes="r0_0" intLanes=":n1_0_0" shape="250.00,-3.20 250.00,0.00 251.65,2.74 254.35,0.93 255.87,-0.56 256.19,-1.71 255.32,-2.54 253.25,-3.03">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="n2" type="priority" x="0.00" y="250.00" incLanes="r1_0" intLanes=":n2_0_0" shape="1.65,152.74 0.00,150.00 -1.65,152.74 -0.55,153.18 -0.00,153.24 0.55,153.18 1.10,153.02">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="n3" type="priority" x="-500.00" y="0.00" incLanes="r2_0" intLanes=":n3_0_0" shape="-251.65,2.74 -250.00,0.00 -250.00,-3.20 -253.25,-3.03 -255.32,-2.54 -256.19,-1.71 -255.87,-0.56 -254.35,0.93">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+
+    <connection from="r0" to="r1" fromLane="0" toLane="0" via=":n1_0_0" dir="l" state="M"/>
+    <connection from="r1" to="r2" fromLane="0" toLane="0" via=":n2_0_0" dir="l" state="M"/>
+    <connection from="r2" to="r3" fromLane="0" toLane="0" via=":n3_0_0" dir="l" state="M"/>
+    <connection from="r3" to="r0" fromLane="0" toLane="0" via=":n0_0_0" dir="s" state="M"/>
+
+    <connection from=":n0_0" to="r0" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":n1_0" to="r1" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":n2_0" to="r2" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":n3_0" to="r3" fromLane="0" toLane="0" dir="l" state="M"/>
+
+</net>

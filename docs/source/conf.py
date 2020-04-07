@@ -44,6 +44,7 @@ extensions = [
     "sphinx_autopackagesummary",
     "sphinx_rtd_theme",
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosectionlabel",
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
     "sphinx.ext.extlinks",
