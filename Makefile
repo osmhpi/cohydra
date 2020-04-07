@@ -5,9 +5,9 @@ export COHYDRA_TAG := ${COHYDRA_TAG}
 
 docker_build := docker build --build-arg NS3_TAG --build-arg SUMO_TAG --build-arg COHYDRA_TAG
 
-.PHONY: latest ns-3 sumo cohydra-base cohydra cohydra-dev docs
+.PHONY: latest cohydra-base cohydra cohydra-dev docs
 
-all: ns-3 sumo cohydra-base cohydra cohydra-dev
+all: cohydra-base cohydra cohydra-dev
 	#
 	# build tag ${COHYDRA_TAG}
 	#
