@@ -26,7 +26,7 @@ class SUMOMobilityInput(MobilityInput):
     * | **Remote Mode**: In this mode the testbed connects to an external already running SUMO instance.
       | You configure the host and port where the SUMO server is running via the ``sumo_host`` and ``sumo_port`` argument.
     * | **Local Mode**: In this mode the testbed starts a locally installed version of SUMO.
-      | You configure the simulation via the ``config_path`` argument.
+      | You configure the simulation via the ``sumo_cmd`` and ``config_path`` argument.
         If SUMO is not installed globally you need to set the ``SUMO_HOME`` environment variable.
       | **Warning: This does not work when using cohydra in the prebuilt docker containers.**
         For instructions on how to use cohydra without Docker,
@@ -42,12 +42,15 @@ class SUMOMobilityInput(MobilityInput):
         The host on which the SUMO simulation is running.
     sumo_port : int
         The TraCI port.
+    sumo_cmd : str
+         The command to start sumo when using the local mode (default: ``sumo``).
     config_path : str
          The path to the simulation configuration (.cfg).
     """
 
     def __init__(self, name="SUMO External Simulation", steps=1000,
-                 sumo_host='localhost', sumo_port=8813, config_path=None):
+                 sumo_host='localhost', sumo_port=8813, sumo_cmd="sumo",
+                 config_path=None):
         super().__init__(name)
         #: The host on which the SUMO simulation is running.
         #:
@@ -57,6 +60,8 @@ class SUMOMobilityInput(MobilityInput):
         #:
         #: Can be specified on the server with the ``--remote-port`` option.
         self.sumo_port = sumo_port
+        #: The command to start sumo locally
+        self.sumo_cmd = sumo_cmd
         #: The path to the simulation scenario configuration.
         self.config_path = config_path
         #: The number of steps to simulate.
@@ -70,7 +75,7 @@ class SUMOMobilityInput(MobilityInput):
         if self.config_path is None:
             traci.init(host=self.sumo_host, port=self.sumo_port)
         else:
-            traci.start(['sumo', '-c', self.config_path])
+            traci.start([self.sumo_cmd, '-c', self.config_path])
         self.step_counter = 0
 
     def start(self):
