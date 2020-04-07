@@ -1,8 +1,6 @@
 """The blueprint for a simulation."""
 
 import logging
-import os
-from datetime import datetime
 
 from .simulation import Simulation
 from .context import Context, SimpleContext
@@ -34,11 +32,6 @@ class Scenario:
         self.simulation = None
         #: The visualization object
         self.visualization = None
-
-        date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        #: The log directory for all logs
-        self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
-        os.makedirs(self.log_directory, exist_ok=True)
 
         #: The Context is e.g.\ used for teardowns.
         #:
@@ -78,12 +71,6 @@ class Scenario:
             The new visualization object.
         """
         self.visualization = visualization
-        Visualization.set_visualization(self.visualization)
-        self.visualization.set_output_directory(self.log_directory)
-
-        # Refresh the position of all nodes for the new object
-        for node in self.nodes():
-            Visualization.get_visualization().set_node_position(node, *node.position)
 
     def channels(self):
         """Retrieve all channels.

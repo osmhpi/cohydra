@@ -3,6 +3,7 @@
 import logging
 import os
 import threading
+from datetime import datetime
 
 from ns import core, internet
 from pyroute2 import IPRoute
@@ -12,7 +13,7 @@ import docker
 from .util import once
 from .context import defer
 from .workflow import Workflow
-from .visualization import Visualization
+from .visualization import Visualization, NoVisualization
 
 logger = logging.getLogger(__name__)
 
@@ -50,8 +51,17 @@ class Simulation:
         #: The scenario describing the simulation.
         self.scenario = scenario
 
-        #: The directory where all log files are stored.
-        self.log_directory = scenario.log_directory
+        date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        #: The log directory for all logs
+        self.log_directory = os.path.join(os.getcwd(), 'simulation-logs', date)
+        os.makedirs(self.log_directory, exist_ok=True)
+
+        self.visualization = scenario.visualization or NoVisualization()
+        self.visualization.set_output_directory(self.log_directory)
+        # Refresh the position of all nodes for the new object
+        for node in scenario.nodes():
+            self.visualization.set_node_position(node, *node.position)
+        Visualization.set_visualization(self.visualization)
 
         #: A docker runtime client for checking whether there is an
         #: influxdb running for monitoring purposes.
