@@ -1,41 +1,41 @@
-"""Visualisations to display simulation results."""
+"""Visualizations to display simulation results."""
 
 from abc import ABC, abstractmethod
 
-class Visualisation(ABC):
-    """The Visualisation class is the abstract super class of all visualisations.
+class Visualization(ABC):
+    """The Visualization class is the abstract super class of all visualizations.
 
-    To set a new visualisation or to get the current visualisation object use:
+    To set a new visualization or to get the current visualization object use:
 
     .. code-block:: python
 
-        from cohydra.visualisation import Visualisation, NoVisualisation
-        Visualisation.set_visualisation(NoVisualisation())
-        Visualisation.get_visualisation().set_node_size(5.0)
+        from cohydra.visualization import Visualization, NoVisualization
+        Visualization.set_visualization(NoVisualization())
+        Visualization.get_visualization().set_node_size(5.0)
     """
 
-    __current_visualisation = None
+    __current_visualization = None
 
     @staticmethod
-    def get_visualisation():
-        """Return the current visualisation. Default is no visualisation"""
-        if Visualisation.__current_visualisation is None:
-            Visualisation.set_visualisation(NoVisualisation())
-        return Visualisation.__current_visualisation
+    def get_visualization():
+        """Return the current visualization. Default is no visualization"""
+        if Visualization.__current_visualization is None:
+            Visualization.set_visualization(NoVisualization())
+        return Visualization.__current_visualization
 
     @staticmethod
-    def set_visualisation(visualisation):
-        """Sets a new visualisation.
+    def set_visualization(visualization):
+        """Sets a new visualization.
 
         Parameters
         ----------
-        node : :class:`.Visualisation`
-            The new visualisation object.
+        node : :class:`.Visualization`
+            The new visualization object.
         """
-        Visualisation.__current_visualisation = visualisation
+        Visualization.__current_visualization = visualization
 
     def __init__(self):
-        #: The size of each node in the visualisation
+        #: The size of each node in the visualization
         self.node_size = 4
         #: The output directory
         self.output_directory = None
@@ -62,7 +62,7 @@ class Visualisation(ABC):
 
     @abstractmethod
     def prepare_node(self, node):
-        """Gives the visualisation the oppertunity to prepare a node
+        """Gives the visualization the oppertunity to prepare a node
 
         Parameters
         ----------
@@ -73,7 +73,7 @@ class Visualisation(ABC):
 
     @abstractmethod
     def set_node_position(self, node, x, y, z=0):
-        """Set the position of the node in the visualisation.
+        """Set the position of the node in the visualization.
 
         Parameters
         ----------
@@ -89,10 +89,10 @@ class Visualisation(ABC):
         pass
 
 
-class NoVisualisation(Visualisation):
+class NoVisualization(Visualization):
     """The NoContext is a Null-Object and therefore **does nothing**.
 
-    There is no visualisation at all and all calls to the visualisation class
+    There is no visualization at all and all calls to the visualization class
     will be ignored.
     """
 

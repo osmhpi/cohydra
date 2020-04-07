@@ -12,7 +12,7 @@ import docker
 from .util import once
 from .context import defer
 from .workflow import Workflow
-from .visualisation import Visualisation
+from .visualization import Visualization
 
 logger = logging.getLogger(__name__)
 
@@ -113,9 +113,9 @@ class Simulation:
         for (i, network) in enumerate(self.scenario.networks):
             network.prepare(self, i)
 
-        logger.info('Preparing nodes for simulation and visualisation.')
+        logger.info('Preparing nodes for simulation and visualization.')
         for node in self.scenario.nodes():
-            Visualisation.get_visualisation().prepare_node(node)
+            Visualization.get_visualization().prepare_node(node)
             node.prepare(self)
 
         logger.info('Preparing mobility inputs for simulation.')

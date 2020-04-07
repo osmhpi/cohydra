@@ -6,7 +6,7 @@ from datetime import datetime
 
 from .simulation import Simulation
 from .context import Context, SimpleContext
-from .visualisation import Visualisation
+from .visualization import Visualization
 
 logger = logging.getLogger(__name__)
 
@@ -32,8 +32,8 @@ class Scenario:
         self.workflows = set()
         #: A reference to a simulation (if running).
         self.simulation = None
-        #: The visualisation object
-        self.visualisation = None
+        #: The visualization object
+        self.visualization = None
 
         date = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         #: The log directory for all logs
@@ -69,21 +69,21 @@ class Scenario:
         """
         self.mobility_inputs.append(mobility_input)
 
-    def set_visualisation(self, visualisation):
-        """Sets the new :class:`.Visualisation`.
+    def set_visualization(self, visualization):
+        """Sets the new :class:`.Visualization`.
 
         Parameters
         ----------
-        visualisation : :class:`.Visualisation`
-            The new visualisation object.
+        visualization : :class:`.Visualization`
+            The new visualization object.
         """
-        self.visualisation = visualisation
-        Visualisation.set_visualisation(self.visualisation)
-        self.visualisation.set_output_directory(self.log_directory)
+        self.visualization = visualization
+        Visualization.set_visualization(self.visualization)
+        self.visualization.set_output_directory(self.log_directory)
 
         # Refresh the position of all nodes for the new object
         for node in self.nodes():
-            Visualisation.get_visualisation().set_node_position(node, *node.position)
+            Visualization.get_visualization().set_node_position(node, *node.position)
 
     def channels(self):
         """Retrieve all channels.

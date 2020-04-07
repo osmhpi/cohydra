@@ -1,23 +1,23 @@
-"""NetAnim Visualisation using the NetAnim format."""
+"""NetAnim Visualization using the NetAnim format."""
 
 import os
 from ns import netanim
 
-from .visualisation import Visualisation
+from .visualization import Visualization
 
-class NetAnimVisualisation(Visualisation):
-    """The NetAnimVisualisation class produces a netanim.xml file which
-    contains visualisation details in the NetAnim format.
+class NetAnimVisualization(Visualization):
+    """The NetAnimVisualization class produces a netanim.xml file which
+    contains visualization details in the NetAnim format.
 
-    To create a NetAnim visualisation, use the following code and hand the
+    To create a NetAnim visualization, use the following code and hand the
     object to the scenario.
 
     .. code-block:: python
 
-        from cohydra.visualisation.netanimvisualisation import NetAnimVisualisation
-        visualisation = NetAnimVisualisation()
-        visualisation.set_node_size(5.0)
-        scenario.set_visualisation(visualisation)
+        from cohydra.visualization.netanimvisualization import NetAnimVisualization
+        visualization = NetAnimVisualization()
+        visualization.set_node_size(5.0)
+        scenario.set_visualization(visualization)
     """
 
     def __init__(self):

@@ -2,7 +2,7 @@
 
 from cohydra import ArgumentParser, Network, DockerNode, Scenario
 
-from cohydra.visualisation.netanimvisualisation import NetAnimVisualisation
+from cohydra.visualization.netanimvisualization import NetAnimVisualization
 
 def main():
 
@@ -18,9 +18,9 @@ def main():
 
     scenario.add_network(net)
 
-    visualisation = NetAnimVisualisation()
-    visualisation.set_node_size(5.0)
-    scenario.set_visualisation(visualisation)
+    visualization = NetAnimVisualization()
+    visualization.set_node_size(5.0)
+    scenario.set_visualization(visualization)
 
     with scenario as sim:
         # To simulate forever, just do not specifiy the simulation_time parameter.

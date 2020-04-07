@@ -4,7 +4,7 @@ import logging
 from ns import core, csma, network, wifi
 from aexpr import aexpr
 
-from ..visualisation import Visualisation
+from ..visualization import Visualization
 
 logger = logging.getLogger(__name__)
 
@@ -35,17 +35,17 @@ class Node:
         self.ns3_node = network.Node()
         core.Names.Add(self.name, self.ns3_node)
 
-        #: The position of the node (used by wifi models and visualisation)
+        #: The position of the node (used by wifi models and visualization)
         self.position = (0, 0, 0)
-        # Every change at the position will be forwarded to the visualisation
+        # Every change at the position will be forwarded to the visualization
         aexpr(lambda: self.position, globals(), locals())\
         .on_change(lambda obs, oldv, newv:\
-                    Visualisation\
-                        .get_visualisation()\
+                    Visualization\
+                        .get_visualization()\
                         .set_node_position(self, newv[0], newv[1], newv[2])\
         )
-        Visualisation.get_visualisation().set_node_position(self, 0, 0, 0)
-        #: The color of the node used in the visualisation.
+        Visualization.get_visualization().set_node_position(self, 0, 0, 0)
+        #: The color of the node used in the visualization.
         self.color = None
 
         #: The interfaces (~network cards) of this node.
@@ -55,7 +55,7 @@ class Node:
 
     def set_position(self, x, y, z=0): # pylint: disable=invalid-name
         """Set the position of the node. It also updates the position in
-        the visualisation.
+        the visualization.
 
         Parameters
         ----------
