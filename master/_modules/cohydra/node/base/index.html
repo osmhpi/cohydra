@@ -155,8 +155,9 @@
 <span></span><span class="sd">&quot;&quot;&quot;Base abstract class for a node.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">csma</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">netanim</span><span class="p">,</span> <span class="n">wifi</span>
+<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">csma</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">wifi</span>
+
+<span class="kn">from</span> <span class="nn">..visualization</span> <span class="kn">import</span> <span class="n">Visualization</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -187,8 +188,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ns3_node</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">Node</span><span class="p">()</span>
         <span class="n">core</span><span class="o">.</span><span class="n">Names</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
-        <span class="c1">#: The color of the node used in NetAnim.</span>
+        <span class="c1">#: The position of the node (used by wifi models and visualization)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#: The color of the node used in the visualization.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1">#: The interfaces (~network cards) of this node.</span>
@@ -197,7 +200,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">command_executor</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Node.set_position"><a class="viewcode-back" href="../../../../api/cohydra.node.base/#cohydra.node.base.Node.set_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span> <span class="c1"># pylint: disable=invalid-name</span>
-        <span class="sd">&quot;&quot;&quot;Set the position of the node in NetAnim.</span>
+        <span class="sd">&quot;&quot;&quot;Set the position of the node.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -208,7 +211,7 @@
 <span class="sd">        z : float</span>
 <span class="sd">            The z-position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">netanim</span><span class="o">.</span><span class="n">AnimationInterface</span><span class="o">.</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Node.add_interface"><a class="viewcode-back" href="../../../../api/cohydra.node.base/#cohydra.node.base.Node.add_interface">[docs]</a>    <span class="k">def</span> <span class="nf">add_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;eth&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add an interface to the node.</span>
