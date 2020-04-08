@@ -1,8 +1,9 @@
 """Base abstract class for a node."""
 import logging
 
-import random
-from ns import core, csma, network, netanim, wifi
+from ns import core, csma, network, wifi
+
+from ..visualization import Visualization
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +34,10 @@ class Node:
         self.ns3_node = network.Node()
         core.Names.Add(self.name, self.ns3_node)
 
-        self.set_position(random.randint(10, 100), random.randint(10, 100))
-        #: The color of the node used in NetAnim.
+        #: The position of the node (used by wifi models and visualization)
+        self.position = (0, 0, 0)
+
+        #: The color of the node used in the visualization.
         self.color = None
 
         #: The interfaces (~network cards) of this node.
@@ -43,7 +46,7 @@ class Node:
         self.command_executor = None
 
     def set_position(self, x, y, z=0): # pylint: disable=invalid-name
-        """Set the position of the node in NetAnim.
+        """Set the position of the node.
 
         Parameters
         ----------
@@ -54,7 +57,7 @@ class Node:
         z : float
             The z-position.
         """
-        netanim.AnimationInterface.SetConstantPosition(self.ns3_node, x, y, z)
+        self.position = (x, y, z)
 
     def add_interface(self, interface, name=None, prefix='eth'):
         """Add an interface to the node.

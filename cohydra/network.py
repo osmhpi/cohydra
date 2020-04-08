@@ -55,7 +55,7 @@ class Network:
         self.network = network_address
         #: A helper used to generate the neccessary IP addresses.
         self.address_helper = network_address_helper(network_address)
-        #: The color of the network's nodes in NetAnim.
+        #: The color of the network's nodes in a visualization.
         self.color = None
 
     def connect(self, *nodes, channel_type=CSMAChannel, **kwargs):
@@ -92,7 +92,7 @@ class Network:
         logger.info('Preparing network (base IP: %s)', self.network)
 
         if self.color is None:
-            # Color is needed for NetAnim.
+            # Color is needed for a visualization.
             color = network_color_for(network_index, len(simulation.scenario.networks))
             self.color = color
 

@@ -4,6 +4,7 @@ import logging
 
 from .simulation import Simulation
 from .context import Context, SimpleContext
+from .visualization import Visualization
 
 logger = logging.getLogger(__name__)
 
@@ -20,27 +21,22 @@ class Scenario:
         ...
         with scenario as simulation:
             simulation.simulate(simulation_time=60)
-
-    Parameters
-    ----------
-    netanim_node_size : float
-        This determines the size of a node for displaying in NetAnim.
-
     """
 
-    def __init__(self, netanim_node_size: float = 4):
+    def __init__(self):
         #: All networks belonging to the scenario.
         self.networks = set()
         #: The workflows to be executed.
         self.workflows = set()
         #: A reference to a simulation (if running).
         self.simulation = None
+        #: The visualization object
+        self.visualization = None
+
         #: The Context is e.g.\ used for teardowns.
         #:
         #: It is created on simulation start.
         self.context = None
-        #: The size of a node (a circle) in NetAnim.
-        self.netanim_node_size = netanim_node_size
         self.mobility_inputs = []
 
 
@@ -65,6 +61,16 @@ class Scenario:
             It will get prepared on simulation start.
         """
         self.mobility_inputs.append(mobility_input)
+
+    def set_visualization(self, visualization):
+        """Sets the new :class:`.Visualization`.
+
+        Parameters
+        ----------
+        visualization : :class:`.Visualization`
+            The new visualization object.
+        """
+        self.visualization = visualization
 
     def channels(self):
         """Retrieve all channels.
