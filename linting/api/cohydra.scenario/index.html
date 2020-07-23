@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.scenario &mdash; cohydra 0.2.0 - linting documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.simulation" href="../cohydra.simulation/" />
+    <link rel="prev" title="cohydra.node.switch" href="../cohydra.node.switch/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - linting
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.visualization/">cohydra.visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+      <li>cohydra.scenario</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.scenario">
+<span id="cohydra-scenario"></span><h1>cohydra.scenario<a class="headerlink" href="#module-cohydra.scenario" title="Permalink to this headline">¶</a></h1>
+<p>The blueprint for a simulation.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.scenario.Scenario" title="cohydra.scenario.Scenario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scenario</span></code></a></p></td>
+<td><p>The scenario is kind of a blueprint for a simulation.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="class">
+<dt id="cohydra.scenario.Scenario">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.scenario.</code><code class="sig-name descname">Scenario</code><a class="reference internal" href="../../_modules/cohydra/scenario/#Scenario"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.scenario.Scenario" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The scenario is kind of a blueprint for a simulation.</p>
+<p>A scenario can be used the following way:</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scenario</span> <span class="o">=</span> <span class="n">Scenario</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="k">with</span> <span class="n">scenario</span> <span class="k">as</span> <span class="n">simulation</span><span class="p">:</span>
+    <span class="n">simulation</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">simulation_time</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="cohydra.scenario.Scenario.networks">
+<code class="sig-name descname">networks</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.scenario.Scenario.networks" title="Permalink to this definition">¶</a></dt>
+<dd><p>All networks belonging to the scenario.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.scenario.Scenario.workflows">
+<code class="sig-name descname">workflows</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.scenario.Scenario.workflows" title="Permalink to this definition">¶</a></dt>
+<dd><p>The workflows to be executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.scenario.Scenario.simulation">
+<code class="sig-name descname">simulation</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.scenario.Scenario.simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>A reference to a simulation (if running).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.scenario.Scenario.visualization">
+<code class="sig-name descname">visualization</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.scenario.Scenario.visualization" title="Permalink to this definition">¶</a></dt>
+<dd><p>The visualization object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.scenario.Scenario.context">
+<code class="sig-name descname">context</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.scenario.Scenario.context" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Context is e.g.used for teardowns.</p>
+<p>It is created on simulation start.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.scenario.Scenario.add_network">
+<code class="sig-name descname">add_network</code><span class="sig-paren">(</span><em class="sig-param">network</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/scenario/#Scenario.add_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.scenario.Scenario.add_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a network to be simulated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="../cohydra.network/#cohydra.network.Network" title="cohydra.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – The Network to add.
+It will get prepared on simulation start.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.scenario.Scenario.add_mobility_input">
+<code class="sig-name descname">add_mobility_input</code><span class="sig-paren">(</span><em class="sig-param">mobility_input</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/scenario/#Scenario.add_mobility_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.scenario.Scenario.add_mobility_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a <a class="reference internal" href="../cohydra.mobility_input.mobility_input/#cohydra.mobility_input.mobility_input.MobilityInput" title="cohydra.mobility_input.mobility_input.MobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityInput</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mobility_input</strong> (<a class="reference internal" href="../cohydra.mobility_input.mobility_input/#cohydra.mobility_input.mobility_input.MobilityInput" title="cohydra.mobility_input.mobility_input.MobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityInput</span></code></a>) – The MobilityInput to add.
+It will get prepared on simulation start.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.scenario.Scenario.set_visualization">
+<code class="sig-name descname">set_visualization</code><span class="sig-paren">(</span><em class="sig-param">visualization</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/scenario/#Scenario.set_visualization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.scenario.Scenario.set_visualization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the new <a class="reference internal" href="../cohydra.visualization.visualization/#cohydra.visualization.visualization.Visualization" title="cohydra.visualization.visualization.Visualization"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visualization</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>visualization</strong> (<a class="reference internal" href="../cohydra.visualization.visualization/#cohydra.visualization.visualization.Visualization" title="cohydra.visualization.visualization.Visualization"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visualization</span></code></a>) – The new visualization object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.scenario.Scenario.channels">
+<code class="sig-name descname">channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/scenario/#Scenario.channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.scenario.Scenario.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all channels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>All channels of all networks in the current configuration.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" title="cohydra.channel.channel.Channel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Channel</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.scenario.Scenario.nodes">
+<code class="sig-name descname">nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/scenario/#Scenario.nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.scenario.Scenario.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all nodes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>All nodes of all channels in the current configuration.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.scenario.Scenario.workflow">
+<code class="sig-name descname">workflow</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/scenario/#Scenario.workflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.scenario.Scenario.workflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a workflow to the scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>callable</em>) – The callable to be executed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-5b9cadfb1fa4e28a5deeb469d2acc768d5b8fc54.png" alt="Inheritance diagram of cohydra.scenario" usemap="#inheritance0c7836cde2" class="inheritance graphviz" /></div>
+<map id="inheritance0c7836cde2" name="inheritance0c7836cde2">
+<area shape="rect" id="node1" href="#cohydra.scenario.Scenario" target="_top" title="The scenario is kind of a blueprint for a simulation." alt="" coords="5,5,199,31"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.simulation/" class="btn btn-neutral float-right" title="cohydra.simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.node.switch/" class="btn btn-neutral float-left" title="cohydra.node.switch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

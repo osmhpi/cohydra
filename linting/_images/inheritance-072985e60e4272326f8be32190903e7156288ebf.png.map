@@ -1,0 +1,5 @@
+<map id="inheritance3573212b4f" name="inheritance3573212b4f">
+<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="44,5,227,31"/>
+<area shape="rect" id="node2" href="../cohydra.node.external/#cohydra.node.external.ExternalNode" target="_top" title="An ExternalNode represents an external device." alt="" coords="5,79,265,104"/>
+<area shape="rect" id="node3" href="#cohydra.node.ssh.SSHNode" target="_top" title="An SSH node represents an external device reachable via SSH." alt="" coords="35,152,235,177"/>
+</map>
