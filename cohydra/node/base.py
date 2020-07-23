@@ -3,8 +3,6 @@ import logging
 
 from ns import core, csma, network, wifi
 
-from ..visualization import Visualization
-
 logger = logging.getLogger(__name__)
 
 class Node:
