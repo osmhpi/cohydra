@@ -50,3 +50,12 @@ pyton3 basic_example.py
 ```
 
 Cohydra so far has only been tested with **Debian 10 Buster** and **Ubuntu 18.04 Bionic Beaver**.
+
+## Contribution
+
+We are always happy when somebody contributes to cohydra.
+Therefore please create a fork and create a pull request to our repository.
+Make sure, that [`pylint`](https://www.pylint.org/) does not show any additional errors or warnings.
+Also make sure that your code and your pull request is well documented.
+The documentation should also contain how to test your feature, if it is more complex.
+Afterwards we are going to test your new feature and review the code.
