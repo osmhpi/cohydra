@@ -51,7 +51,7 @@ window.addEventListener('load', function() {
     var branchesContainer = createElement(otherVersionsContainer, 'dl');
     createElement(branchesContainer, 'dt', {}, 'Branches');
 
-    var branches = ["master", "add-license", "bugfix/docsbuild", "feature/lxd-nodes", "feature/non-root-user", "feature/wifi_802_11p", "gh-pages", "linting"];
+    var branches = ["master", "add-license", "bugfix/docsbuild", "feature/lxd-nodes", "feature/non-root-user", "feature/wifi_802_11p", "gh-pages", "linting", "readme-documentation"];
     for (var i = 0; i < branches.length; i++) {
         var branch = branches[i];
         var container = branchesContainer;

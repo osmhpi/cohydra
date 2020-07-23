@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.network &mdash; cohydra 0.2.0 - readme-documentation documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.node" href="../cohydra.node/" />
+    <link rel="prev" title="cohydra.mobility_input.sumo" href="../cohydra.mobility_input.sumo/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - readme-documentation
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.visualization/">cohydra.visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+      <li>cohydra.network</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.network">
+<span id="cohydra-network"></span><h1>cohydra.network<a class="headerlink" href="#module-cohydra.network" title="Permalink to this headline">¶</a></h1>
+<p>A subnet.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.network.network_address_helper" title="cohydra.network.network_address_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_address_helper</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.network.Network" title="cohydra.network.Network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Network</span></code></a></p></td>
+<td><p>A network connects many nodes together and assigns IP addresses.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="function">
+<dt id="cohydra.network.network_address_helper">
+<code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">network_address_helper</code><span class="sig-paren">(</span><em class="sig-param">network</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#network_address_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.network_address_helper" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="cohydra.network.Network">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">Network</code><span class="sig-paren">(</span><em class="sig-param">network_address</em>, <em class="sig-param">netmask=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A network connects many nodes together and assigns IP addresses.</p>
+<p>It can be compared to a subnet or so.
+It should also support IPv6 (untested!).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network_address</strong> (<em>str</em>) – The network base address (and optional subnet mask).
+An example for this parameter could be <code class="code docutils literal notranslate"><span class="pre">&quot;10.42.42.0/24&quot;</span></code>.</p></li>
+<li><p><strong>netmask</strong> (<em>str</em>) – The networks subnet mask. It can be used to provide a mask
+if not already given in the <code class="code docutils literal notranslate"><span class="pre">network_address</span></code> parameter.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="cohydra.network.Network.channels">
+<code class="sig-name descname">channels</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.network.Network.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>All the channels in the network.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.network.Network.network">
+<code class="sig-name descname">network</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.network.Network.network" title="Permalink to this definition">¶</a></dt>
+<dd><p>The network’s address (containing the subnet mask).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.network.Network.address_helper">
+<code class="sig-name descname">address_helper</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.network.Network.address_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper used to generate the neccessary IP addresses.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.network.Network.color">
+<code class="sig-name descname">color</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.network.Network.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color of the network’s nodes in a visualization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.network.Network.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">*nodes</em>, <em class="sig-param">channel_type=&lt;class 'cohydra.channel.csma.CSMAChannel'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to or more nodes on a single conection.</p>
+<p>This is comparable to inserting a cable between them.
+Necessary configuration can be passed to the channel creation with keyword arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> (list of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>) – The nodes to connect on one physical connection. These must be instances of subclasses of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>.</p></li>
+<li><p><strong>channel_type</strong> (<em>class</em>) – The channel to use.
+This can be one of <a class="reference internal" href="../cohydra.channel.csma/#cohydra.channel.csma.CSMAChannel" title="cohydra.channel.csma.CSMAChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSMAChannel</span></code></a> or <a class="reference internal" href="../cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel" title="cohydra.channel.wifi.WiFiChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WiFiChannel</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.network.Network.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">simulation</em>, <em class="sig-param">network_index</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network.prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the network by building the docker containers.</p>
+<p><em>Warning:</em> Don’t call this function manually.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>) – The simulation to prepare the network for.</p></li>
+<li><p><strong>network_index</strong> (<em>int</em>) – The index of the network (needed for coloring).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-2690ffdfdd982ca25813fbac91f1dc6829f695e4.png" alt="Inheritance diagram of cohydra.network" usemap="#inheritance62d696dddd" class="inheritance graphviz" /></div>
+<map id="inheritance62d696dddd" name="inheritance62d696dddd">
+<area shape="rect" id="node1" href="#cohydra.network.Network" target="_top" title="A network connects many nodes together and assigns IP addresses." alt="" coords="5,5,196,31"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.node/" class="btn btn-neutral float-right" title="cohydra.node" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.mobility_input.sumo/" class="btn btn-neutral float-left" title="cohydra.mobility_input.sumo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
