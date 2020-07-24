@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from testbed import ArgumentParser, Scenario, Network
-from testbed.node import SSHNode
+from cohydra import ArgumentParser, Scenario, Network
+from cohydra.node import SSHNode
 
 def main():
     scenario = Scenario()
@@ -15,6 +15,7 @@ def main():
     scenario.add_network(net)
 
     with scenario as sim:
+        # To simulate forever, just do not specifiy the simulation_time parameter.
         sim.simulate()
 
 if __name__ == "__main__":

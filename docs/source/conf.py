@@ -14,16 +14,26 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import os
+from datetime import datetime
+
 import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = 'testbed'
-copyright = '2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla'
+project = 'cohydra'
 author = 'Arne Boockmeyer, Martin Michaelis, Felix Gohla'
+copyright = f'{datetime.utcnow().year}, {author}'
 
 # The full version, including alpha/beta/rc tags
-release = '0.2.0'
+version = '0.2.0'
+
+if 'BUILD_TAG' in os.environ:
+    release = os.environ['BUILD_TAG']
+    if release != 'master':
+        version = f'{version} - {release}'
+
+release = version
 
 # -- General configuration ---------------------------------------------------
 
@@ -31,12 +41,16 @@ release = '0.2.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "sphinx_autopackagesummary",
     "sphinx_rtd_theme",
     "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
+    "sphinx.ext.autosectionlabel",
     "sphinx.ext.autosummary",
-    "sphinx_autopackagesummary",
-    "sphinx.ext.extlinks"
+    "sphinx.ext.coverage",
+    "sphinx.ext.extlinks",
+    "sphinx.ext.inheritance_diagram",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -47,7 +61,6 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -55,22 +68,24 @@ exclude_patterns = []
 #
 html_theme = 'sphinx_rtd_theme'
 
-html_show_sourcelink = True
+html_copy_source = False
+
+if 'VERSIONS_JS_URL' in os.environ:
+    html_js_files = [os.environ['VERSIONS_JS_URL']]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 napoleon_google_docstring = False
 napoleon_use_param = False
 napoleon_use_ivar = True
 
-## Include Python objects as they appear in source files
-## Default: alphabetically ('alphabetical')
-autodoc_member_order = 'bysource'
-## Default flags used by autodoc directives
-autodoc_default_flags = ['members', 'show-inheritance']
+autodoc_default_options = {
+    'member-order': 'bysource', # Include Python objects as they appear in source files
+    'show-inheritance': True,
+}
 ## Generate autodoc stubs with summaries from code
 autosummary_generate = True
 
@@ -78,5 +93,9 @@ html_show_sphinx = False
 
 # Link replacement
 extlinks = {
-    'src': ('https://gitlab.hpi.de/robert.schmid/testbed-temp/tree/master/%s', 'src ')
+    'src': ('https://github.com/osmhpi/cohydra/tree/master/%s', 'src ')
 }
+
+# Inheritance diagram design
+inheritance_graph_attrs = dict(rankdir='TB', fontsize=18)
+inheritance_edge_attrs = dict(dir='back', arrowtail='empty', arrowsize=1.5)

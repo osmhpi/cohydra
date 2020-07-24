@@ -1,14 +1,15 @@
-export NS3_TAG ?= 3.30-python3
-SN3T_TAG ?= $(shell if [ -z "`git status --porcelain`" ]; then git rev-parse --short HEAD; else echo dirty; fi)
-export SN3T_TAG := ${SN3T_TAG}
+export NS3_TAG ?= 3.30
+export SUMO_TAG ?= 1.4.0
+COHYDRA_TAG ?= $(shell if [ -z "`git status --porcelain`" ]; then git rev-parse --short HEAD; else echo dirty; fi)
+export COHYDRA_TAG := ${COHYDRA_TAG}
 
-docker_build := docker build --build-arg NS3_TAG --build-arg SN3T_TAG
+docker_build := docker build --build-arg NS3_TAG --build-arg SUMO_TAG --build-arg COHYDRA_TAG
 
-.PHONY: latest ns-3 testbed-base testbed testbed-dev docs
+.PHONY: latest cohydra-base cohydra cohydra-dev docs
 
-all: ns-3 testbed-base testbed testbed-dev
+all: cohydra-base cohydra cohydra-dev
 	#
-	# build tag ${SN3T_TAG}
+	# build tag ${COHYDRA_TAG}
 	#
 
 git-is-clean:
@@ -17,41 +18,36 @@ ifeq '${shell git status --porcelain}' ''
 else
 	${error Git status is not clean.}
 endif
-	
+
 
 latest: git-is-clean all
-	docker tag mgjm/ns-3:${NS3_TAG} mgjm/ns-3:latest
-	docker tag mgjm/sn3t:base-${SN3T_TAG} mgjm/sn3t:base
-	docker tag mgjm/sn3t:${SN3T_TAG} mgjm/sn3t:latest
-	docker tag mgjm/sn3t:dev-${SN3T_TAG} mgjm/sn3t:dev
+	docker tag osmhpi/cohydra:base-${COHYDRA_TAG} osmhpi/cohydra:base
+	docker tag osmhpi/cohydra:${COHYDRA_TAG} osmhpi/cohydra:latest
+	docker tag osmhpi/cohydra:dev-${COHYDRA_TAG} osmhpi/cohydra:dev
 
-ns-3:
-	${docker_build} -t mgjm/ns-3:${NS3_TAG} container-images/ns-3
+cohydra-base:
+	${docker_build} -t osmhpi/cohydra:base-${COHYDRA_TAG} docker/cohydra-base
 
-testbed-base:
-	${docker_build} -t mgjm/sn3t:base-${SN3T_TAG} container-images/testbed-base
+cohydra:
+	${docker_build} -t osmhpi/cohydra:${COHYDRA_TAG} . -f docker/Dockerfile
 
-testbed:
-	${docker_build} -t mgjm/sn3t:${SN3T_TAG} .
+cohydra-dev:
+	${docker_build} -t osmhpi/cohydra:dev-${COHYDRA_TAG} docker/cohydra-dev
 
-testbed-dev:
-	${docker_build} -t mgjm/sn3t:dev-${SN3T_TAG} container-images/testbed-dev
+pull-latest:
+	docker pull osmhpi/cohydra:base
+	docker pull osmhpi/cohydra:latest
+	docker pull osmhpi/cohydra:dev
 
-save: git-is-clean
-	docker save \
-		mgjm/ns-3:${NS3_TAG} \
-		mgjm/ns-3:latest \
-		mgjm/sn3t:base-${SN3T_TAG} \
-		mgjm/sn3t:base \
-		mgjm/sn3t:${SN3T_TAG} \
-		mgjm/sn3t:latest \
-		mgjm/sn3t:dev-${SN3T_TAG} \
-		mgjm/sn3t:dev
+push:
+	docker push osmhpi/cohydra:base-${COHYDRA_TAG}
+	docker push osmhpi/cohydra:${COHYDRA_TAG}
+	docker push osmhpi/cohydra:dev-${COHYDRA_TAG}
+
+push-latest: git-is-clean push
+	docker push osmhpi/cohydra:base
+	docker push osmhpi/cohydra:latest
+	docker push osmhpi/cohydra:dev
 
 docs:
-	$(RM) -r docs/source/_autosummary
-	cd docs && \
-		$(MAKE) html && \
-		$(MAKE) clean && \
-		$(MAKE) html && \
-		$(MAKE) html
+	$(MAKE) -C docs

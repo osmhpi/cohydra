@@ -1,0 +1,29 @@
+name: Pull Request Opened
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  link_docs:
+    name: Link Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Action Script
+        uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const { pull_request } = context.payload;
+            const { base, head } = pull_request;
+            if (base.repo.id !== head.repo.id) {
+              console.info('Skipping pull request from fork');
+              return;
+            }
+
+            await github.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${pull_request.body}\n\n---\n[Documentation of \`${head.ref}\`](https://${context.repo.owner}.github.io/${context.repo.repo}/${head.ref})`
+            });

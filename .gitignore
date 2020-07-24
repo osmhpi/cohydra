@@ -25,5 +25,5 @@ var/*
 /docker/sawtooth-pbft/keys
 
 # Generated documentation
-docs/build
-docs/source/_autosummary
+/docs/build
+/docs/source/api

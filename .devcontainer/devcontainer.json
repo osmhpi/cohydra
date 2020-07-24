@@ -1,5 +1,5 @@
 {
-	"name": "testbed",
+	"name": "cohydra",
 	"dockerFile": "Dockerfile",
 	"runArgs": [
 		// Uncomment the line if you will use a ptrace-based debugger like C++, Go, and Rust.
@@ -26,8 +26,8 @@
 		// run as privileged container
 		"--privileged"
 	],
-	"workspaceMount": "source=${localWorkspaceFolder},target=/root/testbed,type=bind",
-	"workspaceFolder": "/root/testbed",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/root/cohydra,type=bind",
+	"workspaceFolder": "/root/cohydra",
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},

@@ -2,40 +2,49 @@
 
 .. automodule:: {{ fullname }}
     :members:
-
-    {% block functions %}
-    {% if functions %}
-    .. rubric:: Functions
-
-    .. autosummary::
-    {% for item in functions %}
-        {{ item }}
-    {%- endfor %}
-    {% endif %}
-    {% endblock %}
-
-    {% block classes %}
-    {% if classes %}
-    .. rubric:: Classes
-
-    .. autosummary::
-    {% for item in classes %}
-        {{ item }}
-    {%- endfor %}
-    {% endif %}
-    {% endblock %}
-
-    {% block exceptions %}
-    {% if exceptions %}
-    .. rubric:: Exceptions
-
-    .. autosummary::
-    {% for item in exceptions %}
-        {{ item }}
-    {%- endfor %}
-    {% endif %}
-    {% endblock %}
+    :undoc-members:
+    :inherited-members:
 
     .. autopackagesummary:: {{ fullname }}
         :toctree: .
         :template: autosummary/package.rst
+
+    {% if functions %}
+    .. rubric:: Functions
+
+    .. autosummary::
+        :nosignatures:
+    {% for item in functions %}
+        {{ item }}
+    {%- endfor %}
+    {% endif %}
+
+    {% if classes %}
+    .. rubric:: Classes
+
+    .. autosummary::
+        :nosignatures:
+    {% for item in classes %}
+        {{ item }}
+    {%- endfor %}
+    {% endif %}
+
+    {% if exceptions %}
+    .. rubric:: Exceptions
+
+    .. autosummary::
+        :nosignatures:
+    {% for item in exceptions %}
+        {{ item }}
+    {%- endfor %}
+    {% endif %}
+    
+    |
+
+{% if classes %}
+.. rubric:: Inheritance Diagramm
+
+.. inheritance-diagram:: {{ fullname }}
+
+|
+{% endif %}
