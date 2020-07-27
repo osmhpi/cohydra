@@ -170,9 +170,13 @@ In the container, cohydra will be added to your <code class="code docutils liter
 But you need to make sure, that you run the container with privileges to access the host network in order to have access to the host’s network interfaces.
 The Docker socket is mounted into the container to enable creating new containers from within the simulation.
 You of course need to modify the volume mount to allow cohydra access to your scenarios:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
-</pre></div>
-</div>
+<dl class="simple">
+<dt>::</dt><dd><dl class="simple">
+<dt>$ docker run -it –rm –cap-add=ALL </dt><dd><p>-v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/lxd:/var/lib/lxd -v /var/snap/lxd/common/lxd:/var/snap/lxd/common/lxd –net host –pid host –userns host –privileged osmhpi/cohydra:latest</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p>The main image is based on the images in the <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/docker">docker</a> directory.
 The <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/docker/cohydra-base/Dockerfile">cohydra-base</a> installs all neccessary dependencies for cohydra,
 <a class="reference external" href="https://github.com/osmhpi/cohydra/tree/master/docker/cohydra-dev/Dockerfile">cohydra-dev</a> is for development purposes (docker-cli in the container).</p>
