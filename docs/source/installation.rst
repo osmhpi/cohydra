@@ -17,8 +17,15 @@ The Docker socket is mounted into the container to enable creating new container
 You of course need to modify the volume mount to allow cohydra access to your scenarios:
 
 ::
-
-    $ docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
+    $ docker run -it --rm --cap-add=ALL \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v /var/lib/lxd:/var/lib/lxd \
+        -v /var/snap/lxd/common/lxd:/var/snap/lxd/common/lxd \
+        --net host \
+        --pid host \
+        --userns host \
+        --privileged \
+        osmhpi/cohydra:latest
 
 The main image is based on the images in the :src:`docker <docker>` directory.
 The :src:`cohydra-base <docker/cohydra-base/Dockerfile>` installs all neccessary dependencies for cohydra,

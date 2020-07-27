@@ -21,5 +21,6 @@ RUN pip3 install --no-cache-dir \
 	&& true
 
 WORKDIR /root/cohydra
-ENV PATH=${PATH}:/root/cohydra/tools
+ENV PATH=${PATH}:/root/cohydra/tools \
+	PYLXD_WARNINGS=
 RUN ln -s /root/cohydra/cohydra $PYTHONPATH/cohydra
