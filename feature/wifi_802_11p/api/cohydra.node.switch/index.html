@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.node.switch &mdash; cohydra 0.2.0 - feature/wifi_802_11p documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.scenario" href="../cohydra.scenario/" />
+    <link rel="prev" title="cohydra.node.ssh" href="../cohydra.node.ssh/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - feature/wifi_802_11p
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../cohydra.node/">cohydra.node</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.base/">cohydra.node.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.docker/">cohydra.node.docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.external/">cohydra.node.external</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.ssh/">cohydra.node.ssh</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.node.switch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.visualization/">cohydra.visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+          <li><a href="../cohydra.node/">cohydra.node</a> &raquo;</li>
+        
+      <li>cohydra.node.switch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.node.switch">
+<span id="cohydra-node-switch"></span><h1>cohydra.node.switch<a class="headerlink" href="#module-cohydra.node.switch" title="Permalink to this headline">¶</a></h1>
+<p>Simulated network switch.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.node.switch.SwitchNode" title="cohydra.node.switch.SwitchNode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SwitchNode</span></code></a></p></td>
+<td><p>This is representing a switch between other nodes.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="class">
+<dt id="cohydra.node.switch.SwitchNode">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.node.switch.</code><code class="sig-name descname">SwitchNode</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/switch/#SwitchNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.switch.SwitchNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.node.base.Node</span></code></a></p>
+<p>This is representing a switch between other nodes.</p>
+<p>It uses ns-3 internals for routing.</p>
+<dl class="attribute">
+<dt id="cohydra.node.switch.SwitchNode.bridge_device">
+<code class="sig-name descname">bridge_device</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.switch.SwitchNode.bridge_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>The ns-3 internal device to route packages.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.switch.SwitchNode.add_interface">
+<code class="sig-name descname">add_interface</code><span class="sig-paren">(</span><em class="sig-param">interface</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/switch/#SwitchNode.add_interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.switch.SwitchNode.add_interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interface to the node.</p>
+<dl class="simple">
+<dt><em>Warning:</em> Do not call this function manually.</dt><dd><p>The functionality is handled by the network and channels.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interface</strong> (<a class="reference internal" href="../cohydra.interface/#cohydra.interface.Interface" title="cohydra.interface.Interface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interface</span></code></a>) – The interface to add.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the interface.</p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – If no name is supplied, the function works out
+a name by appending a number to the prefix.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.switch.SwitchNode.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">simulation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/switch/#SwitchNode.prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.switch.SwitchNode.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do all neccesary steps to prepare a node for the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>simulation</strong> (<a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>) – The simulation to prepare the node for.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.switch.SwitchNode.wants_ip_stack">
+<code class="sig-name descname">wants_ip_stack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/switch/#SwitchNode.wants_ip_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.switch.SwitchNode.wants_ip_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether a IP stack shall be installed onto the node.</p>
+<p>Installing is handled by the Channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="code docutils literal notranslate"><span class="pre">True</span></code> indicates that a ns-3 IP stack shall be installed when preparing this node.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.switch.SwitchNode.execute_command">
+<code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">user=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/switch/#SwitchNode.execute_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.switch.SwitchNode.execute_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a command within the node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str or list of str</em>) – The command to execute.</p></li>
+<li><p><strong>user</strong> (<em>str</em>) – If a user (name) is specified, the command is executed
+as this user. <strong>Warning:</strong> Not all nodes support this feature.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.switch.SwitchNode.go_offline">
+<code class="sig-name descname">go_offline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.switch.SwitchNode.go_offline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect the node from all channels.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.switch.SwitchNode.go_online">
+<code class="sig-name descname">go_online</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.switch.SwitchNode.go_online" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect the node back to all channels.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.switch.SwitchNode.set_position">
+<code class="sig-name descname">set_position</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.switch.SwitchNode.set_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the position of the node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – The x-position.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The y-position.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – The z-position.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-3321e95f6e507abb1087a44de1b9d48f2d33f4c2.png" alt="Inheritance diagram of cohydra.node.switch" usemap="#inheritanceea700aa707" class="inheritance graphviz" /></div>
+<map id="inheritanceea700aa707" name="inheritanceea700aa707">
+<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="33,5,215,31"/>
+<area shape="rect" id="node2" href="#cohydra.node.switch.SwitchNode" target="_top" title="This is representing a switch between other nodes." alt="" coords="5,79,243,104"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.scenario/" class="btn btn-neutral float-right" title="cohydra.scenario" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.node.ssh/" class="btn btn-neutral float-left" title="cohydra.node.ssh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
