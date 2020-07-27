@@ -9,6 +9,11 @@
 		// mount docker socket
 		"-v",
 		"/var/run/docker.sock:/var/run/docker.sock",
+		// mount lxd socket
+		"-v",
+		"/var/snap/lxd/common/lxd:/var/snap/lxd/common/lxd",
+		"-v",
+		"/var/lib/lxd:/var/lib/lxd",
 		// run with host network
 		"--net",
 		"host",
