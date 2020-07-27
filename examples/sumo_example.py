@@ -15,7 +15,7 @@ def main():
 
     scenario.add_network(net)
 
-    sumo = SUMOMobilityInput(name='Rail-To-X', sumo_cmd="/home/arne/source/sumo/bin/sumo-gui", config_path="/home/arne/Masterarbeit/sumo-scenarios/scenario4/scenario.sumocfg")
+    sumo = SUMOMobilityInput(name='Rail-To-X', sumo_port=8081)
     sumo.add_node_to_mapping(switch, 'n0', obj_type='junction')
     sumo.add_node_to_mapping(train, 'train')
 
