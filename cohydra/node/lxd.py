@@ -6,7 +6,7 @@ from nsenter import Namespace
 import pylxd
 
 from ..context import defer
-from cohydra.cohydra.command_executor import LXDCommandExecutor
+from ..command_executor import LXDCommandExecutor
 from .base import Node
 
 logger = logging.getLogger(__name__)

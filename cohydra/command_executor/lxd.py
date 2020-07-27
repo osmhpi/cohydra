@@ -2,7 +2,7 @@
 import logging
 from pylxd.models import Container
 
-from cohydra.cohydra.command_executor import util
+from . import util
 from .base import CommandExecutor, ExitCode
 
 def create_handler(log, level):
