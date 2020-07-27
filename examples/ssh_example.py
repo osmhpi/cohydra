@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from testbed import ArgumentParser, Scenario, Network, SwitchNode, DockerNode, SSHNode
+from cohydra import ArgumentParser, Scenario, Network, SwitchNode, DockerNode, SSHNode
 
 def main():
     scenario = Scenario()
@@ -15,7 +15,8 @@ def main():
 
     scenario.add_network(net)
     with scenario as sim:
-        sim.simulate(simluation_time=60)
+        # To simulate forever, just do not specifiy the simulation_time parameter.
+        sim.simulate(simulation_time=60)
 
 if __name__ == "__main__":
     parser = ArgumentParser()

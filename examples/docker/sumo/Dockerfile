@@ -1,6 +1,12 @@
-FROM openjdk:11.0.5-slim-buster
+FROM openjdk:8u242-jdk
 
-COPY ./filetransfer /filetransfer
-WORKDIR /filetransfer
-RUN javac *.java
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+COPY filetransfer/* /filetransfer/
+WORKDIR /filetransfer/
+
+RUN javac GenTestFile.java
 RUN java GenTestFile
+RUN javac FileClient.java
+RUN javac FileServer.java

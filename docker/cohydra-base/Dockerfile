@@ -1,0 +1,34 @@
+ARG SUMO_TAG=1.4.0
+ARG NS3_TAG=3.30
+
+FROM osmhpi/sumo:$SUMO_TAG AS sumo
+
+FROM osmhpi/ns-3:$NS3_TAG
+
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends \
+	git \
+	python3-pip \
+	python3-setuptools \
+	&& \
+	apt-get autoremove -y && \
+	apt-get clean -y && \
+	rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --no-cache-dir \
+	coloredlogs \
+	docker \
+	nsenter \
+	paramiko \
+	pyroute2 \
+	pyyaml \
+	git+https://github.com/active-expressions/active-expressions-static-python
+
+# Copy the sumo python packages (traci, sumolib and libsumo) from the sumo image
+COPY --from=sumo /usr/local/lib/python3.7 /usr/local/lib/python3.7
+
+ENV COLOREDLOGS_DATE_FORMAT="%H:%M:%S" \
+	COLOREDLOGS_LOG_FORMAT="%(asctime)s %(name)-32s %(levelname)-8s %(message)s" \
+	COLOREDLOGS_LOG_LEVEL="DEBUG" \
+	COLOREDLOGS_LEVEL_STYLES="debug=cyan;warning=yellow;error=red;critical=red,bold" \
+	COLOREDLOGS_AUTO_INSTALL="true"

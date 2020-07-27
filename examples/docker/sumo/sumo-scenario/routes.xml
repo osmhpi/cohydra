@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Mi 21 Aug 2019 13:26:18 CEST by Eclipse SUMO netedit Version v1_2_0+0803-e2fd7b8a96
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="/home/arne/Masterarbeit/SUMO/net1.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/arne/Masterarbeit/SUMO/net1.net.xml"/>
+    </output>
+
+    <processing>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.5"/>
+        <rectangular-lane-cut value="false"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="false"/>
+    </pedestrian>
+
+    <netedit>
+        <additional-files value="/home/arne/Masterarbeit/SUMO/reroutes.add.xml"/>
+        <route-files value="/home/arne/Masterarbeit/SUMO/routes2.xml"/>
+    </netedit>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <route edges="r3 r0 r1 r2" color="red" id="route_1"/>
+    <!--<vType id="rail" accel="33.33" decel="33.33" length="30.00" maxSpeed="33.33" vClass="rail" color="231,22,22"/>
+    <vehicle id="vehicle_1" type="rail" depart="0.00" departSpeed="33.33" route="route_1"/>-->
+
+    <!-- 100kmh = 27.77 ms ; 50kmh = 13.88-->
+    <vType id="rail2" accel="50.00" decel="50.00" length="20.00" maxSpeed="27.77" vClass="rail" color="255,0,0"/>
+    <vehicle id="train" type="rail2" depart="0.00" route="route_1"/>
+</routes>
