@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.workflow &mdash; cohydra 0.2.0 - lxd-docker-changes documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="prev" title="cohydra.visualization.visualization" href="../cohydra.visualization.visualization/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - lxd-docker-changes
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.visualization/">cohydra.visualization</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+      <li>cohydra.workflow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.workflow">
+<span id="cohydra-workflow"></span><h1>cohydra.workflow<a class="headerlink" href="#module-cohydra.workflow" title="Permalink to this headline">¶</a></h1>
+<p>Allow fault-injection by executing a sequence of instructions.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.workflow.Workflow" title="cohydra.workflow.Workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Workflow</span></code></a></p></td>
+<td><p>A workflow is a contains a list of commands for planned execution during the simulation.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="class">
+<dt id="cohydra.workflow.Workflow">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.workflow.</code><code class="sig-name descname">Workflow</code><span class="sig-paren">(</span><em class="sig-param">task</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A workflow is a contains a list of commands for planned execution during the simulation.</p>
+<p>This is based on the work of Arne Boockmeyer’s
+<a class="reference external" href="https://gitlab.hpi.de/arne.boockmeyer/dasylab-testbed/">dasylab-testbed</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Every <a class="reference internal" href="#cohydra.workflow.Workflow" title="cohydra.workflow.Workflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">Workflow</span></code></a> creates a thread.</p>
+</div>
+<p class="rubric">Example</p>
+<p>Please use it with a decorator provided by the <a class="reference internal" href="../cohydra.scenario/#cohydra.scenario.Scenario" title="cohydra.scenario.Scenario"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scenario</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@scenario</span><span class="o">.</span><span class="n">workflow</span>
+<span class="k">def</span> <span class="nf">workflow_function_name</span><span class="p">(</span><span class="n">workflow</span><span class="p">):</span>
+    <span class="n">do_something</span><span class="p">()</span>
+    <span class="n">workflow</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">do_another_thing</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>task</strong> (<em>callable</em>) – The function to be executed in the workflow.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="cohydra.workflow.Workflow.stop_event">
+<code class="sig-name descname">stop_event</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.workflow.Workflow.stop_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>An event indicating when to stop the workflow thread.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.workflow.Workflow.current_waiting_events">
+<code class="sig-name descname">current_waiting_events</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.workflow.Workflow.current_waiting_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>These events are waiting on some condition to come true.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.workflow.Workflow.task">
+<code class="sig-name descname">task</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.workflow.Workflow.task" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function being executed by the workflow thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.workflow.Workflow.stop">
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the workflow.</p>
+<p><strong>Warning:</strong> Do not call this manually. This is done by the <a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.workflow.Workflow.start">
+<code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the workflow.</p>
+<p><strong>Warning:</strong> Do not call this manually. This is done by the <a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.workflow.Workflow.sleep">
+<code class="sig-name descname">sleep</code><span class="sig-paren">(</span><em class="sig-param">duration</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow.sleep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow.sleep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sleep and wait.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>duration</strong> (<em>float</em>) – The duration to sleep in seconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.workflow.Workflow.wait_until">
+<code class="sig-name descname">wait_until</code><span class="sig-paren">(</span><em class="sig-param">expression</em>, <em class="sig-param">expected_result</em>, <em class="sig-param">global_variables</em>, <em class="sig-param">local_variables</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow.wait_until"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow.wait_until" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until an expression is equal to a specific value.</p>
+<p>Like <a class="reference internal" href="#cohydra.workflow.Workflow.sleep" title="cohydra.workflow.Workflow.sleep"><code class="xref py py-func docutils literal notranslate"><span class="pre">sleep()</span></code></a> this is a blocking call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expression</strong> – The expression to evaluate.
+<strong>Warning:</strong> not all expressions are supported.
+See <a class="reference external" href="https://github.com/active-expressions/active-expressions-static-python">https://github.com/active-expressions/active-expressions-static-python</a> for further infos.</p></li>
+<li><p><strong>expected_result</strong> – The value to compare againt.</p></li>
+<li><p><strong>global_variables</strong> – In order to work properly, you need to pass the global variable space with <code class="code docutils literal notranslate"><span class="pre">globals()</span></code>.</p></li>
+<li><p><strong>local_variables</strong> – In order to work properly, you need to pass the global variable space with <code class="code docutils literal notranslate"><span class="pre">locals()</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.workflow.Workflow.wait_until_true">
+<code class="sig-name descname">wait_until_true</code><span class="sig-paren">(</span><em class="sig-param">expression</em>, <em class="sig-param">global_variables</em>, <em class="sig-param">local_variables</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/workflow/#Workflow.wait_until_true"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.workflow.Workflow.wait_until_true" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until an expression is equal to True.</p>
+<p>Like <a class="reference internal" href="#cohydra.workflow.Workflow.sleep" title="cohydra.workflow.Workflow.sleep"><code class="xref py py-func docutils literal notranslate"><span class="pre">sleep()</span></code></a> this is a blocking call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expression</strong> – The expression to evaluate.
+<strong>Warning:</strong> not all expressions are supported.
+See <a class="reference external" href="https://github.com/active-expressions/active-expressions-static-python">https://github.com/active-expressions/active-expressions-static-python</a> for further infos.</p></li>
+<li><p><strong>global_variables</strong> – In order to work properly, you need to pass the global variable space with <code class="code docutils literal notranslate"><span class="pre">globals()</span></code>.</p></li>
+<li><p><strong>local_variables</strong> – In order to work properly, you need to pass the global variable space with <code class="code docutils literal notranslate"><span class="pre">locals()</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-0f6e6581d149aa23cd5e527f5e4dfcf9aee8208d.png" alt="Inheritance diagram of cohydra.workflow" usemap="#inheritanceee76a54741" class="inheritance graphviz" /></div>
+<map id="inheritanceee76a54741" name="inheritanceee76a54741">
+<area shape="rect" id="node1" href="#cohydra.workflow.Workflow" target="_top" title="A workflow is a contains a list of commands for planned execution during the simulation." alt="" coords="5,5,205,31"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../cohydra.visualization.visualization/" class="btn btn-neutral float-left" title="cohydra.visualization.visualization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

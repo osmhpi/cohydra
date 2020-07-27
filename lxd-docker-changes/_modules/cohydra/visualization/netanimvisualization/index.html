@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.visualization.netanimvisualization &mdash; cohydra 0.2.0 - lxd-docker-changes documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - lxd-docker-changes
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../">Module code</a> &raquo;</li>
+        
+      <li>cohydra.visualization.netanimvisualization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cohydra.visualization.netanimvisualization</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;NetAnim Visualization using the NetAnim format.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">netanim</span>
+
+<span class="kn">from</span> <span class="nn">.visualization</span> <span class="kn">import</span> <span class="n">Visualization</span>
+
+<div class="viewcode-block" id="NetAnimVisualization"><a class="viewcode-back" href="../../../../api/cohydra.visualization.netanimvisualization/#cohydra.visualization.netanimvisualization.NetAnimVisualization">[docs]</a><span class="k">class</span> <span class="nc">NetAnimVisualization</span><span class="p">(</span><span class="n">Visualization</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The NetAnimVisualization class produces a netanim.xml file which</span>
+<span class="sd">    contains visualization details in the NetAnim format.</span>
+
+<span class="sd">    To create a NetAnim visualization, use the following code and hand the</span>
+<span class="sd">    object to the scenario.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from cohydra.visualization.netanimvisualization import NetAnimVisualization</span>
+<span class="sd">        visualization = NetAnimVisualization()</span>
+<span class="sd">        visualization.set_node_size(5.0)</span>
+<span class="sd">        scenario.set_visualization(visualization)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1">#: The netanim animation interface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="NetAnimVisualization.prepare_node"><a class="viewcode-back" href="../../../../api/cohydra.visualization.netanimvisualization/#cohydra.visualization.netanimvisualization.NetAnimVisualization.prepare_node">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prepare</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span><span class="o">.</span><span class="n">UpdateNodeDescription</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">color</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span><span class="o">.</span><span class="n">UpdateNodeColor</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">,</span> <span class="o">*</span><span class="n">node</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span><span class="o">.</span><span class="n">UpdateNodeSize</span><span class="p">(</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="o">.</span><span class="n">GetId</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_size</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">node_size</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetAnimVisualization.set_node_position"><a class="viewcode-back" href="../../../../api/cohydra.visualization.netanimvisualization/#cohydra.visualization.netanimvisualization.NetAnimVisualization.set_node_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_node_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">netanim</span><span class="o">.</span><span class="n">AnimationInterface</span><span class="o">.</span><span class="n">SetConstantPosition</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span> <span class="o">=</span> <span class="n">netanim</span><span class="o">.</span><span class="n">AnimationInterface</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span><span class="s2">&quot;netanim.xml&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">animation_interface</span><span class="o">.</span><span class="n">EnablePacketMetadata</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

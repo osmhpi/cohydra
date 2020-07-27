@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.channel.wifi &mdash; cohydra 0.2.0 - lxd-docker-changes documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - lxd-docker-changes
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../">Module code</a> &raquo;</li>
+        
+      <li>cohydra.channel.wifi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cohydra.channel.wifi</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Wireless channel.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">ipaddress</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">internet</span><span class="p">,</span> <span class="n">network</span> <span class="k">as</span> <span class="n">ns_net</span><span class="p">,</span> <span class="n">wifi</span>
+
+<span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">Channel</span>
+<span class="kn">from</span> <span class="nn">..interface</span> <span class="kn">import</span> <span class="n">Interface</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WiFiChannel"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel">[docs]</a><span class="k">class</span> <span class="nc">WiFiChannel</span><span class="p">(</span><span class="n">Channel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A WiFiChannel is a physical (but of course wireless) connection</span>
+<span class="sd">    between two or more wireless devices.</span>
+
+<span class="sd">    Further information can be found reading the</span>
+<span class="sd">    `ns-3 source here &lt;https://www.nsnam.org/doxygen/wifi-phy_8cc_source.html&gt;`_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    channel : int</span>
+<span class="sd">        The WiFi channel to use.</span>
+<span class="sd">        This will be **ignored** if frequency is set.</span>
+<span class="sd">    frequency : int</span>
+<span class="sd">        The frequency of the wireless channel in MHz.</span>
+<span class="sd">    channel_width : int</span>
+<span class="sd">        The width of the channel in MHz.</span>
+<span class="sd">        Valid values are :code:`5`, :code:`10`, :code:`20`, :code:`22`, :code:`40`, :code:`80`, :code:`160`.</span>
+<span class="sd">    antennas : int</span>
+<span class="sd">        The number of antennas / spatial streams to use.</span>
+<span class="sd">    tx_power : float</span>
+<span class="sd">        The sending power in dBm.</span>
+<span class="sd">    standard : :class:`.WiFiStandard`</span>
+<span class="sd">        The WiFi standard to use.</span>
+<span class="sd">    data_rate : :class:`.WiFiDataRate`</span>
+<span class="sd">        The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WiFiChannel.WiFiStandard"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.WiFiStandard">[docs]</a>    <span class="k">class</span> <span class="nc">WiFiStandard</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;All available WiFi standards.</span>
+
+<span class="sd">        See here for further information: https://en.wikipedia.org/wiki/IEEE_802.11.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#: The first WiFi standard from 1999.</span>
+        <span class="n">WIFI_802_11a</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211a</span>
+        <span class="c1">#: Standard with maximum raw data rate of 11 Mbit/s.</span>
+        <span class="n">WIFI_802_11b</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211b</span>
+        <span class="c1">#: Standard with maximum raw bitrate of 54 Mbit/s in 2.4GHz band.</span>
+        <span class="n">WIFI_802_11g</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211g</span>
+        <span class="c1">#: Standard from 2009 in 2.4GHz band.</span>
+        <span class="n">WIFI_802_11n</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211n_2_4GHZ</span>
+        <span class="c1">#: Standard from 2009 in 5GHz band.</span>
+        <span class="n">WIFI_802_11n_5G</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211n_5GHZ</span>
+        <span class="c1">#: Standard from 2013.</span>
+        <span class="n">WIFI_802_11ac</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211ac</span>
+        <span class="c1">#: &quot;WiFi 6&quot;.</span>
+        <span class="n">WIFI_802_11ax</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211ax_2_4GHZ</span></div>
+
+<div class="viewcode-block" id="WiFiChannel.WiFiDataRate"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.WiFiDataRate">[docs]</a>    <span class="k">class</span> <span class="nc">WiFiDataRate</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;All available WiFi data rates.</span>
+
+<span class="sd">        Choosing the correct and best data rate depends on the standard you are using.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_6Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate6Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_9Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate9Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_12Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate12Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_18Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate18Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_24Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate24Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_36Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate36Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_48Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate48Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
+        <span class="n">OFDM_RATE_54Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate54Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">DSSS_RATE_1Mbps</span> <span class="o">=</span> <span class="s2">&quot;DsssRate1Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">DSSS_RATE_2Mbps</span> <span class="o">=</span> <span class="s2">&quot;DsssRate2Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">DSSS_RATE_5_5Mbps</span> <span class="o">=</span> <span class="s2">&quot;DsssRate5_5Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11b`, :attr:`.WiFiStandard.WIFI_802_11g`,</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ac` or :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">DSSS_RATE_11Mbps</span> <span class="o">=</span> <span class="s2">&quot;DsssRate11Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_6Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate6Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_9Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate9Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_12Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate12Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_18Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate18Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_24Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate24Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_36Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate36Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_48Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate48Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
+        <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
+        <span class="n">ERP_OFDM_RATE_54Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate54Mbps&quot;</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">channel_width</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">antennas</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tx_power</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+                 <span class="n">standard</span><span class="p">:</span> <span class="n">WiFiStandard</span> <span class="o">=</span> <span class="n">WiFiStandard</span><span class="o">.</span><span class="n">WIFI_802_11a</span><span class="p">,</span>
+                 <span class="n">data_rate</span><span class="p">:</span> <span class="n">WiFiDataRate</span> <span class="o">=</span> <span class="n">WiFiDataRate</span><span class="o">.</span><span class="n">OFDM_RATE_6Mbps</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
+
+        <span class="c1">#: The channel to use.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
+        <span class="c1">#: The frequency to use.</span>
+        <span class="c1">#:</span>
+        <span class="c1">#: This could collide with other WiFi channels.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span>
+        <span class="c1">#: The width of the channel in MHz.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel_width</span> <span class="o">=</span> <span class="n">channel_width</span>
+        <span class="c1">#: The number of antennas to use.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antennas</span> <span class="o">=</span> <span class="n">antennas</span>
+        <span class="c1">#: The sending power in dBm.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx_power</span> <span class="o">=</span> <span class="n">tx_power</span>
+        <span class="c1">#: The WiFi standard to use.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">standard</span> <span class="o">=</span> <span class="n">standard</span>
+        <span class="c1">#: The data rate to use.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span> <span class="o">=</span> <span class="n">data_rate</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting up physical layer of WiFi.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">YansWifiPhyHelper</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;ChannelWidth&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">UintegerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_width</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">UintegerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequency</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;ChannelNumber&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">UintegerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;Antennas&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">UintegerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">antennas</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;MaxSupportedTxSpatialStreams&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">UintegerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">antennas</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;MaxSupportedRxSpatialStreams&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">UintegerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">antennas</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;TxPowerStart&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tx_power</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;TxPowerEnd&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tx_power</span><span class="p">))</span>
+
+        <span class="c1"># Enable monitoring of radio headers.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">SetPcapDataLinkType</span><span class="p">(</span><span class="n">wifi</span><span class="o">.</span><span class="n">WifiPhyHelper</span><span class="o">.</span><span class="n">DLT_IEEE802_11_RADIO</span><span class="p">)</span>
+
+        <span class="n">wifi_channel_helper</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">YansWifiChannelHelper</span><span class="p">()</span>
+        <span class="n">wifi_channel_helper</span><span class="o">.</span><span class="n">SetPropagationDelay</span><span class="p">(</span><span class="s2">&quot;ns3::ConstantSpeedPropagationDelayModel&quot;</span><span class="p">)</span>
+        <span class="n">wifi_channel_helper</span><span class="o">.</span><span class="n">AddPropagationLoss</span><span class="p">(</span><span class="s2">&quot;ns3::LogDistancePropagationLossModel&quot;</span><span class="p">)</span>
+        <span class="c1"># wifi_channel_helper.AddPropagationLoss(&quot;ns3::RangePropagationLossModel&quot;)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">SetChannel</span><span class="p">(</span><span class="n">wifi_channel_helper</span><span class="o">.</span><span class="n">Create</span><span class="p">())</span>
+
+        <span class="c1">#: Helper for creating the WiFi channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WifiHelper</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">SetRemoteStationManager</span><span class="p">(</span><span class="s2">&quot;ns3::ConstantRateWifiManager&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;DataMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                                          <span class="s2">&quot;ControlMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">SetStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">wifi_mac_helper</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WifiMacHelper</span><span class="p">()</span>
+
+        <span class="c1"># Adhoc network between multiple nodes (no access point).</span>
+        <span class="n">wifi_mac_helper</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="s2">&quot;ns3::AdhocWifiMac&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Install on all connected nodes.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Installing the WiFi channel to </span><span class="si">%d</span><span class="s2"> nodes. Mode is </span><span class="si">%s</span><span class="s2"> (data) / </span><span class="si">%s</span><span class="s2"> (control).&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">),</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">standard</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="p">)</span>
+        <span class="c1">#: All ns-3 devices on this channel.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">Install</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="p">,</span> <span class="n">wifi_mac_helper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns3_nodes_container</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Setting IP addresses on nodes.&#39;</span><span class="p">)</span>
+        <span class="n">stack_helper</span> <span class="o">=</span> <span class="n">internet</span><span class="o">.</span><span class="n">InternetStackHelper</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+            <span class="n">ns3_device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">wants_ip_stack</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">internet</span><span class="o">.</span><span class="n">Ipv4</span><span class="o">.</span><span class="n">GetTypeId</span><span class="p">())</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Installing IP stack on </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="n">stack_helper</span><span class="o">.</span><span class="n">Install</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">)</span>
+                <span class="n">device_container</span> <span class="o">=</span> <span class="n">ns_net</span><span class="o">.</span><span class="n">NetDeviceContainer</span><span class="p">(</span><span class="n">ns3_device</span><span class="p">)</span>
+                <span class="n">ip_address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">address_helper</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">device_container</span><span class="p">)</span><span class="o">.</span><span class="n">GetAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">netmask</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">prefixlen</span>
+                <span class="n">address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_interface</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ip_address</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">netmask</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="n">interface</span> <span class="o">=</span> <span class="n">Interface</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">,</span> <span class="n">ns3_device</span><span class="o">=</span><span class="n">ns3_device</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+            <span class="n">ns3_device</span><span class="o">.</span><span class="n">GetMac</span><span class="p">()</span><span class="o">.</span><span class="n">SetAddress</span><span class="p">(</span><span class="n">ns_net</span><span class="o">.</span><span class="n">Mac48Address</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">mac_address</span><span class="p">))</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">add_interface</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WiFiChannel.prepare"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">interface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interfaces</span><span class="p">:</span>
+            <span class="n">pcap_log_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">log_directory</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">pcap_file_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">EnablePcap</span><span class="p">(</span><span class="n">pcap_log_path</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">ns3_device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
