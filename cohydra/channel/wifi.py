@@ -4,7 +4,7 @@ import logging
 import os
 
 from enum import Enum, unique
-from ns import core, internet, network as ns_net, wifi, wave
+from ns import core, internet, network as ns_net, wifi, wave, propagation
 
 from .channel import Channel
 from ..interface import Interface
@@ -178,12 +178,27 @@ class WiFiChannel(Channel):
         # Enable monitoring of radio headers.
         self.wifi_phy_helper.SetPcapDataLinkType(wifi.WifiPhyHelper.DLT_IEEE802_11_RADIO)
 
-        wifi_channel_helper = wifi.YansWifiChannelHelper()
-        wifi_channel_helper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel")
-        wifi_channel_helper.AddPropagationLoss("ns3::LogDistancePropagationLossModel")
-        # wifi_channel_helper.AddPropagationLoss("ns3::RangePropagationLossModel")
+        wifi_channel = wifi.YansWifiChannel()
+        self.propagation_delay_model = propagation.ConstantSpeedPropagationDelayModel()
+        wifi_channel.SetAttribute("PropagationDelayModel", core.PointerValue(self.propagation_delay_model))
 
-        self.wifi_phy_helper.SetChannel(wifi_channel_helper.Create())
+        if self.standard == WiFiChannel.WiFiStandard.WIFI_802_11p:
+            # Loss Model, parameter values from Boockmeyer, A. (2020):
+            # "Hatebefi: Hybrid Application Testbed for Fault Injection"
+            loss_model = propagation.ThreeLogDistancePropagationLossModel()
+            loss_model.SetAttribute("Distance0", core.DoubleValue(27.3))
+            loss_model.SetAttribute("Distance1", core.DoubleValue(68.4))
+            loss_model.SetAttribute("Distance2", core.DoubleValue(80.7))
+            loss_model.SetAttribute("Exponent0", core.DoubleValue(1.332671627050236))
+            loss_model.SetAttribute("Exponent1", core.DoubleValue(2.6812446718062612))
+            loss_model.SetAttribute("Exponent2", core.DoubleValue(3.5145944762444183))
+            loss_model.SetAttribute("ReferenceLoss", core.DoubleValue(83.54330702928374))
+            wifi_channel.SetAttribute("PropagationLossModel", core.PointerValue(loss_model))
+        else:
+            loss_model = propagation.LogDistancePropagationLossModel()
+            wifi_channel.SetAttribute("PropagationLossModel", core.PointerValue(loss_model))
+
+        self.wifi_phy_helper.SetChannel(wifi_channel)
 
         #: Helper for creating the WiFi channel.
         self.wifi = None
