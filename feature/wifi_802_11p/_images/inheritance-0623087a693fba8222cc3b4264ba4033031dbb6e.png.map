@@ -1,5 +1,0 @@
-<map id="inheritancef1e70b09fd" name="inheritancef1e70b09fd">
-<area shape="rect" id="node1" title="Helper class that provides a standard way to create an ABC using" alt="" coords="191,5,267,31"/>
-<area shape="rect" id="node3" href="../cohydra.visualization.visualization/#cohydra.visualization.visualization.Visualization" target="_top" title="The Visualization class is the abstract super class of all visualizations." alt="" coords="61,79,397,104"/>
-<area shape="rect" id="node2" href="#cohydra.visualization.netanimvisualization.NetAnimVisualization" target="_top" title="The NetAnimVisualization class produces a netanim.xml file which" alt="" coords="5,152,452,177"/>
-</map>

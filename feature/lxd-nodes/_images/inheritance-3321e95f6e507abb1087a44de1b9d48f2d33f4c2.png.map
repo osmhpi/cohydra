@@ -1,4 +1,0 @@
-<map id="inheritanceea700aa707" name="inheritanceea700aa707">
-<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="33,5,215,31"/>
-<area shape="rect" id="node2" href="#cohydra.node.switch.SwitchNode" target="_top" title="This is representing a switch between other nodes." alt="" coords="5,79,243,104"/>
-</map>
