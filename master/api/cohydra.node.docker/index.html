@@ -104,6 +104,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.base/">cohydra.node.base</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.node.docker</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.external/">cohydra.node.external</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.lxd/">cohydra.node.lxd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.ssh/">cohydra.node.ssh</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.switch/">cohydra.node.switch</a></li>
 </ul>
@@ -407,14 +408,14 @@ This is useful for a scripted <a class="reference internal" href="../cohydra.wor
 
 <dl class="method">
 <dt id="cohydra.node.docker.DockerNode.start_docker_container">
-<code class="sig-name descname">start_docker_container</code><span class="sig-paren">(</span><em class="sig-param">log_directory</em>, <em class="sig-param">extra_hosts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/docker/#DockerNode.start_docker_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.docker.DockerNode.start_docker_container" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">start_docker_container</code><span class="sig-paren">(</span><em class="sig-param">log_directory</em>, <em class="sig-param">hosts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/docker/#DockerNode.start_docker_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.docker.DockerNode.start_docker_container" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start the docker container.</p>
 <p>All docker containers are labeled with “ns-3” as the creator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>log_directory</strong> (<em>str</em>) – The path to the directory to put log files in.</p></li>
-<li><p><strong>extra_hosts</strong> (<em>dict</em>) – A dictionary with hostnames as keys and IP addresses as value.</p></li>
+<li><p><strong>hosts</strong> (<em>dict</em>) – A dictionary with hostnames as keys and IP addresses (a list) as value.</p></li>
 </ul>
 </dd>
 </dl>

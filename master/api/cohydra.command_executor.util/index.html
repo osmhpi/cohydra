@@ -99,6 +99,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.console/">cohydra.command_executor.console</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.docker/">cohydra.command_executor.docker</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.local/">cohydra.command_executor.local</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.lxd/">cohydra.command_executor.lxd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.command_executor.ssh/">cohydra.command_executor.ssh</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.command_executor.util</a></li>
 </ul>
@@ -202,10 +203,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.command_executor.util.split_shell_arguments" title="cohydra.command_executor.util.split_shell_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_shell_arguments</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.command_executor.util.apply_user_and_shell" title="cohydra.command_executor.util.apply_user_and_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_user_and_shell</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#cohydra.command_executor.util.stringify_shell_arguments" title="cohydra.command_executor.util.stringify_shell_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stringify_shell_arguments</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#cohydra.command_executor.util.split_shell_arguments" title="cohydra.command_executor.util.split_shell_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_shell_arguments</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.command_executor.util.stringify_shell_arguments" title="cohydra.command_executor.util.stringify_shell_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stringify_shell_arguments</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -233,6 +237,11 @@
 <dl class="function">
 <dt id="cohydra.command_executor.util.split_shell_arguments">
 <code class="sig-prename descclassname">cohydra.command_executor.util.</code><code class="sig-name descname">split_shell_arguments</code><span class="sig-paren">(</span><em class="sig-param">command</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/util/#split_shell_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.util.split_shell_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cohydra.command_executor.util.apply_user_and_shell">
+<code class="sig-prename descclassname">cohydra.command_executor.util.</code><code class="sig-name descname">apply_user_and_shell</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">user=None</em>, <em class="sig-param">shell=None</em>, <em class="sig-param">sudo=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/command_executor/util/#apply_user_and_shell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.command_executor.util.apply_user_and_shell" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">

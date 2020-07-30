@@ -327,7 +327,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">docker_image</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docker_image_tag</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DockerNode.start_docker_container"><a class="viewcode-back" href="../../../../api/cohydra.node.docker/#cohydra.node.docker.DockerNode.start_docker_container">[docs]</a>    <span class="k">def</span> <span class="nf">start_docker_container</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_directory</span><span class="p">,</span> <span class="n">extra_hosts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DockerNode.start_docker_container"><a class="viewcode-back" href="../../../../api/cohydra.node.docker/#cohydra.node.docker.DockerNode.start_docker_container">[docs]</a>    <span class="k">def</span> <span class="nf">start_docker_container</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_directory</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start the docker container.</span>
 
 <span class="sd">        All docker containers are labeled with &quot;ns-3&quot; as the creator.</span>
@@ -336,11 +336,14 @@
 <span class="sd">        ----------</span>
 <span class="sd">        log_directory : str</span>
 <span class="sd">            The path to the directory to put log files in.</span>
-<span class="sd">        extra_hosts : dict</span>
-<span class="sd">            A dictionary with hostnames as keys and IP addresses as value.</span>
+<span class="sd">        hosts : dict</span>
+<span class="sd">            A dictionary with hostnames as keys and IP addresses (a list) as value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting docker container: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
+
+        <span class="n">extra_hosts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">address</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">addresses</span> <span class="ow">in</span> <span class="n">hosts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">address</span> <span class="ow">in</span> <span class="n">addresses</span><span class="p">]</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">containers</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">docker_image_tag</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
