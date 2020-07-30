@@ -1,7 +1,7 @@
 """Base abstract class for a node."""
 import logging
 
-from ns import core, csma, network, wifi
+from ns import core, csma, network, wifi, mobility
 
 from ..visualization import Visualization
 
@@ -37,6 +37,14 @@ class Node:
         #: The position of the node (used by wifi models and visualization)
         self.position = (0, 0, 0)
 
+        # Install mobility model for networks
+        mobility_helper = mobility.MobilityHelper()
+        mobility_helper.SetMobilityModel("ns3::ConstantPositionMobilityModel")
+        position_alloc = mobility.ListPositionAllocator()
+        position_alloc.Add(core.Vector(self.position[0], self.position[1], self.position[2]))
+        mobility_helper.SetPositionAllocator(position_alloc)
+        mobility_helper.Install(self.ns3_node)
+
         #: The color of the node used in the visualization.
         self.color = None
 
@@ -46,7 +54,7 @@ class Node:
         self.command_executor = None
 
     def set_position(self, x, y, z=0): # pylint: disable=invalid-name
-        """Set the position of the node.
+        """Set the position of the node and updates the mobitlity model.
 
         Parameters
         ----------
@@ -58,6 +66,8 @@ class Node:
             The z-position.
         """
         self.position = (x, y, z)
+        mobility_model = self.ns3_node.GetObject(mobility.MobilityModel.GetTypeId())
+        mobility_model.SetPosition(core.Vector(self.position[0], self.position[1], self.position[2]))
 
     def add_interface(self, interface, name=None, prefix='eth'):
         """Add an interface to the node.

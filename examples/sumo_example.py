@@ -10,7 +10,8 @@ def main():
 
     switch = DockerNode('switch', docker_build_dir='./docker/sumo', command="java FileServer")
     train = DockerNode('train', docker_build_dir='./docker/sumo', command="java FileClient")
-    net.connect(train, switch, channel_type=WiFiChannel, tx_power=30.0)
+    net.connect(train, switch, channel_type=WiFiChannel, frequency=5860, channel_width=10, tx_power=18.0,
+                standard=WiFiChannel.WiFiStandard.WIFI_802_11p, data_rate=WiFiChannel.WiFiDataRate.OFDM_RATE_BW_6Mbps)
 
     scenario.add_network(net)
 
