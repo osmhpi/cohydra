@@ -6,4 +6,5 @@ from .base import CommandExecutor
 from .local import LocalCommandExecutor
 from .console import ConsoleCommandExecutor
 from .docker import DockerCommandExecutor
+from .lxd import LXDCommandExecutor
 from .ssh import SSHCommandExecutor

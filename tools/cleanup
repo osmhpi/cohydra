@@ -2,9 +2,11 @@
 
 from pyroute2 import IPRoute
 import docker
+import pylxd
 from cohydra import argparse
 
 def main(logger, dry_run, images, all_images):
+    # Network interfaces.
     ipr = IPRoute()
     links = ipr.get_links()
     for link in links:
@@ -14,9 +16,10 @@ def main(logger, dry_run, images, all_images):
             if not dry_run:
                 ipr.link('delete', ifname=name)
 
+    # Docker.
     client = docker.from_env()
-    containers = client.containers.list(all=True, filters={'label': 'created-by=ns-3'})
-    for container in containers:
+    docker_containers = client.containers.list(all=True, filters={'label': 'created-by=ns-3'})
+    for container in docker_containers:
         logger.info('remove container %s', container.name)
         if not dry_run:
             container.remove(force=True)
@@ -35,6 +38,21 @@ def main(logger, dry_run, images, all_images):
                 logger.info('remove image %s', ', '.join(image.tags))
                 if not dry_run:
                     client.images.remove(image=image.id)
+
+    # LXD.
+    client = None
+    try:
+        client = pylxd.Client()
+    except pylxd.exceptions.ClientConnectionFailed:
+        pass
+    if client is not None:
+        lxd_containers = client.containers.all()
+        for container in lxd_containers:
+            if container.config.get('user.created-by') == 'ns-3':
+                logger.info('remove container %s', container.name)
+                if not dry_run:
+                    container.stop(timeout=-1, wait=True)
+                    container.delete(wait=True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
