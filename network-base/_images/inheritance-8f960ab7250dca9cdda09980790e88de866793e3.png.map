@@ -1,0 +1,4 @@
+<map id="inheritance31b80ff093" name="inheritance31b80ff093">
+<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="13,5,196,31"/>
+<area shape="rect" id="node2" href="#cohydra.node.lxd.LXDNode" target="_top" title="A LXDNode represents a LXD container." alt="" coords="5,79,204,104"/>
+</map>
