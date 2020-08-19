@@ -2,7 +2,6 @@
 
 import logging
 import ipaddress
-from ns import internet, network as ns_net
 
 from .channel import CSMAChannel
 from .util import network_color_for
@@ -14,20 +13,6 @@ DEFAULT_PREFIX = {
     6: 64,
 }
 
-def network_address_helper(network, base):
-    if network.version == 4:
-        if base is None:
-            base = "0.0.0.1"
-        address = ns_net.Ipv4Address(network.network_address)
-        prefix = ns_net.Ipv4Mask(network.netmask)
-        return internet.Ipv4AddressHelper(address, prefix, base=ns_net.Ipv4Address(base))
-    if network.version == 6:
-        if base is None:
-            base = "::1"
-        address = ns_net.Ipv6Address(network.network_address)
-        prefix = ns_net.Ipv6Prefix(network.prefixlen)
-        return internet.Ipv6AddressHelper(address, prefix, base=ns_net.Ipv6Address(base))
-    raise 'Network version is not IPv4 or IPv6'
 
 class Network:
     """A network connects many nodes together and assigns IP addresses.
