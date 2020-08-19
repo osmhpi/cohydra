@@ -115,15 +115,15 @@ class Simulation:
         except docker.errors.NotFound:
             pass
 
+        logger.info('Preparing networks for simulation.')
+        for (i, network) in enumerate(self.scenario.networks):
+            network.prepare(self, i)
+
         logger.info('Preparing channels for simulation.')
         for channel in self.scenario.channels():
             for interface in channel.interfaces:
                 if interface.address is not None:
                     self.hosts[interface.node.name].append(interface.address.ip)
-
-        logger.info('Preparing networks for simulation.')
-        for (i, network) in enumerate(self.scenario.networks):
-            network.prepare(self, i)
 
         logger.info('Preparing nodes for simulation and visualization.')
         for node in self.scenario.nodes():

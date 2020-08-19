@@ -59,7 +59,7 @@ class WiFiChannel(Channel):
         WIFI_802_11ac = wifi.WIFI_PHY_STANDARD_80211ac
         #: "WiFi 6".
         WIFI_802_11ax = wifi.WIFI_PHY_STANDARD_80211ax_2_4GHZ
-        ## Wireless Access in Vehicular Environments (WAVE).
+        #: Wireless Access in Vehicular Environments (WAVE).
         WIFI_802_11p = wifi.WIFI_PHY_STANDARD_80211_10MHZ
 
     @unique
@@ -238,21 +238,33 @@ class WiFiChannel(Channel):
         logger.info('Setting IP addresses on nodes.')
         stack_helper = internet.InternetStackHelper()
 
-        for i, node in enumerate(nodes):
+        for i, connected_node in enumerate(nodes):
             ns3_device = self.devices_container.Get(i)
+            node = connected_node.node
 
             address = None
+            interface = None
             if node.wants_ip_stack():
                 if node.ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
                     logger.info('Installing IP stack on %s', node.name)
                     stack_helper.Install(node.ns3_node)
-                device_container = ns_net.NetDeviceContainer(ns3_device)
-                ip_address = self.network.address_helper.Assign(device_container).GetAddress(0)
-                netmask = network.network.prefixlen
-                address = ipaddress.ip_interface(f'{ip_address}/{netmask}')
+                address = connected_node.address
+                if address is None:
+                    address = self.network.get_free_ip_address()
 
-            interface = Interface(node=node, ns3_device=ns3_device, address=address)
-            ns3_device.GetMac().SetAddress(ns_net.Mac48Address(interface.mac_address))
+                network_address = ipaddress.ip_network(f'{str(address)}/{network.netmask}', strict=False)
+                ns3_network_address = ns_net.Ipv4Address(network_address.network_address)
+                ns3_network_prefix = ns_net.Ipv4Mask(network_address.netmask)
+                base = ipaddress.ip_address(int(address) - int(network_address.network_address))
+                helper = internet.Ipv4AddressHelper(ns3_network_address, ns3_network_prefix,
+                                                    base=ns_net.Ipv4Address(str(base)))
+                device_container = ns_net.NetDeviceContainer(ns3_device)
+                helper.Assign(device_container)
+                interface = Interface(node=node, ns3_device=ns3_device,
+                                      address=ipaddress.ip_interface(f'{str(address)}/{network.netmask}'))
+            else:
+                interface = Interface(node=node, ns3_device=ns3_device, address=connected_node.address)
+            ns3_device.SetAddress(ns_net.Mac48Address(interface.mac_address))
             node.add_interface(interface)
             self.interfaces.append(interface)
 

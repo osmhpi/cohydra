@@ -32,8 +32,8 @@ class Channel:
         logger.debug('Creating container with %d nodes', len(nodes))
         #: A container with all ns-3 internal nodes.
         self.ns3_nodes_container = ns_net.NodeContainer()
-        for node in nodes:
-            self.ns3_nodes_container.Add(node.ns3_node)
+        for connected_node in nodes:
+            self.ns3_nodes_container.Add(connected_node.node.ns3_node)
 
     @property
     def nodes(self):
