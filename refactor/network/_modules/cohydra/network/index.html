@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.network &mdash; cohydra 0.2.0 - refactor/network documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - refactor/network
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../../">Module code</a> &raquo;</li>
+        
+      <li>cohydra.network</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cohydra.network</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A subnet.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">ipaddress</span>
+
+<span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">CSMAChannel</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">network_color_for</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">DEFAULT_PREFIX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="Network"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network">[docs]</a><span class="k">class</span> <span class="nc">Network</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A network connects many nodes together and assigns IP addresses.</span>
+
+<span class="sd">    It can be compared to a subnet or so.</span>
+<span class="sd">    It should also support IPv6 (untested!).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network_address : str</span>
+<span class="sd">        The network base address (and optional subnet mask).</span>
+<span class="sd">        An example for this parameter could be :code:`&quot;10.42.42.0/24&quot;`.</span>
+<span class="sd">    netmask : str</span>
+<span class="sd">        The networks subnet mask. It can be used to provide a mask</span>
+<span class="sd">        if not already given in the :code:`network_address` parameter.</span>
+<span class="sd">    base : str</span>
+<span class="sd">        The base / start for the IP-addresses of this network.</span>
+<span class="sd">        An IPv4 example for this parameter could be :code:`&quot;0.0.0.50&quot;`.</span>
+<span class="sd">    default_channel_type : class</span>
+<span class="sd">        The default channel to use.</span>
+<span class="sd">        This can be one of :class:`.CSMAChannel` or :class:`.WiFiChannel`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network_address</span><span class="p">,</span> <span class="n">netmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_channel_type</span><span class="o">=</span><span class="n">CSMAChannel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1">#: All the channels in the network.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="c1">#: The prototypes for the future channels.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">default_channel_type</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)}</span>
+        <span class="c1">#: The channel type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_channel_type</span> <span class="o">=</span> <span class="n">default_channel_type</span>
+        <span class="c1">#: The list of the connected nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">#: The list of already allocated ip addresses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">network_address</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">network_address</span><span class="p">:</span>
+                <span class="n">network_address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_network</span><span class="p">(</span><span class="n">network_address</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">netmask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">netmask</span> <span class="o">=</span> <span class="n">DEFAULT_PREFIX</span><span class="p">[</span><span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">network_address</span><span class="p">)</span><span class="o">.</span><span class="n">version</span><span class="p">]</span>
+                <span class="n">network_address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_network</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">network_address</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">netmask</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="c1">#: The network&#39;s address (containing the subnet mask).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network_address</span>
+        <span class="c1">#: The network&#39;s netmask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netmask</span> <span class="o">=</span> <span class="n">netmask</span>
+        <span class="c1">#: The next potentially free ip address of that network moved by base</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">network_address</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">network_address</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">base</span><span class="p">))</span>
+        <span class="c1">#: The color of the network&#39;s nodes in a visualization.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Network.create_channel"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.create_channel">[docs]</a>    <span class="k">def</span> <span class="nf">create_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">channel_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">channel_kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds one named channel prototype to the network.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the channel.</span>
+<span class="sd">        channel_type : str</span>
+<span class="sd">            The channel type. If set to :code:`None`, the default channel type will be set.</span>
+<span class="sd">        channel_kwargs : str</span>
+<span class="sd">            The arguments of the new channel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">channel_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">channel_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_channel_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">channel_type</span><span class="p">,</span> <span class="n">channel_kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Network.connect"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ip_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds one node to the network.</span>
+
+<span class="sd">        This is comparable to inserting a cable between them.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : :class:`.Node`</span>
+<span class="sd">            The node that should be connected to the network. It must be instance a subclass of :class:`.Node`.</span>
+<span class="sd">        ip_addr : str</span>
+<span class="sd">            The IP address of that node. If :code:`None` an random IP from the network will be assigned.</span>
+<span class="sd">            If not :code:`None` the IP address have to be in the range of the network.</span>
+<span class="sd">        channel_name : str</span>
+<span class="sd">            The name of the channel where the node should be connected to. Default is the default channel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">ip_addr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip_addr</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ConnectedNode</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">address</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> does not exists. You have to create it before.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Network.block_ip_address"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.block_ip_address">[docs]</a>    <span class="k">def</span> <span class="nf">block_ip_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_addr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Blocks an IP address.</span>
+
+<span class="sd">        That IP address will not be assigned to any node.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ip_addr : str</span>
+<span class="sd">            The IP address which will be blocked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Block the IP address </span><span class="si">%s</span><span class="s1"> in the network </span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ip_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">netmask</span><span class="p">)</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip_addr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;IP address </span><span class="si">{</span><span class="n">ip_addr</span><span class="si">}</span><span class="s1"> already in use&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">address</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Network.get_free_ip_address"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.get_free_ip_address">[docs]</a>    <span class="k">def</span> <span class="nf">get_free_ip_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a free ip address.</span>
+
+<span class="sd">        This returns an ip address which is not already allocated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">while</span> <span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="p">:</span>
+            <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">network_of_address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_network</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">address</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">netmask</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">network_of_address</span><span class="o">.</span><span class="n">network_address</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">network_address</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Too many clients in that network&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">address</span></div>
+
+<div class="viewcode-block" id="Network.prepare"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">,</span> <span class="n">network_index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepares the network.</span>
+
+<span class="sd">        *Warning:* Don&#39;t call this function manually.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        simulation : :class:`.Simulation`</span>
+<span class="sd">            The simulation to prepare the network for.</span>
+<span class="sd">        network_index : int</span>
+<span class="sd">            The index of the network (needed for coloring).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing network (base IP: </span><span class="si">%s</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">channel_index</span><span class="p">,</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Please specify at least two nodes to connect in the channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">][</span><span class="mi">0</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">],</span>
+                                                                <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Color is needed for a visualization.</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="n">network_color_for</span><span class="p">(</span><span class="n">network_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">networks</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing channel #</span><span class="si">%d</span><span class="s1"> of network </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">channel_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
+                <span class="n">channel</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ConnectedNode"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ConnectedNode">[docs]</a><span class="k">class</span> <span class="nc">ConnectedNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

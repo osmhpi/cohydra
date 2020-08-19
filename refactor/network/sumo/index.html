@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using SUMO With cohydra &mdash; cohydra 0.2.0 - refactor/network documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="API Reference" href="../api/" />
+    <link rel="prev" title="Getting Started" href="../getting-started/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - refactor/network
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using SUMO With cohydra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#variant-1-install-sumo-on-simulation-host">Variant 1: Install SUMO On Simulation Host</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-sumo-in-remote-mode">Run SUMO In Remote Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-sumo-in-local-mode">Run SUMO In Local Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variant-2-using-docker">Variant 2: Using Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-a-sumo-scenario-with-cohydra">Writing a SUMO Scenario With cohydra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#connect-to-a-sumo-remote-mode-instance">Connect To A SUMO Remote Mode Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connect-to-a-sumo-local-mode-instance">Connect To A SUMO Local Mode Instance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../">Docs</a> &raquo;</li>
+        
+      <li>Using SUMO With cohydra</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-sumo-with-cohydra">
+<h1>Using SUMO With cohydra<a class="headerlink" href="#using-sumo-with-cohydra" title="Permalink to this headline">¶</a></h1>
+<p>For simulating the movement of wireless network participants, cohydra provides a connection to
+the <a class="reference external" href="https://sumo.dlr.de/">SUMO</a> simulator.</p>
+<p>There are two ways to use SUMO with cohydra. In either way, cohydra uses the <a class="reference external" href="https://sumo.dlr.de/docs/TraCI.html">TraCI</a>
+Python library to connect to the SUMO instance, running as server.</p>
+<div class="section" id="variant-1-install-sumo-on-simulation-host">
+<h2>Variant 1: Install SUMO On Simulation Host<a class="headerlink" href="#variant-1-install-sumo-on-simulation-host" title="Permalink to this headline">¶</a></h2>
+<p>You can install SUMO directly onto the simulation host. On Debian-based machines, this can be achievd by executing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">sumo</span> <span class="n">sumo</span><span class="o">-</span><span class="n">tools</span> <span class="n">sumo</span><span class="o">-</span><span class="n">docs</span>
+</pre></div>
+</div>
+<p><strong>Important:</strong> cohydra relies on the TraCI Python library.
+If you use cohydra <em>without Docker</em>, you need to ensure that cohydra can find the library.
+Set the <code class="docutils literal notranslate"><span class="pre">SUMO_HOME</span></code> environment variable accordingly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ export SUMO_HOME=&quot;/usr/share/sumo&quot;
+</pre></div>
+</div>
+<div class="section" id="run-sumo-in-remote-mode">
+<h3>Run SUMO In Remote Mode<a class="headerlink" href="#run-sumo-in-remote-mode" title="Permalink to this headline">¶</a></h3>
+<p>After that you can start the simulation and load your configuration files.
+You have to provide a port for TraCI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sumo-gui --remote-port 8813 -c /path/to/configuration
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-sumo-in-local-mode">
+<h3>Run SUMO In Local Mode<a class="headerlink" href="#run-sumo-in-local-mode" title="Permalink to this headline">¶</a></h3>
+<p><strong>Prerequesite:</strong> This assumes that <strong>you are not using cohydra in Docker</strong>! From within the cohydra-container, you cannot start SUMO automatically on the host.
+To install cohydra locally, please see <a class="reference internal" href="../installation/#local-installation-without-docker"><span class="std std-ref">Local Installation Without Docker</span></a>.</p>
+<p>Cohydra can start the SUMO simulation for you. You can just pass a <code class="docutils literal notranslate"><span class="pre">config_path</span></code> to the initializer of the <a class="reference internal" href="../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.SUMOMobilityInput" title="cohydra.mobility_input.sumo.SUMOMobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code></a>.
+The testbed will use a version of SUMO <strong>without GUI</strong> because there is no way to start the SUMO simulation automatically from cohydra with the GUI-version.</p>
+</div>
+</div>
+<div class="section" id="variant-2-using-docker">
+<h2>Variant 2: Using Docker<a class="headerlink" href="#variant-2-using-docker" title="Permalink to this headline">¶</a></h2>
+<p>SUMO can also be used with Docker.
+We provide Docker images at the <a class="reference external" href="https://hub.docker.com/r/osmhpi/sumo">osmhpi/sumo repository</a> that can be used.
+After pulling the image, the simulation can be started with a new container.
+Make sure to properly setup your <em>volume mounts</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run -it --rm \
+    --net host \
+    --pid host \
+    --userns host \
+    --privileged \
+    --cap-add=ALL \
+    --env=&quot;DISPLAY&quot; \
+    -v &quot;/etc/group:/etc/group:ro&quot; \
+    -v &quot;/etc/passwd:/etc/passwd:ro&quot; \
+    -v &quot;/etc/shadow:/etc/shadow:ro&quot; \
+    -v &quot;/etc/sudoers.d:/etc/sudoers.d:ro&quot; \
+    -v &quot;/tmp/.X11-unix:/tmp/.X11-unix:rw&quot; \
+    --user=$(id -u) \
+    -w /workspace \
+    -v /path/to/configuration-folder:/workspace \
+    osmhpi/sumo:latest \
+    bash
+</pre></div>
+</div>
+<p>Now you can proceed like in the local installation by entering the command to start SUMO in the container:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sumo</span><span class="o">-</span><span class="n">gui</span> <span class="o">--</span><span class="n">remote</span><span class="o">-</span><span class="n">port</span> <span class="mi">8813</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">scenario</span><span class="o">.</span><span class="n">sumocfg</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-a-sumo-scenario-with-cohydra">
+<h2>Writing a SUMO Scenario With cohydra<a class="headerlink" href="#writing-a-sumo-scenario-with-cohydra" title="Permalink to this headline">¶</a></h2>
+<p>After installing and starting SUMO, the simulation be configured to use SUMO with the <a class="reference internal" href="../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.SUMOMobilityInput" title="cohydra.mobility_input.sumo.SUMOMobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code></a> class.
+Please configure the port and host accordingly.
+Furthermore, nodes have to be mapped to SUMO IDs in order to be moved by the co-simulation.</p>
+<div class="section" id="connect-to-a-sumo-remote-mode-instance">
+<h3>Connect To A SUMO Remote Mode Instance<a class="headerlink" href="#connect-to-a-sumo-remote-mode-instance" title="Permalink to this headline">¶</a></h3>
+<p>This example explains how to use cohydra with a SUMO server.</p>
+<p><em>Note:</em> If you are using cohydra with Docker, you can access a SUMO Remote Mode Instance running on the Docker host with <cite>localhost</cite>.
+The container must be in the same network namespace, though. Please have a look at <a class="reference internal" href="../installation/#installation-with-docker"><span class="std std-ref">Installation With Docker</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cohydra.mobility_input</span> <span class="kn">import</span> <span class="n">SUMOMobilityInput</span>
+<span class="c1">#...</span>
+<span class="c1"># Scenario creation</span>
+<span class="c1">#...</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">8813</span> <span class="c1"># TraCI is listening on 8813.</span>
+<span class="n">sumo</span> <span class="o">=</span> <span class="n">SUMOMobilityInput</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Some title&#39;</span><span class="p">,</span> <span class="n">sumo_host</span><span class="o">=</span><span class="s1">&#39;hostname-or-ip&#39;</span><span class="p">,</span> <span class="n">sumo_port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+<span class="n">sumo</span><span class="o">.</span><span class="n">add_node_to_mapping</span><span class="p">(</span><span class="n">car</span><span class="p">,</span> <span class="s1">&#39;car0&#39;</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s1">&#39;vehicle&#39;</span><span class="p">)</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_mobility_input</span><span class="p">(</span><span class="n">sumo</span><span class="p">)</span>
+<span class="c1">#...</span>
+<span class="c1"># Simulation run</span>
+<span class="c1">#...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connect-to-a-sumo-local-mode-instance">
+<h3>Connect To A SUMO Local Mode Instance<a class="headerlink" href="#connect-to-a-sumo-local-mode-instance" title="Permalink to this headline">¶</a></h3>
+<p>This example shows how to start SUMO with cohydra locally.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cohydra.mobility_input</span> <span class="kn">import</span> <span class="n">SUMOMobilityInput</span>
+<span class="c1">#...</span>
+<span class="c1"># Scenario creation</span>
+<span class="c1">#...</span>
+<span class="n">config</span> <span class="o">=</span> <span class="s1">&#39;/absolute/path/to/sumocfg.cfg&#39;</span>
+<span class="n">sumo</span> <span class="o">=</span> <span class="n">SUMOMobilityInput</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Some title&#39;</span><span class="p">,</span> <span class="n">config_path</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="n">sumo</span><span class="o">.</span><span class="n">add_node_to_mapping</span><span class="p">(</span><span class="n">car</span><span class="p">,</span> <span class="s1">&#39;car0&#39;</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s1">&#39;vehicle&#39;</span><span class="p">)</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_mobility_input</span><span class="p">(</span><span class="n">sumo</span><span class="p">)</span>
+<span class="c1">#...</span>
+<span class="c1"># Simulation run</span>
+<span class="c1">#...</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../getting-started/" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
