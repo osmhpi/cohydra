@@ -2,6 +2,6 @@
 
 from .channel import Channel, CSMAChannel, WiFiChannel
 from .network import Network
-from .node import Node, SwitchNode, DockerNode, LXDNode, ExternalNode, SSHNode
+from .node import Node, SwitchNode, DockerNode, LXDNode, ExternalNode, SSHNode, QEMUNode
 from .scenario import Scenario
 from .argparse import ArgumentParser

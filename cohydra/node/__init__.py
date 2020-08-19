@@ -7,3 +7,4 @@ from .docker import DockerNode
 from .lxd import LXDNode
 from .external import ExternalNode
 from .ssh import SSHNode
+from .qemu import QEMUNode

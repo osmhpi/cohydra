@@ -133,7 +133,7 @@ class Simulation:
         logger.info('Preparing mobility inputs for simulation.')
         for mobility_input in self.scenario.mobility_inputs:
             mobility_input.prepare(self)
-
+        logger.info(self.hosts)
         routing_helper = internet.Ipv4GlobalRoutingHelper
         routing_helper.PopulateRoutingTables()
 
