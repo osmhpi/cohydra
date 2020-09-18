@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cohydra.node.external &mdash; cohydra 0.2.0 documentation</title>
+  <title>cohydra.node.interface &mdash; cohydra 0.2.0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex/" />
     <link rel="search" title="Search" href="../../search/" />
-    <link rel="next" title="cohydra.node.interface" href="../cohydra.node.interface/" />
-    <link rel="prev" title="cohydra.node.docker" href="../cohydra.node.docker/" /> 
+    <link rel="next" title="cohydra.node.lxd" href="../cohydra.node.lxd/" />
+    <link rel="prev" title="cohydra.node.external" href="../cohydra.node.external/" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -103,8 +103,8 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../cohydra.node/">cohydra.node</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.base/">cohydra.node.base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.docker/">cohydra.node.docker</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.node.external</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.interface/">cohydra.node.interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.external/">cohydra.node.external</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.node.interface</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.lxd/">cohydra.node.lxd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.ssh/">cohydra.node.ssh</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.switch/">cohydra.node.switch</a></li>
@@ -168,7 +168,7 @@
         
           <li><a href="../cohydra.node/">cohydra.node</a> &raquo;</li>
         
-      <li>cohydra.node.external</li>
+      <li>cohydra.node.interface</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -185,9 +185,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-cohydra.node.external">
-<span id="cohydra-node-external"></span><h1>cohydra.node.external<a class="headerlink" href="#module-cohydra.node.external" title="Permalink to this headline">¶</a></h1>
-<p>Physical Nodes that are connected to the simulation host.</p>
+  <div class="section" id="module-cohydra.node.interface">
+<span id="cohydra-node-interface"></span><h1>cohydra.node.interface<a class="headerlink" href="#module-cohydra.node.interface" title="Permalink to this headline">¶</a></h1>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -203,8 +202,8 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.node.external.ExternalNode" title="cohydra.node.external.ExternalNode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExternalNode</span></code></a></p></td>
-<td><p>An ExternalNode represents an external device.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.node.interface.InterfaceNode" title="cohydra.node.interface.InterfaceNode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InterfaceNode</span></code></a></p></td>
+<td><p>A Interface Node represents a node (or network) behind an local network interface.</p></td>
 </tr>
 </tbody>
 </table>
@@ -212,45 +211,36 @@
 <div class="line"><br /></div>
 </div>
 <dl class="class">
-<dt id="cohydra.node.external.ExternalNode">
-<em class="property">class </em><code class="sig-prename descclassname">cohydra.node.external.</code><code class="sig-name descname">ExternalNode</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">bridge=None</em>, <em class="sig-param">ifname='eth0'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/external/#ExternalNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.external.ExternalNode" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.node.interface.</code><code class="sig-name descname">InterfaceNode</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">ifname='eth0'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/interface/#InterfaceNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.interface.InterfaceNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.node.base.Node</span></code></a></p>
-<p>An ExternalNode represents an external device.</p>
-<p>To use this kind of node you need to setup the network before.
-This includes setting up network bridges that route packages to the
-real hardware / external devices.
-Please consider the <code class="code docutils literal notranslate"><span class="pre">setup-external.py</span></code> script.</p>
+<p>A Interface Node represents a node (or network) behind an local network interface.
+This is an easy and simple way to include external nodes inside of the simulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bridge</strong> (<em>str</em>) – The name of the bridge (that alread exists) to connect the simulation node to.
-If not specified, <code class="code docutils literal notranslate"><span class="pre">ns3-{name}</span></code> is used.</p></li>
-<li><p><strong>ifname</strong> (<em>str</em>) – The name of the interface <strong>on the remote device</strong>.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the node.
+It must consist only of <em>alphanumeric characters</em> and <code class="code docutils literal notranslate"><span class="pre">-</span></code>, <code class="code docutils literal notranslate"><span class="pre">_</span></code> and <code class="code docutils literal notranslate"><span class="pre">.</span></code>.</p></li>
+<li><p><strong>ifname</strong> (<em>str</em>) – The name of the local network interface. Default is eth0.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="attribute">
-<dt id="cohydra.node.external.ExternalNode.bridge">
-<code class="sig-name descname">bridge</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.external.ExternalNode.bridge" title="Permalink to this definition">¶</a></dt>
-<dd><p>The name of the bridge the external node is connected to.</p>
+<dt id="cohydra.node.interface.InterfaceNode.ifname">
+<code class="sig-name descname">ifname</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.ifname" title="Permalink to this definition">¶</a></dt>
+<dd><p>The interface name on the local machine.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cohydra.node.external.ExternalNode.ifname">
-<code class="sig-name descname">ifname</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.external.ExternalNode.ifname" title="Permalink to this definition">¶</a></dt>
-<dd><p>The interface name on the remote device.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="cohydra.node.external.ExternalNode.command_executor">
-<code class="sig-name descname">command_executor</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.external.ExternalNode.command_executor" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode.command_executor">
+<code class="sig-name descname">command_executor</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.command_executor" title="Permalink to this definition">¶</a></dt>
 <dd><p>The executor for running commands on the external device.
 This is useful for a scripted <code class="xref py py-class docutils literal notranslate"><span class="pre">Workflow</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="cohydra.node.external.ExternalNode.wants_ip_stack">
-<code class="sig-name descname">wants_ip_stack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/external/#ExternalNode.wants_ip_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.external.ExternalNode.wants_ip_stack" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode.wants_ip_stack">
+<code class="sig-name descname">wants_ip_stack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/interface/#InterfaceNode.wants_ip_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.wants_ip_stack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicates whether a IP stack shall be installed onto the node.</p>
 <p>Installing is handled by the Channel.</p>
 <dl class="field-list simple">
@@ -264,37 +254,14 @@ This is useful for a scripted <code class="xref py py-class docutils literal not
 </dd></dl>
 
 <dl class="method">
-<dt id="cohydra.node.external.ExternalNode.prepare">
-<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">simulation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/external/#ExternalNode.prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.external.ExternalNode.prepare" title="Permalink to this definition">¶</a></dt>
-<dd><p>This also runs setup on the remote device by setting the IP address
-the device is assigned during simulation.</p>
+<dt id="cohydra.node.interface.InterfaceNode.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">simulation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/interface/#InterfaceNode.prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>This creates the bridge and connects the local NIC to the bridge.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="cohydra.node.external.ExternalNode.setup_remote_address">
-<code class="sig-name descname">setup_remote_address</code><span class="sig-paren">(</span><em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/external/#ExternalNode.setup_remote_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.external.ExternalNode.setup_remote_address" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the simulation IP address to the remote device.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>address</strong> (<em>str</em>) – The address to assign to the external node in simulation.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="cohydra.node.external.ExternalNode.remove_remote_address">
-<code class="sig-name descname">remove_remote_address</code><span class="sig-paren">(</span><em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/external/#ExternalNode.remove_remote_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.external.ExternalNode.remove_remote_address" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the simulation IP address from the remote device.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>address</strong> (<em>str</em>) – The address to remove from the external node.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="cohydra.node.external.ExternalNode.add_interface">
-<code class="sig-name descname">add_interface</code><span class="sig-paren">(</span><em class="sig-param">interface</em>, <em class="sig-param">name=None</em>, <em class="sig-param">prefix='eth'</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.external.ExternalNode.add_interface" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode.add_interface">
+<code class="sig-name descname">add_interface</code><span class="sig-paren">(</span><em class="sig-param">interface</em>, <em class="sig-param">name=None</em>, <em class="sig-param">prefix='eth'</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.add_interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an interface to the node.</p>
 <dl class="simple">
 <dt><em>Warning:</em> Do not call this function manually.</dt><dd><p>The functionality is handled by the network and channels.</p>
@@ -313,8 +280,8 @@ a name by appending a number to the prefix.</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="cohydra.node.external.ExternalNode.execute_command">
-<code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">user=None</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.external.ExternalNode.execute_command" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode.execute_command">
+<code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">user=None</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.execute_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a command within the node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -328,20 +295,20 @@ as this user. <strong>Warning:</strong> Not all nodes support this feature.</p><
 </dd></dl>
 
 <dl class="method">
-<dt id="cohydra.node.external.ExternalNode.go_offline">
-<code class="sig-name descname">go_offline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.external.ExternalNode.go_offline" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode.go_offline">
+<code class="sig-name descname">go_offline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.go_offline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disconnect the node from all channels.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="cohydra.node.external.ExternalNode.go_online">
-<code class="sig-name descname">go_online</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.external.ExternalNode.go_online" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode.go_online">
+<code class="sig-name descname">go_online</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.go_online" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect the node back to all channels.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="cohydra.node.external.ExternalNode.set_position">
-<code class="sig-name descname">set_position</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.external.ExternalNode.set_position" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.node.interface.InterfaceNode.set_position">
+<code class="sig-name descname">set_position</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.interface.InterfaceNode.set_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the position of the node and updates the mobitlity model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -357,10 +324,10 @@ as this user. <strong>Warning:</strong> Not all nodes support this feature.</p><
 </dd></dl>
 
 <p class="rubric">Inheritance Diagramm</p>
-<div class="graphviz"><img src="../../_images/inheritance-533a90156b3776ad61011f09ac507d1203922b00.png" alt="Inheritance diagram of cohydra.node.external" usemap="#inheritancea810018474" class="inheritance graphviz" /></div>
-<map id="inheritancea810018474" name="inheritancea810018474">
-<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="44,5,227,31"/>
-<area shape="rect" id="node2" href="#cohydra.node.external.ExternalNode" target="_top" title="An ExternalNode represents an external device." alt="" coords="5,79,265,104"/>
+<div class="graphviz"><img src="../../_images/inheritance-f442871077b2b783e70d9aebac567a752b0b36cf.png" alt="Inheritance diagram of cohydra.node.interface" usemap="#inheritanced679fd805b" class="inheritance graphviz" /></div>
+<map id="inheritanced679fd805b" name="inheritanced679fd805b">
+<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="48,5,231,31"/>
+<area shape="rect" id="node2" href="#cohydra.node.interface.InterfaceNode" target="_top" title="A Interface Node represents a node (or network) behind an local network interface." alt="" coords="5,79,273,104"/>
 </map><div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -374,10 +341,10 @@ as this user. <strong>Warning:</strong> Not all nodes support this feature.</p><
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cohydra.node.interface/" class="btn btn-neutral float-right" title="cohydra.node.interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cohydra.node.lxd/" class="btn btn-neutral float-right" title="cohydra.node.lxd" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../cohydra.node.docker/" class="btn btn-neutral float-left" title="cohydra.node.docker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../cohydra.node.external/" class="btn btn-neutral float-left" title="cohydra.node.external" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
