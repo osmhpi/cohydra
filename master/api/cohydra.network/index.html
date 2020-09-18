@@ -214,12 +214,12 @@
 </div>
 <dl class="function">
 <dt id="cohydra.network.network_address_helper">
-<code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">network_address_helper</code><span class="sig-paren">(</span><em class="sig-param">network</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#network_address_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.network_address_helper" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">network_address_helper</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">base</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#network_address_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.network_address_helper" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="cohydra.network.Network">
-<em class="property">class </em><code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">Network</code><span class="sig-paren">(</span><em class="sig-param">network_address</em>, <em class="sig-param">netmask=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">Network</code><span class="sig-paren">(</span><em class="sig-param">network_address</em>, <em class="sig-param">netmask=None</em>, <em class="sig-param">base=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A network connects many nodes together and assigns IP addresses.</p>
 <p>It can be compared to a subnet or so.
@@ -231,6 +231,8 @@ It should also support IPv6 (untested!).</p>
 An example for this parameter could be <code class="code docutils literal notranslate"><span class="pre">&quot;10.42.42.0/24&quot;</span></code>.</p></li>
 <li><p><strong>netmask</strong> (<em>str</em>) – The networks subnet mask. It can be used to provide a mask
 if not already given in the <code class="code docutils literal notranslate"><span class="pre">network_address</span></code> parameter.</p></li>
+<li><p><strong>base</strong> (<em>str</em>) – The base / start for the IP-addresses of this network.
+An IPv4 example for this parameter could be <code class="code docutils literal notranslate"><span class="pre">&quot;0.0.0.50&quot;</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
