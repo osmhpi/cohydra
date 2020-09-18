@@ -1,4 +1,0 @@
-<map id="inheritance1f8a1dfbed" name="inheritance1f8a1dfbed">
-<area shape="rect" id="node1" href="../cohydra.command_executor.base/#cohydra.command_executor.base.CommandExecutor" target="_top" title="The CommandExecutor abstracts away the code for running" alt="" coords="34,5,403,31"/>
-<area shape="rect" id="node2" href="#cohydra.command_executor.docker.DockerCommandExecutor" target="_top" title="The DockerCommandExecutor runs commands in a Docker container." alt="" coords="5,79,432,104"/>
-</map>

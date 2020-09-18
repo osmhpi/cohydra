@@ -1,4 +1,0 @@
-<map id="inheritanced679fd805b" name="inheritanced679fd805b">
-<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="48,5,231,31"/>
-<area shape="rect" id="node2" href="#cohydra.node.interface.InterfaceNode" target="_top" title="A Interface Node represents a node (or network) behind an local network interface." alt="" coords="5,79,273,104"/>
-</map>
