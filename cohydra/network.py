@@ -14,15 +14,19 @@ DEFAULT_PREFIX = {
     6: 64,
 }
 
-def network_address_helper(network):
+def network_address_helper(network, base):
     if network.version == 4:
+        if base is None:
+            base = "0.0.0.1"
         address = ns_net.Ipv4Address(network.network_address)
         prefix = ns_net.Ipv4Mask(network.netmask)
-        return internet.Ipv4AddressHelper(address, prefix)
+        return internet.Ipv4AddressHelper(address, prefix, base=ns_net.Ipv4Address(base))
     if network.version == 6:
+        if base is None:
+            base = "::1"
         address = ns_net.Ipv6Address(network.network_address)
         prefix = ns_net.Ipv6Prefix(network.prefixlen)
-        return internet.Ipv6AddressHelper(address, prefix)
+        return internet.Ipv6AddressHelper(address, prefix, base=ns_net.Ipv6Address(base))
     raise 'Network version is not IPv4 or IPv6'
 
 class Network:
@@ -39,9 +43,12 @@ class Network:
     netmask : str
         The networks subnet mask. It can be used to provide a mask
         if not already given in the :code:`network_address` parameter.
+    base : str
+        The base / start for the IP-addresses of this network.
+        An IPv4 example for this parameter could be :code:`"0.0.0.50"`.
     """
 
-    def __init__(self, network_address, netmask=None):
+    def __init__(self, network_address, netmask=None, base=None):
         #: All the channels in the network.
         self.channels = list()
         if isinstance(network_address, str):
@@ -54,7 +61,7 @@ class Network:
         #: The network's address (containing the subnet mask).
         self.network = network_address
         #: A helper used to generate the neccessary IP addresses.
-        self.address_helper = network_address_helper(network_address)
+        self.address_helper = network_address_helper(network_address, base)
         #: The color of the network's nodes in a visualization.
         self.color = None
 
