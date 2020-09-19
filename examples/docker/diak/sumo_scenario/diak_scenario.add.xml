@@ -1,0 +1,22 @@
+<additionals>
+    <rerouter id="rerouter_0" edges="e0">
+        <interval end="1e9">
+           <destProbReroute id="e5"/>
+        </interval>
+    </rerouter>
+    <rerouter id="rerouter_1" edges="e5">
+        <interval end="1e9">
+           <destProbReroute id="e0"/>
+        </interval>
+    </rerouter>
+    <rerouter id="rerouter_2" edges="train0">
+        <interval end="1e9">
+           <destProbReroute id="train3"/>
+        </interval>
+    </rerouter>
+    <rerouter id="rerouter_3" edges="train3">
+        <interval end="1e9">
+           <destProbReroute id="train0"/>
+        </interval>
+    </rerouter>
+</additionals>

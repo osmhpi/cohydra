@@ -1,0 +1,8 @@
+<routes>
+<route edges="train0 train1 train2 train3 train4 train5 train6 train7" color="red" id="route_train"/>
+
+   <vType id="car" type="passenger" length="5" accel="3.5" decel="2.2" sigma="1.0"/>
+   <flow id="carflow" type="car" beg="0" end="0" number="5" from="e0" to="e9"/>
+   <vType id="rail" vClass="rail" type="rail" length="500" accel="3.5" decel="2.2" sigma="1.0"/>
+   <vehicle id="train" type="rail" depart="0.00" route="route_train"/>
+</routes>

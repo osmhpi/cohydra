@@ -1,0 +1,7 @@
+<configuration>
+    <input>
+       <net-file value="diak_scenario.net.xml"/>
+       <route-files value="diak_scenario.rou.xml"/>
+       <additional-files value="diak_scenario.add.xml"/>
+    </input>
+</configuration>
