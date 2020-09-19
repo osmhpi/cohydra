@@ -1,9 +1,9 @@
 <routes>
-   <route edges="train0 train1 train2 train3 train4 train5 train6 train7" color="red" id="route_train"/>
+   <route edges="train0 train1 train2 train3 train4 train5 train6 train7 train8 train9 train10 train11 train12 train13 train14 train15 train16 train17 train18 train19" color="red" id="route_train"/>
    <route edges="e0 e1 e2 e3 e4 e5 e6 e7 e8 e9" color="blue" id="route_car"/>
 
    <vType id="car" type="passenger" length="5" accel="10" decel="7" sigma="1.0" maxSpeed="100"/>
    <vehicle id="car" type="car" depart="0.00" route="route_car"/>
-   <vType id="rail" vClass="rail" type="rail" length="500" accel="10" decel="7" sigma="1.0" maxSpeed="100"/>
+   <vType id="rail" vClass="rail" type="rail" length="150" accel="10" decel="7" sigma="1.0" maxSpeed="100"/>
    <vehicle id="train" type="rail" depart="0.00" route="route_train"/>
 </routes>
