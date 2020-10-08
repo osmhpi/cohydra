@@ -1,6 +1,6 @@
 <routes>
-   <route edges="train5 train6 train7 train8 train9 train10 train11 train12 train13 train14 train15 train16 train17 train18 train19 train0 train1 train2 train3 train4" color="red" id="route_train"/>
-   <route edges="e8 e9 e0 e1 e2 e3 e4 e5 e6 e7" color="blue" id="route_car"/>
+   <route edges="train3 train4 train5 train6 train7 train8 train9 train10 train11 train12 train13 train14 train15 train16 train17 train18 train19 train0 train1 train2" color="red" id="route_train"/>
+   <route edges="e6 e7 e8 e9 e0 e1 e2 e3 e4 e5" color="blue" id="route_car"/>
 
    <vType id="car" type="passenger" length="5" accel="15" decel="10" sigma="1.0" maxSpeed="150"/>
    <vehicle id="car" type="car" depart="0.00" route="route_car"/>
