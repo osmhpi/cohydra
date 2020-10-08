@@ -30,7 +30,7 @@ class WarnCarThread:
                         sock2.sendall(message)
                     else:
                         break
-                    time.sleep(1)
+                    time.sleep(0.5)
             except ConnectionRefusedError:
                 print("CAR REFUSED", flush=True)
             except OSError:
@@ -51,7 +51,6 @@ sock.listen(1)
 while True:
     connection, client_address = sock.accept()
     connection.settimeout(5)
-    print("timeout "+str(connection.gettimeout()), flush=True)
     c = WarnCarThread()
     try:
         print("CLOSE GATE", flush=True)
@@ -59,13 +58,12 @@ while True:
         t.start()
         # Signal termination
         while True:
-            print("Start receive data", flush=True)
             data = connection.recv(16)
-            print("Received data", flush=True)
-            if not data:
+            if data:
+                connection.sendall(data)
+            else:
                 break
     except timeout:
-        print("Connection timed out", flush=True)
         pass
     finally:
         # Clean up the connection

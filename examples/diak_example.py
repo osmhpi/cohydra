@@ -3,7 +3,6 @@
 from cohydra import ArgumentParser, Network, DockerNode, Scenario, WiFiChannel
 from cohydra.mobility_input import SUMOMobilityInput
 
-
 def main():
     scenario = Scenario()
 
@@ -18,12 +17,13 @@ def main():
 
     scenario.add_network(net)
 
-    sumo = SUMOMobilityInput(sumo_cmd='/home/arne/source/sumo/bin/sumo-gui', config_path="./docker/diak/sumo_scenario/diak_scenario.sumocfg")
-    sumo.add_node_to_mapping(car, 'car')
+    sumo = SUMOMobilityInput(sumo_cmd='/home/arne/source/sumo/bin/sumo-gui', config_path="./docker/diak/sumo_scenario/diak_scenario.sumocfg", step_length=0.5, rpc_server=("172.17.0.1", 23404))
+    sumo.add_node_to_mapping(car, 'car0')
     sumo.add_node_to_mapping(cross, 'junction1', obj_type="junction")
     sumo.add_node_to_mapping(train, 'train')
 
     scenario.add_mobility_input(sumo)
+
 
     with scenario as sim:
         # To simulate forever, just do not specifiy the simulation_time parameter.

@@ -10,20 +10,21 @@ print("Start TRAIN", flush=True)
 while True:
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(5)
         server_address = (cross_ip, cross_port)
         sock.connect(server_address)
-        print("IN RANGE", flush=True)
         try:
             while True:
                 sock.sendall(message)
-                print("SEND Im here", flush=True)
-                time.sleep(1)
+                data = sock.recv(16)
+                if not data:
+                    break
+                time.sleep(0.5)
 
         finally:
-            print("OUT OF RANGE", flush=True)
             sock.close()
     except ConnectionRefusedError:
-        print("OUT OF RANGE (CR)", flush=True)
+        pass
     except OSError:
-        print("OUT OF RANGE (OS)", flush=True)
-    time.sleep(1)
+        pass
+    time.sleep(0.5)

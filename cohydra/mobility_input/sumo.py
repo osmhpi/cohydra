@@ -6,6 +6,7 @@ import sys
 import threading
 import time
 from math import hypot
+from xmlrpc.server import SimpleXMLRPCServer
 
 if 'SUMO_HOME' in os.environ:
     SUMO_HOME = os.environ['SUMO_HOME']
@@ -15,8 +16,23 @@ if 'SUMO_HOME' in os.environ:
 import traci
 
 from .mobility_input import MobilityInput
+import threading
 
 logger = logging.getLogger(__name__)
+
+class RPCServer:
+    def __init__(self, connection_details):
+        self._running = True
+        self.connection_details = connection_details
+
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True  # Daemonize thread
+        thread.start()  # Start the execution
+
+    def run(self):
+        server = SimpleXMLRPCServer(self.connection_details, allow_none=True)
+        server.register_instance(traci, allow_dotted_names=True)
+        server.serve_forever()
 
 class SUMOMobilityInput(MobilityInput):
     """SUMOMobilityInput is an interface to the SUMO simulation environment.
@@ -49,11 +65,14 @@ class SUMOMobilityInput(MobilityInput):
     steplength : float
         The length of each simulation step in seconds (default: 1).
         It only has effect in the local mode.
+    rpc_server : tuple
+        Starts a rpc server if value is not None.
+        The tuple needs two elements: (ip, port).
     """
 
     def __init__(self, name="SUMO External Simulation", steps=1000,
                  sumo_host='localhost', sumo_port=8813, sumo_cmd="sumo",
-                 config_path=None, step_length=1):
+                 config_path=None, step_length=1, rpc_server=None):
         super().__init__(name)
         #: The host on which the SUMO simulation is running.
         #:
@@ -73,6 +92,8 @@ class SUMOMobilityInput(MobilityInput):
         self.step_length = step_length
         #: The number of steps to simulate in SUMO.
         self.step_counter = 0
+        #: The connection details of the RPC server
+        self.rpc_server = rpc_server
 
     def prepare(self, simulation):
         """Connect to SUMO server."""
@@ -82,6 +103,10 @@ class SUMOMobilityInput(MobilityInput):
         else:
             traci.start([self.sumo_cmd, "--step-length", str(self.step_length), '-c', self.config_path])
         self.step_counter = 0
+
+        if self.rpc_server is not None:
+            logger.info("Starting RPC server on %s:%d", self.rpc_server[0], self.rpc_server[1])
+            RPCServer(self.rpc_server)
 
     def start(self):
         """Start a thread stepping through the sumo simulation."""
