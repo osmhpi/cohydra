@@ -160,6 +160,7 @@
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">hypot</span>
+<span class="kn">from</span> <span class="nn">xmlrpc.server</span> <span class="kn">import</span> <span class="n">SimpleXMLRPCServer</span>
 
 <span class="k">if</span> <span class="s1">&#39;SUMO_HOME&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
     <span class="n">SUMO_HOME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SUMO_HOME&#39;</span><span class="p">]</span>
@@ -169,8 +170,23 @@
 <span class="kn">import</span> <span class="nn">traci</span>
 
 <span class="kn">from</span> <span class="nn">.mobility_input</span> <span class="kn">import</span> <span class="n">MobilityInput</span>
+<span class="kn">import</span> <span class="nn">threading</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RPCServer"><a class="viewcode-back" href="../../../../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.RPCServer">[docs]</a><span class="k">class</span> <span class="nc">RPCServer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_details</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection_details</span> <span class="o">=</span> <span class="n">connection_details</span>
+
+        <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Daemonize thread</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>  <span class="c1"># Start the execution</span>
+
+<div class="viewcode-block" id="RPCServer.run"><a class="viewcode-back" href="../../../../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.RPCServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">SimpleXMLRPCServer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_details</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">register_instance</span><span class="p">(</span><span class="n">traci</span><span class="p">,</span> <span class="n">allow_dotted_names</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span></div></div>
 
 <div class="viewcode-block" id="SUMOMobilityInput"><a class="viewcode-back" href="../../../../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.SUMOMobilityInput">[docs]</a><span class="k">class</span> <span class="nc">SUMOMobilityInput</span><span class="p">(</span><span class="n">MobilityInput</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;SUMOMobilityInput is an interface to the SUMO simulation environment.</span>
@@ -203,11 +219,14 @@
 <span class="sd">    steplength : float</span>
 <span class="sd">        The length of each simulation step in seconds (default: 1).</span>
 <span class="sd">        It only has effect in the local mode.</span>
+<span class="sd">    rpc_server : tuple</span>
+<span class="sd">        Starts a rpc server if value is not None.</span>
+<span class="sd">        The tuple needs two elements: (ip, port).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SUMO External Simulation&quot;</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
                  <span class="n">sumo_host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">sumo_port</span><span class="o">=</span><span class="mi">8813</span><span class="p">,</span> <span class="n">sumo_cmd</span><span class="o">=</span><span class="s2">&quot;sumo&quot;</span><span class="p">,</span>
-                 <span class="n">config_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step_length</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                 <span class="n">config_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rpc_server</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="c1">#: The host on which the SUMO simulation is running.</span>
         <span class="c1">#:</span>
@@ -227,6 +246,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">step_length</span> <span class="o">=</span> <span class="n">step_length</span>
         <span class="c1">#: The number of steps to simulate in SUMO.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1">#: The connection details of the RPC server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpc_server</span> <span class="o">=</span> <span class="n">rpc_server</span>
 
 <div class="viewcode-block" id="SUMOMobilityInput.prepare"><a class="viewcode-back" href="../../../../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.SUMOMobilityInput.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Connect to SUMO server.&quot;&quot;&quot;</span>
@@ -235,7 +256,11 @@
             <span class="n">traci</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sumo_host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sumo_port</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">traci</span><span class="o">.</span><span class="n">start</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">sumo_cmd</span><span class="p">,</span> <span class="s2">&quot;--step-length&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_length</span><span class="p">),</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_path</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step_counter</span> <span class="o">=</span> <span class="mi">0</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpc_server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting RPC server on </span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpc_server</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpc_server</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">RPCServer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rpc_server</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SUMOMobilityInput.start"><a class="viewcode-back" href="../../../../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.SUMOMobilityInput.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start a thread stepping through the sumo simulation.&quot;&quot;&quot;</span>
