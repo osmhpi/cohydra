@@ -160,20 +160,21 @@ class Network:
         logger.info('Preparing network (base IP: %s)', self.network)
 
         for channel_index, channel_name in enumerate(self.channels_prototypes):
-            if len(self.nodes[channel_name]) < 2:
-                raise ValueError(f'Please specify at least two nodes to connect in the channel {channel_name}.')
-            channel = self.channels_prototypes[channel_name][0](self, self.nodes[channel_name],
-                                                                **self.channels_prototypes[channel_name][1])
-            self.channels.append(channel)
+            if channel_name not in self.nodes or len(self.nodes[channel_name]) < 2:
+                logger.warning(f'{channel_name} will not be created because it has not enough nodes inside (2 at least)')
+            else:
+                channel = self.channels_prototypes[channel_name][0](self, self.nodes[channel_name],
+                                                                    **self.channels_prototypes[channel_name][1])
+                self.channels.append(channel)
 
-            if self.color is None:
-                # Color is needed for a visualization.
-                color = network_color_for(network_index, len(simulation.scenario.networks))
-                self.color = color
+                if self.color is None:
+                    # Color is needed for a visualization.
+                    color = network_color_for(network_index, len(simulation.scenario.networks))
+                    self.color = color
 
-            for channel in self.channels:
-                logger.info('Preparing channel #%d of network %s', channel_index, self.network)
-                channel.prepare(simulation)
+                for channel in self.channels:
+                    logger.info('Preparing channel #%d of network %s', channel_index, self.network)
+                    channel.prepare(simulation)
 
 
 class ConnectedNode:
