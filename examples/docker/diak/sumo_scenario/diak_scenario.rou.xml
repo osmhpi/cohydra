@@ -3,7 +3,7 @@
    <route edges="e7 e8 e9 e0 e1 e2 e3 e4 e5 e6" color="blue" id="route_car"/>
 
    <vType id="car" type="passenger" length="5" accel="15" decel="10" sigma="1.0" maxSpeed="150"/>
-   <vehicle id="car" type="car" depart="0.00" route="route_car"/>
+   <vehicle id="car0" type="car" depart="0.00" route="route_car"/>
    <vType id="rail" vClass="rail" type="rail" length="200" accel="5" decel="10" sigma="1.0" maxSpeed="100"/>
    <vehicle id="train" type="rail" depart="0.00" route="route_train"/>
 </routes>
