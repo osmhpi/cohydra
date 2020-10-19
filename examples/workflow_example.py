@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Warning: This contains the old networking logic. See #46
+
 from cohydra import ArgumentParser, Network, DockerNode, SwitchNode, Scenario
 
 class Example(object):

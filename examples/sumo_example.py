@@ -6,16 +6,19 @@ from cohydra.mobility_input import SUMOMobilityInput
 def main():
     scenario = Scenario()
 
-    net = Network("10.0.0.0", "255.255.255.0")
+    net = Network("10.0.0.0", "255.255.255.0", default_channel_type=WiFiChannel, frequency=5860, channel_width=10,
+                  tx_power=18.0, standard=WiFiChannel.WiFiStandard.WIFI_802_11p,
+                  data_rate=WiFiChannel.WiFiDataRate.OFDM_RATE_BW_6Mbps)
 
     switch = DockerNode('switch', docker_build_dir='./docker/sumo', command="java FileServer")
     train = DockerNode('train', docker_build_dir='./docker/sumo', command="java FileClient")
-    net.connect(train, switch, channel_type=WiFiChannel, frequency=5860, channel_width=10, tx_power=18.0,
-                standard=WiFiChannel.WiFiStandard.WIFI_802_11p, data_rate=WiFiChannel.WiFiDataRate.OFDM_RATE_BW_6Mbps)
+    net.connect(train)
+    net.connect(switch)
 
     scenario.add_network(net)
 
-    sumo = SUMOMobilityInput(name='Rail-To-X', sumo_port=8081)
+    sumo = SUMOMobilityInput(sumo_cmd="sumo-gui", config_path="docker/sumo/sumo-scenario/scenario.sumocfg",
+                             step_length=0.2)
     sumo.add_node_to_mapping(switch, 'n0', obj_type='junction')
     sumo.add_node_to_mapping(train, 'train')
 

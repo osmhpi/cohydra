@@ -6,11 +6,12 @@ from cohydra.node import SSHNode
 def main():
     scenario = Scenario()
 
-    net = Network('10.200.0.0', '255.255.255.0')
+    net = Network('10.200.0.0', '255.255.255.0', delay='150ms', speed='100Mbps')
 
     ping = SSHNode('ping')
     pong = SSHNode('pong')
-    net.connect(ping, pong, delay='150ms', speed='100Mbps')
+    net.connect(ping)
+    net.connect(pong)
 
     scenario.add_network(net)
 

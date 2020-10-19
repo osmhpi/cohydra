@@ -5,13 +5,17 @@ from cohydra import ArgumentParser, Scenario, Network, SwitchNode, DockerNode, S
 def main():
     scenario = Scenario()
 
-    net = Network("10.0.0.0", "255.255.255.0")
+    net = Network("10.0.0.0", "255.255.255.0", delay="200ms")
 
     node1 = DockerNode('pong', docker_build_dir='./docker/pong')
     node2 = SwitchNode('bridge-1')
     node3 = SSHNode('ping', '10.243.42.11')
-    net.connect(node1, node2, delay='200ms')
-    net.connect(node2, node3, delay='200ms')
+    net.create_channel("channel1")
+    net.create_channel("channel2")
+    net.connect(node1, channel_name="channel1")
+    net.connect(node2, channel_name="channel1")
+    net.connect(node2, channel_name="channel2")
+    net.connect(node3, channel_name="channel2")
 
     scenario.add_network(net)
     with scenario as sim:
