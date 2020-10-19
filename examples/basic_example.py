@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
-from cohydra import ArgumentParser, Network, DockerNode, Scenario, WiFiChannel
+from cohydra import ArgumentParser, Network, DockerNode, Scenario
 
 def main():
     scenario = Scenario()
 
-    net = Network("10.0.0.0", "255.255.255.0", base="0.0.0.2", default_channel_type=WiFiChannel, delay="200ms")
+    net = Network("10.0.0.0", "255.255.255.0", base="0.0.0.2", delay="200ms")
     net.block_ip_address("10.0.0.1")
 
     node1 = DockerNode('ping', docker_build_dir='./docker/ping')
-    node1.set_position(0, 50, 0)
     node2 = DockerNode('pong', docker_build_dir='./docker/pong')
     net.connect(node1, "10.0.0.17")
     net.connect(node2)
