@@ -283,7 +283,7 @@
 <div class="viewcode-block" id="Network.get_free_ip_address"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.get_free_ip_address">[docs]</a>    <span class="k">def</span> <span class="nf">get_free_ip_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a free ip address.</span>
 
-<span class="sd">        This returns an ip address which is not already allocated.</span>
+<span class="sd">        This returns an ip address which is not already allocated or blocked.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_free_ip</span> <span class="o">+</span> <span class="mi">1</span>
@@ -317,7 +317,7 @@
             <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> will not be created because it has not enough nodes inside (2 at least)&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">][</span><span class="mi">0</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">],</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">][</span><span class="mi">0</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">],</span>
                                                                     <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
 
@@ -328,7 +328,41 @@
 
                 <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing channel #</span><span class="si">%d</span><span class="s1"> of network </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">channel_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
-                    <span class="n">channel</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span></div></div>
+                    <span class="n">channel</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Network.set_delay"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the delay of a specific channel (if name is present) or all channels.</span>
+
+<span class="sd">        In case of WiFi-Channels, the distance between the nodes is important. The requested delay is configured at 100</span>
+<span class="sd">        meters distance. If the distance is smaller, the delay is smaller as well (for example half of the delay at</span>
+<span class="sd">        50 meters).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        delay : str</span>
+<span class="sd">            The new time for delay in the channel in seconds (10s) or milliseconds (10ms)</span>
+<span class="sd">        channel_name : str</span>
+<span class="sd">            The name of a specific channel (or all channels if value is None)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">channel</span><span class="o">.</span><span class="n">channel_name</span> <span class="ow">is</span> <span class="n">channel_name</span><span class="p">:</span>
+                <span class="n">channel</span><span class="o">.</span><span class="n">set_delay</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Network.set_speed"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.set_speed">[docs]</a>    <span class="k">def</span> <span class="nf">set_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the speed of a specific channel (if name is present) or all channels.</span>
+
+<span class="sd">        *Warning:* Sofar this has only effect when happening before simulation start.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        speed : str</span>
+<span class="sd">            The new speed</span>
+<span class="sd">        channel_name : str</span>
+<span class="sd">            The name of a specific channel (or all channels if value is None)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">channel</span><span class="o">.</span><span class="n">channel_name</span> <span class="ow">is</span> <span class="n">channel_name</span><span class="p">:</span>
+                <span class="n">channel</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ConnectedNode"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ConnectedNode">[docs]</a><span class="k">class</span> <span class="nc">ConnectedNode</span><span class="p">:</span>

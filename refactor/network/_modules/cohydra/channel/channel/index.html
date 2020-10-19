@@ -172,13 +172,18 @@
 <span class="sd">    ----------</span>
 <span class="sd">    network : :class:`.Network`</span>
 <span class="sd">        The network this channel belongs to.</span>
+<span class="sd">    channel_name : str</span>
+<span class="sd">        The name of the channel</span>
 <span class="sd">    nodes : list of :class:`.Node`</span>
 <span class="sd">        The nodes to connect on a physical channel.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="n">nodes</span><span class="p">):</span>
         <span class="c1">#: The network the channel belongs to.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+
+        <span class="c1">#: The name of the channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span> <span class="o">=</span> <span class="n">channel_name</span>
 
         <span class="c1">#: All Interfaces (~network cards) on this channel.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interfaces</span> <span class="o">=</span> <span class="p">[]</span>

@@ -209,7 +209,7 @@
 </div>
 <dl class="class">
 <dt id="cohydra.channel.csma.CSMAChannel">
-<em class="property">class </em><code class="sig-prename descclassname">cohydra.channel.csma.</code><code class="sig-name descname">CSMAChannel</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">nodes</em>, <em class="sig-param">delay='0ms'</em>, <em class="sig-param">speed='100Mbps'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/csma/#CSMAChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.channel.csma.</code><code class="sig-name descname">CSMAChannel</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">channel_name</em>, <em class="sig-param">nodes</em>, <em class="sig-param">delay='0ms'</em>, <em class="sig-param">data_rate='100Mbps'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/csma/#CSMAChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" title="cohydra.channel.channel.Channel"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.channel.channel.Channel</span></code></a></p>
 <p>The Channel resembles a physical connection of nodes.</p>
 <p>For CSMA this would be equivalent to one LAN cable.
@@ -217,8 +217,8 @@ All Nodes connected to a channel will be on one collision domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>delay</strong> (<em>str</em>) – A time for delay in the channel.</p></li>
-<li><p><strong>speed</strong> (<em>str</em>) – The channel’s transmission speed.</p></li>
+<li><p><strong>delay</strong> (<em>str</em>) – A time for delay in the channel in seconds (10s) or milliseconds (10ms).</p></li>
+<li><p><strong>data_rate</strong> (<em>str</em>) – The channel’s transmission data rate.</p></li>
 </ul>
 </dd>
 </dl>
@@ -229,8 +229,8 @@ All Nodes connected to a channel will be on one collision domain.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cohydra.channel.csma.CSMAChannel.speed">
-<code class="sig-name descname">speed</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.speed" title="Permalink to this definition">¶</a></dt>
+<dt id="cohydra.channel.csma.CSMAChannel.data_rate">
+<code class="sig-name descname">data_rate</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.data_rate" title="Permalink to this definition">¶</a></dt>
 <dd><p>The channel’s speed for transmitting and receiving.</p>
 <p>Valid values e.g. are <code class="code docutils literal notranslate"><span class="pre">'100Mbps'</span></code> or <code class="code docutils literal notranslate"><span class="pre">'64kbps'</span></code>.</p>
 </dd></dl>
@@ -242,9 +242,9 @@ All Nodes connected to a channel will be on one collision domain.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cohydra.channel.csma.CSMAChannel.devices_container">
-<code class="sig-name descname">devices_container</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.devices_container" title="Permalink to this definition">¶</a></dt>
-<dd><p>All ns-3 devices on this channel.</p>
+<dt id="cohydra.channel.csma.CSMAChannel.csma_channel">
+<code class="sig-name descname">csma_channel</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.csma_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel for connecting the nodes</p>
 </dd></dl>
 
 <dl class="method">
@@ -257,6 +257,16 @@ All Nodes connected to a channel will be on one collision domain.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="method">
+<dt id="cohydra.channel.csma.CSMAChannel.set_delay">
+<code class="sig-name descname">set_delay</code><span class="sig-paren">(</span><em class="sig-param">delay</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/csma/#CSMAChannel.set_delay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.set_delay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cohydra.channel.csma.CSMAChannel.set_data_rate">
+<code class="sig-name descname">set_data_rate</code><span class="sig-paren">(</span><em class="sig-param">data_rate</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/csma/#CSMAChannel.set_data_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.set_data_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="cohydra.channel.csma.CSMAChannel.nodes">

@@ -156,6 +156,7 @@
 <span class="kn">import</span> <span class="nn">ipaddress</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
 <span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">internet</span><span class="p">,</span> <span class="n">network</span> <span class="k">as</span> <span class="n">ns_net</span><span class="p">,</span> <span class="n">wifi</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">propagation</span>
@@ -191,6 +192,8 @@
 <span class="sd">        The WiFi standard to use.</span>
 <span class="sd">    data_rate : :class:`.WiFiDataRate`</span>
 <span class="sd">        The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.</span>
+<span class="sd">    delay : str</span>
+<span class="sd">        A time for delay in the channel in seconds (10s) or milliseconds (10ms) at 100m distance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="WiFiChannel.WiFiStandard"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.WiFiStandard">[docs]</a>    <span class="nd">@unique</span>
@@ -294,10 +297,10 @@
         <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
         <span class="n">OFDM_RATE_BW_27Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate27MbpsBW10MHz&quot;</span></div>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">channel_width</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">antennas</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tx_power</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">channel_width</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">antennas</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tx_power</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
                  <span class="n">standard</span><span class="p">:</span> <span class="n">WiFiStandard</span> <span class="o">=</span> <span class="n">WiFiStandard</span><span class="o">.</span><span class="n">WIFI_802_11b</span><span class="p">,</span>
-                 <span class="n">data_rate</span><span class="p">:</span> <span class="n">WiFiDataRate</span> <span class="o">=</span> <span class="n">WiFiDataRate</span><span class="o">.</span><span class="n">DSSS_RATE_11Mbps</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
+                 <span class="n">data_rate</span><span class="p">:</span> <span class="n">WiFiDataRate</span> <span class="o">=</span> <span class="n">WiFiDataRate</span><span class="o">.</span><span class="n">DSSS_RATE_11Mbps</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="s2">&quot;0ms&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
 
         <span class="c1">#: The channel to use.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
@@ -315,6 +318,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">standard</span> <span class="o">=</span> <span class="n">standard</span>
         <span class="c1">#: The data rate to use.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span> <span class="o">=</span> <span class="n">data_rate</span>
+        <span class="c1">#: The delay for the channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting up physical layer of WiFi.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">YansWifiPhyHelper</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
@@ -334,6 +339,7 @@
 
         <span class="n">wifi_channel</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">YansWifiChannel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span> <span class="o">=</span> <span class="n">propagation</span><span class="o">.</span><span class="n">ConstantSpeedPropagationDelayModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">)</span>
         <span class="n">wifi_channel</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;PropagationDelayModel&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">PointerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">standard</span> <span class="o">==</span> <span class="n">WiFiChannel</span><span class="o">.</span><span class="n">WiFiStandard</span><span class="o">.</span><span class="n">WIFI_802_11p</span><span class="p">:</span>
@@ -426,7 +432,29 @@
 <div class="viewcode-block" id="WiFiChannel.prepare"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">interface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interfaces</span><span class="p">:</span>
             <span class="n">pcap_log_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">log_directory</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">pcap_file_name</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">EnablePcap</span><span class="p">(</span><span class="n">pcap_log_path</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">ns3_device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">EnablePcap</span><span class="p">(</span><span class="n">pcap_log_path</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">ns3_device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WiFiChannel.set_delay"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Set delay of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">delay</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^\d+ms&quot;</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^\d+s&quot;</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">delay</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;ms&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Delay has to be in seconds or milliseconds.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Check if the given delay should be 0. The regex defines all supported time modes.</span>
+            <span class="k">if</span> <span class="n">delay</span> <span class="ow">is</span> <span class="s2">&quot;0ms&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span><span class="o">.</span><span class="n">SetSpeed</span><span class="p">(</span><span class="mi">299792458</span><span class="p">)</span>  <span class="c1"># Light Speed</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Initial setup: 100ms one-way means 1000 m/s speed</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span><span class="o">.</span><span class="n">SetSpeed</span><span class="p">((</span><span class="mf">100.0</span><span class="o">/</span><span class="nb">int</span><span class="p">(</span><span class="n">delay</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WiFiChannel.set_data_rate"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.set_data_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_data_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_rate</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Set delay of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">data_rate</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span> <span class="o">=</span> <span class="n">data_rate</span>  <span class="c1"># This have no effect after creating the network so far.</span></div></div>
 </pre></div>
 
            </div>

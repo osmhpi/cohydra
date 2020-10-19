@@ -174,30 +174,32 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    delay : str</span>
-<span class="sd">        A time for delay in the channel.</span>
-<span class="sd">    speed : str</span>
-<span class="sd">        The channel&#39;s transmission speed.</span>
+<span class="sd">        A time for delay in the channel in seconds (10s) or milliseconds (10ms).</span>
+<span class="sd">    data_rate : str</span>
+<span class="sd">        The channel&#39;s transmission data rate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="s2">&quot;0ms&quot;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="s2">&quot;100Mbps&quot;</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="s2">&quot;0ms&quot;</span><span class="p">,</span> <span class="n">data_rate</span><span class="o">=</span><span class="s2">&quot;100Mbps&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
 
         <span class="c1">#: The channel&#39;s delay.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
         <span class="c1">#: The channel&#39;s speed for transmitting and receiving.</span>
         <span class="c1">#:</span>
         <span class="c1">#: Valid values e.g. are :code:`&#39;100Mbps&#39;` or :code:`&#39;64kbps&#39;`.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span> <span class="o">=</span> <span class="n">data_rate</span>
 
         <span class="c1">#: A helper for connecting nodes via CSMA.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">csma_helper</span> <span class="o">=</span> <span class="n">csma</span><span class="o">.</span><span class="n">CsmaHelper</span><span class="p">()</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Install connection between nodes&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">csma_helper</span><span class="o">.</span><span class="n">SetChannelAttribute</span><span class="p">(</span><span class="s2">&quot;DataRate&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">csma_helper</span><span class="o">.</span><span class="n">SetChannelAttribute</span><span class="p">(</span><span class="s2">&quot;Delay&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">))</span>
+        <span class="c1">#: The channel for connecting the nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csma_channel</span> <span class="o">=</span> <span class="n">csma</span><span class="o">.</span><span class="n">CsmaChannel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data_rate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="p">)</span>
 
         <span class="c1">#: All ns-3 devices on this channel.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csma_helper</span><span class="o">.</span><span class="n">Install</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ns3_nodes_container</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Install connection between nodes&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csma_helper</span><span class="o">.</span><span class="n">Install</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ns3_nodes_container</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">csma_channel</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Set IP addresses on nodes&#39;</span><span class="p">)</span>
         <span class="n">stack_helper</span> <span class="o">=</span> <span class="n">internet</span><span class="o">.</span><span class="n">InternetStackHelper</span><span class="p">()</span>
@@ -206,8 +208,6 @@
             <span class="n">ns3_device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="n">node</span> <span class="o">=</span> <span class="n">connected_node</span><span class="o">.</span><span class="n">node</span>
 
-            <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">interface</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">wants_ip_stack</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">ns3_node</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">internet</span><span class="o">.</span><span class="n">Ipv4</span><span class="o">.</span><span class="n">GetTypeId</span><span class="p">())</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Installing IP stack on </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -235,7 +235,21 @@
 <div class="viewcode-block" id="CSMAChannel.prepare"><a class="viewcode-back" href="../../../../api/cohydra.channel.csma/#cohydra.channel.csma.CSMAChannel.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">interface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interfaces</span><span class="p">:</span>
             <span class="n">pcap_log_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">log_directory</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">pcap_file_name</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">csma_helper</span><span class="o">.</span><span class="n">EnablePcap</span><span class="p">(</span><span class="n">pcap_log_path</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">ns3_device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">csma_helper</span><span class="o">.</span><span class="n">EnablePcap</span><span class="p">(</span><span class="n">pcap_log_path</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">ns3_device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CSMAChannel.set_delay"><a class="viewcode-back" href="../../../../api/cohydra.channel.csma/#cohydra.channel.csma.CSMAChannel.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Set delay of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">delay</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">csma_channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">Config</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;/ChannelList/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csma_channel</span><span class="o">.</span><span class="n">GetId</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;/$ns3::CsmaChannel/Delay&quot;</span><span class="p">,</span>
+                            <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CSMAChannel.set_data_rate"><a class="viewcode-back" href="../../../../api/cohydra.channel.csma/#cohydra.channel.csma.CSMAChannel.set_data_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_data_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_rate</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Set speed of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">data_rate</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span> <span class="o">=</span> <span class="n">data_rate</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">csma_channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">Config</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s2">&quot;/ChannelList/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csma_channel</span><span class="o">.</span><span class="n">GetId</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;/$ns3::CsmaChannel/DataRate&quot;</span><span class="p">,</span>
+                            <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
