@@ -18,13 +18,18 @@ class Channel:
     ----------
     network : :class:`.Network`
         The network this channel belongs to.
+    channel_name : str
+        The name of the channel
     nodes : list of :class:`.Node`
         The nodes to connect on a physical channel.
     """
 
-    def __init__(self, network, nodes):
+    def __init__(self, network, channel_name, nodes):
         #: The network the channel belongs to.
         self.network = network
+
+        #: The name of the channel
+        self.channel_name = channel_name
 
         #: All Interfaces (~network cards) on this channel.
         self.interfaces = []

@@ -2,6 +2,7 @@
 import ipaddress
 import logging
 import os
+import re
 
 from enum import Enum, unique
 from ns import core, internet, network as ns_net, wifi, wave, propagation
@@ -37,6 +38,8 @@ class WiFiChannel(Channel):
         The WiFi standard to use.
     data_rate : :class:`.WiFiDataRate`
         The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.
+    delay : str
+        A time for delay in the channel in seconds (10s) or milliseconds (10ms) at 100m distance.
     """
 
     @unique
@@ -140,10 +143,10 @@ class WiFiChannel(Channel):
         #: Use with :attr:`.WiFiStandard.WIFI_802_11p`.
         OFDM_RATE_BW_27Mbps = "OfdmRate27MbpsBW10MHz"
 
-    def __init__(self, network, nodes, frequency=None, channel=1, channel_width=40, antennas=1, tx_power=20.0,
+    def __init__(self, network, channel_name, nodes, frequency=None, channel=1, channel_width=40, antennas=1, tx_power=20.0,
                  standard: WiFiStandard = WiFiStandard.WIFI_802_11b,
-                 data_rate: WiFiDataRate = WiFiDataRate.DSSS_RATE_11Mbps):
-        super().__init__(network, nodes)
+                 data_rate: WiFiDataRate = WiFiDataRate.DSSS_RATE_11Mbps, delay="0ms"):
+        super().__init__(network, channel_name, nodes)
 
         #: The channel to use.
         self.channel = channel
@@ -161,6 +164,8 @@ class WiFiChannel(Channel):
         self.standard = standard
         #: The data rate to use.
         self.data_rate = data_rate
+        #: The delay for the channel
+        self.delay = delay
 
         logger.debug("Setting up physical layer of WiFi.")
         self.wifi_phy_helper = wifi.YansWifiPhyHelper.Default()
@@ -180,6 +185,7 @@ class WiFiChannel(Channel):
 
         wifi_channel = wifi.YansWifiChannel()
         self.propagation_delay_model = propagation.ConstantSpeedPropagationDelayModel()
+        self.set_delay(self.delay)
         wifi_channel.SetAttribute("PropagationDelayModel", core.PointerValue(self.propagation_delay_model))
 
         if self.standard == WiFiChannel.WiFiStandard.WIFI_802_11p:
@@ -273,3 +279,25 @@ class WiFiChannel(Channel):
         for interface in self.interfaces:
             pcap_log_path = os.path.join(simulation.log_directory, interface.pcap_file_name)
             self.wifi_phy_helper.EnablePcap(pcap_log_path, interface.ns3_device, True, True)
+
+    def set_delay(self, delay):
+        logger.info(f'Set delay of channel {self.channel_name} to {delay}')
+
+        if re.match("^\d+ms", delay):
+            self.delay = delay
+        elif re.match("^\d+s", delay):
+            self.delay = str(int(delay[:-1])*1000)+"ms"
+        else:
+            raise ValueError("Delay has to be in seconds or milliseconds.")
+
+        if self.propagation_delay_model is not None:
+            # Check if the given delay should be 0. The regex defines all supported time modes.
+            if delay is "0ms":
+                self.propagation_delay_model.SetSpeed(299792458)  # Light Speed
+            else:
+                # Initial setup: 100ms one-way means 1000 m/s speed
+                self.propagation_delay_model.SetSpeed((100.0/int(delay[:-2]))*1000.0)
+
+    def set_data_rate(self, data_rate):
+        logger.info(f'Set delay of channel {self.channel_name} to {data_rate}')
+        self.data_rate = data_rate  # This have no effect after creating the network so far.

@@ -20,30 +20,32 @@ class CSMAChannel(Channel):
     Parameters
     ----------
     delay : str
-        A time for delay in the channel.
-    speed : str
-        The channel's transmission speed.
+        A time for delay in the channel in seconds (10s) or milliseconds (10ms).
+    data_rate : str
+        The channel's transmission data rate.
     """
 
-    def __init__(self, network, nodes, delay="0ms", speed="100Mbps"):
-        super().__init__(network, nodes)
+    def __init__(self, network, channel_name, nodes, delay="0ms", data_rate="100Mbps"):
+        super().__init__(network, channel_name, nodes)
 
         #: The channel's delay.
         self.delay = delay
         #: The channel's speed for transmitting and receiving.
         #:
         #: Valid values e.g. are :code:`'100Mbps'` or :code:`'64kbps'`.
-        self.speed = speed
+        self.data_rate = data_rate
 
         #: A helper for connecting nodes via CSMA.
         self.csma_helper = csma.CsmaHelper()
 
-        logger.info('Install connection between nodes')
-        self.csma_helper.SetChannelAttribute("DataRate", core.StringValue(self.speed))
-        self.csma_helper.SetChannelAttribute("Delay", core.StringValue(self.delay))
+        #: The channel for connecting the nodes
+        self.csma_channel = csma.CsmaChannel()
+        self.set_delay(self.delay)
+        self.set_data_rate(self.data_rate)
 
         #: All ns-3 devices on this channel.
-        self.devices_container = self.csma_helper.Install(self.ns3_nodes_container)
+        logger.info('Install connection between nodes')
+        self.devices_container = self.csma_helper.Install(self.ns3_nodes_container, self.csma_channel)
 
         logger.info('Set IP addresses on nodes')
         stack_helper = internet.InternetStackHelper()
@@ -52,8 +54,6 @@ class CSMAChannel(Channel):
             ns3_device = self.devices_container.Get(i)
             node = connected_node.node
 
-            address = None
-            interface = None
             if node.wants_ip_stack():
                 if node.ns3_node.GetObject(internet.Ipv4.GetTypeId()) is None:
                     logger.info('Installing IP stack on %s', node.name)
@@ -82,3 +82,17 @@ class CSMAChannel(Channel):
         for interface in self.interfaces:
             pcap_log_path = os.path.join(simulation.log_directory, interface.pcap_file_name)
             self.csma_helper.EnablePcap(pcap_log_path, interface.ns3_device, True, True)
+
+    def set_delay(self, delay):
+        logger.info(f'Set delay of channel {self.channel_name} to {delay}')
+        self.delay = delay
+        if self.csma_channel is not None:
+            core.Config.Set("/ChannelList/" + str(self.csma_channel.GetId()) + "/$ns3::CsmaChannel/Delay",
+                            core.StringValue(str(self.delay)))
+
+    def set_data_rate(self, data_rate):
+        logger.info(f'Set speed of channel {self.channel_name} to {data_rate}')
+        self.data_rate = data_rate
+        if self.csma_channel is not None:
+            core.Config.Set("/ChannelList/" + str(self.csma_channel.GetId()) + "/$ns3::CsmaChannel/DataRate",
+                            core.StringValue(self.data_rate))

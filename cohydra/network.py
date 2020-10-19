@@ -129,7 +129,7 @@ class Network:
     def get_free_ip_address(self):
         """Get a free ip address.
 
-        This returns an ip address which is not already allocated.
+        This returns an ip address which is not already allocated or blocked.
         """
         address = self.next_free_ip
         self.next_free_ip = self.next_free_ip + 1
@@ -163,7 +163,7 @@ class Network:
             if channel_name not in self.nodes or len(self.nodes[channel_name]) < 2:
                 logger.warning(f'{channel_name} will not be created because it has not enough nodes inside (2 at least)')
             else:
-                channel = self.channels_prototypes[channel_name][0](self, self.nodes[channel_name],
+                channel = self.channels_prototypes[channel_name][0](self, channel_name, self.nodes[channel_name],
                                                                     **self.channels_prototypes[channel_name][1])
                 self.channels.append(channel)
 
@@ -175,6 +175,40 @@ class Network:
                 for channel in self.channels:
                     logger.info('Preparing channel #%d of network %s', channel_index, self.network)
                     channel.prepare(simulation)
+
+    def set_delay(self, delay, channel_name=None):
+        """Sets the delay of a specific channel (if name is present) or all channels.
+
+        In case of WiFi-Channels, the distance between the nodes is important. The requested delay is configured at 100
+        meters distance. If the distance is smaller, the delay is smaller as well (for example half of the delay at
+        50 meters).
+
+        Parameters
+        ----------
+        delay : str
+            The new time for delay in the channel in seconds (10s) or milliseconds (10ms)
+        channel_name : str
+            The name of a specific channel (or all channels if value is None)
+        """
+        for channel in self.channels:
+            if channel_name is None or channel.channel_name is channel_name:
+                channel.set_delay(delay)
+
+    def set_speed(self, speed, channel_name=None):
+        """Sets the speed of a specific channel (if name is present) or all channels.
+
+        *Warning:* Sofar this has only effect when happening before simulation start.
+
+        Parameters
+        ----------
+        speed : str
+            The new speed
+        channel_name : str
+            The name of a specific channel (or all channels if value is None)
+        """
+        for channel in self.channels:
+            if channel_name is None or channel.channel_name is channel_name:
+                channel.set_speed(speed)
 
 
 class ConnectedNode:
