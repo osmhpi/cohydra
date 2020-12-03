@@ -123,13 +123,15 @@ class Interface:
         logger.debug('Remove bridge %s', self.bridge_name)
         ipr.link('del', ifname=self.bridge_name)
 
-    def connect_tap_to_bridge(self, bridge_name=None):
+    def connect_tap_to_bridge(self, bridge_name=None, tap_mode="ConfigureLocal"):
         """Connect a ns-3 tap device to the bridge.
 
         Parameters
         ----------
         bridge_name : str
             The bridge to connect the tap (and ns-3) device to.
+        tap_mode : str
+            The ns-3 mode for the tap bridge. Either ConfigureLocal or UseLocal.
         """
         if bridge_name is None:
             bridge_name = self.bridge_name
@@ -149,10 +151,18 @@ class Interface:
         # ConfigureLocal is used to prevent the TAP / bridged device to use a "learned" MAC address.
         # So, we can set the CSMA and WiFiNetDevice address to something we control.
         # Otherwise, WiFi ACK misses happen.
-        tap_helper.SetAttribute('Mode', core.StringValue('ConfigureLocal'))
-        tap_helper.SetAttribute('DeviceName', core.StringValue(self.tap_name))
-        tap_helper.SetAttribute('MacAddress', ns_net.Mac48AddressValue(ns_net.Mac48Address.Allocate()))
-        tap_helper.Install(self.node.ns3_node, self.ns3_device)
+        if tap_mode == "ConfigureLocal":
+            tap_helper.SetAttribute('Mode', core.StringValue('ConfigureLocal'))
+            tap_helper.SetAttribute('DeviceName', core.StringValue(self.tap_name))
+            tap_helper.SetAttribute('MacAddress', ns_net.Mac48AddressValue(ns_net.Mac48Address.Allocate()))
+            tap_helper.Install(self.node.ns3_node, self.ns3_device)
+        elif tap_mode == "UseLocal":
+            tap_helper.SetAttribute("Mode", core.StringValue("UseLocal"))
+            tap_helper.SetAttribute("DeviceName", core.StringValue(self.tap_name))
+            tap_helper.Install(self.node.ns3_node, self.ns3_device)
+        else:
+            logger.error("Unsupported TAP-Mode %s.", tap_mode)
+
 
     def disconnect_tap_from_bridge(self):
         """Disconnect the (tap) interface and delete it."""
