@@ -29,7 +29,7 @@ run git status
 
 run cd "$TRAVIS_BUILD_DIR"
 run make cohydra-base latest
-run docker run --rm -i -v "$TRAVIS_BUILD_DIR:/app" -w /app osmhpi/cohydra:base << EOF
+run docker run --rm -i -v "$TRAVIS_BUILD_DIR:/app" -w /app osmhpi/cohydra:base bash << EOF
 apt-get update
 apt-get install -y make graphviz
 
