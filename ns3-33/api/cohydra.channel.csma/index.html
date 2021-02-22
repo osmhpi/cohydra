@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.channel.csma &mdash; cohydra 0.2.0 - ns3-33 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.channel.wifi" href="../cohydra.channel.wifi/" />
+    <link rel="prev" title="cohydra.channel.channel" href="../cohydra.channel.channel/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - ns3-33
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.channel.channel/">cohydra.channel.channel</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.channel.csma</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.channel.wifi/">cohydra.channel.wifi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.visualization/">cohydra.visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+          <li><a href="../cohydra.channel/">cohydra.channel</a> &raquo;</li>
+        
+      <li>cohydra.channel.csma</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.channel.csma">
+<span id="cohydra-channel-csma"></span><h1>cohydra.channel.csma<a class="headerlink" href="#module-cohydra.channel.csma" title="Permalink to this headline">¶</a></h1>
+<p>Ethernet LAN channel.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.channel.csma.CSMAChannel" title="cohydra.channel.csma.CSMAChannel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSMAChannel</span></code></a></p></td>
+<td><p>The Channel resembles a physical connection of nodes.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="class">
+<dt id="cohydra.channel.csma.CSMAChannel">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.channel.csma.</code><code class="sig-name descname">CSMAChannel</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">nodes</em>, <em class="sig-param">delay='0ms'</em>, <em class="sig-param">speed='100Mbps'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/csma/#CSMAChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" title="cohydra.channel.channel.Channel"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.channel.channel.Channel</span></code></a></p>
+<p>The Channel resembles a physical connection of nodes.</p>
+<p>For CSMA this would be equivalent to one LAN cable.
+All Nodes connected to a channel will be on one collision domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delay</strong> (<em>str</em>) – A time for delay in the channel.</p></li>
+<li><p><strong>speed</strong> (<em>str</em>) – The channel’s transmission speed.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="cohydra.channel.csma.CSMAChannel.delay">
+<code class="sig-name descname">delay</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.delay" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel’s delay.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.csma.CSMAChannel.speed">
+<code class="sig-name descname">speed</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel’s speed for transmitting and receiving.</p>
+<p>Valid values e.g. are <code class="code docutils literal notranslate"><span class="pre">'100Mbps'</span></code> or <code class="code docutils literal notranslate"><span class="pre">'64kbps'</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.csma.CSMAChannel.csma_helper">
+<code class="sig-name descname">csma_helper</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.csma_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper for connecting nodes via CSMA.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.csma.CSMAChannel.devices_container">
+<code class="sig-name descname">devices_container</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.devices_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>All ns-3 devices on this channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.channel.csma.CSMAChannel.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">simulation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/csma/#CSMAChannel.prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare the channel (for logging).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>simulation</strong> (<a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>) – The simulation to prepare the channel for.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.channel.csma.CSMAChannel.nodes">
+<em class="property">property </em><code class="sig-name descname">nodes</code><a class="headerlink" href="#cohydra.channel.csma.CSMAChannel.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all nodes of this channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The list of nodes in this channel.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-67a79af69e481c009d92ab612791d13dffb92e36.png" alt="Inheritance diagram of cohydra.channel.csma" usemap="#inheritancefd31645bb5" class="inheritance graphviz" /></div>
+<map id="inheritancefd31645bb5" name="inheritancefd31645bb5">
+<area shape="rect" id="node1" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" target="_top" title="The Channel resembles a physical connection of nodes." alt="" coords="16,5,257,31"/>
+<area shape="rect" id="node2" href="#cohydra.channel.csma.CSMAChannel" target="_top" title="The Channel resembles a physical connection of nodes." alt="" coords="5,79,268,104"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.channel.wifi/" class="btn btn-neutral float-right" title="cohydra.channel.wifi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.channel.channel/" class="btn btn-neutral float-left" title="cohydra.channel.channel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
