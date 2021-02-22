@@ -46,7 +46,7 @@ sudo pip3 install git+https://github.com/active-expressions/active-expressions-s
 The Python libraries / directory provided by ns-3 and all other packages has to be in your `PYTHONPATH`, though.
 To run an example testcase, go to the example folder and run:
 ```shell script
-pyton3 basic_example.py
+python3 basic_example.py
 ```
 
 Cohydra so far has only been tested with **Debian 10 Buster** and **Ubuntu 18.04 Bionic Beaver**.
