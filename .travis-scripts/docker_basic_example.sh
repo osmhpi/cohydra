@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-make cohydra-base cohydra cohydra-dev latest
+make cohydra-base cohydra latest
 
 cd examples
 
