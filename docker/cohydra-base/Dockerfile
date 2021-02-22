@@ -5,16 +5,6 @@ FROM osmhpi/sumo:$SUMO_TAG AS sumo
 
 FROM osmhpi/ns-3:$NS3_TAG
 
-RUN apt-get update && \
-	apt-get install -y --no-install-recommends \
-	git \
-	python3-pip \
-	python3-setuptools \
-	&& \
-	apt-get autoremove -y && \
-	apt-get clean -y && \
-	rm -rf /var/lib/apt/lists/*
-
 RUN pip3 install --no-cache-dir \
 	coloredlogs \
 	docker \
