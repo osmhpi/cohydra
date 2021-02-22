@@ -1,4 +1,4 @@
-export NS3_TAG ?= 3.30
+export NS3_TAG ?= 3.33
 export SUMO_TAG ?= 1.4.0
 COHYDRA_TAG ?= $(shell if [ -z "`git status --porcelain`" ]; then git rev-parse --short HEAD; else echo dirty; fi)
 export COHYDRA_TAG := ${COHYDRA_TAG}

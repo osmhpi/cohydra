@@ -1,5 +1,5 @@
 ARG SUMO_TAG=1.4.0
-ARG NS3_TAG=3.30
+ARG NS3_TAG=3.33
 
 FROM osmhpi/sumo:$SUMO_TAG AS sumo
 

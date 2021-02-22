@@ -36,6 +36,6 @@ Local Installation Without Docker
 
 In the case you do not want to use the prebuilt docker, a normal ns-3 installation with *NetAnim* Python bindings will work, too.
 The Python libraries / directory provided by ns-3 has to be in your :code:`PYTHONPATH`, though.
-Cohydra so far has only been tested with **Debian 10 Buster**, **Ubuntu 18.04 Bionic Beaver** and **ns-3.30**.
+Cohydra so far has only been tested with **Debian 10 Buster**, **Ubuntu 18.04 Bionic Beaver** and **ns-3.33**.
 
 There is no installation via :code:`pip`.
