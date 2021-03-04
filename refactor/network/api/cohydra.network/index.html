@@ -191,10 +191,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.network.ConnectedNode" title="cohydra.network.ConnectedNode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConnectedNode</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.network.ChannelPrototype" title="cohydra.network.ChannelPrototype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChannelPrototype</span></code></a></p></td>
+<td><p>A channel prototype defines all parameters for the channel creation and offers a method to add nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cohydra.network.ConnectedNode" title="cohydra.network.ConnectedNode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConnectedNode</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#cohydra.network.Network" title="cohydra.network.Network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Network</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.network.Network" title="cohydra.network.Network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Network</span></code></a></p></td>
 <td><p>A network connects many nodes together and assigns IP addresses.</p></td>
 </tr>
 </tbody>
@@ -204,7 +207,7 @@
 </div>
 <dl class="class">
 <dt id="cohydra.network.Network">
-<em class="property">class </em><code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">Network</code><span class="sig-paren">(</span><em class="sig-param">network_address</em>, <em class="sig-param">netmask=None</em>, <em class="sig-param">base=None</em>, <em class="sig-param">default_channel_type=&lt;class 'cohydra.channel.csma.CSMAChannel'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">Network</code><span class="sig-paren">(</span><em class="sig-param">network_address</em>, <em class="sig-param">netmask=None</em>, <em class="sig-param">base=None</em>, <em class="sig-param">default_channel_type=&lt;class 'cohydra.channel.csma.CSMAChannel'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A network connects many nodes together and assigns IP addresses.</p>
 <p>It can be compared to a subnet or so.
@@ -239,6 +242,12 @@ This can be one of <a class="reference internal" href="../cohydra.channel.csma/#
 <dt id="cohydra.network.Network.default_channel_type">
 <code class="sig-name descname">default_channel_type</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.network.Network.default_channel_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>The channel type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.network.Network.random_channel_names">
+<code class="sig-name descname">random_channel_names</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.network.Network.random_channel_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of random generated channel names to avoid duplicates</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -279,31 +288,14 @@ This can be one of <a class="reference internal" href="../cohydra.channel.csma/#
 
 <dl class="method">
 <dt id="cohydra.network.Network.create_channel">
-<code class="sig-name descname">create_channel</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">channel_type=None</em>, <em class="sig-param">**channel_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network.create_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network.create_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_channel</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">channel_type=None</em>, <em class="sig-param">**channel_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network.create_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network.create_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds one named channel prototype to the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – The name of the channel.</p></li>
-<li><p><strong>channel_type</strong> (<em>str</em>) – The channel type. If set to <code class="code docutils literal notranslate"><span class="pre">None</span></code>, the default channel type will be set.</p></li>
-<li><p><strong>channel_kwargs</strong> (<em>str</em>) – The arguments of the new channel</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="cohydra.network.Network.connect">
-<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">ip_addr=None</em>, <em class="sig-param">channel_name='default'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#Network.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.Network.connect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds one node to the network.</p>
-<p>This is comparable to inserting a cable between them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>node</strong> (<a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>) – The node that should be connected to the network. It must be instance a subclass of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>.</p></li>
-<li><p><strong>ip_addr</strong> (<em>str</em>) – The IP address of that node. If <code class="code docutils literal notranslate"><span class="pre">None</span></code> an random IP from the network will be assigned.
-If not <code class="code docutils literal notranslate"><span class="pre">None</span></code> the IP address have to be in the range of the network.</p></li>
-<li><p><strong>channel_name</strong> (<em>str</em>) – The name of the channel where the node should be connected to. Default is the default channel.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the channel. If set to <code class="code docutils literal notranslate"><span class="pre">None</span></code>, a random name will be generated</p></li>
+<li><p><strong>channel_type</strong> (<em>class</em>) – The channel type. If set to <code class="code docutils literal notranslate"><span class="pre">None</span></code>, the default channel type will be set.</p></li>
+<li><p><strong>channel_kwargs</strong> (<em>dict</em>) – The arguments of the new channel</p></li>
 </ul>
 </dd>
 </dl>
@@ -378,16 +370,76 @@ meters distance. If the distance is smaller, the delay is smaller as well (for e
 </dd></dl>
 
 <dl class="class">
+<dt id="cohydra.network.ChannelPrototype">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">ChannelPrototype</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">name</em>, <em class="sig-param">channel_type</em>, <em class="sig-param">kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#ChannelPrototype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.ChannelPrototype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A channel prototype defines all parameters for the channel creation and offers a method to add nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<a class="reference internal" href="#cohydra.network.Network" title="cohydra.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – The network where the channel is located in.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the channel.</p></li>
+<li><p><strong>channel_type</strong> (<em>class</em>) – The channel to use.
+This can be one of <a class="reference internal" href="../cohydra.channel.csma/#cohydra.channel.csma.CSMAChannel" title="cohydra.channel.csma.CSMAChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSMAChannel</span></code></a> or <a class="reference internal" href="../cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel" title="cohydra.channel.wifi.WiFiChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WiFiChannel</span></code></a>.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – The parameters of the channel.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cohydra.network.ChannelPrototype.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">ip_addr=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#ChannelPrototype.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.ChannelPrototype.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds one node to the channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>) – The node that should be connected to the network. It must be instance a subclass of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>.</p></li>
+<li><p><strong>ip_addr</strong> (<em>str</em>) – The IP address of that node. If <code class="code docutils literal notranslate"><span class="pre">None</span></code> an random IP from the network will be assigned.
+If not <code class="code docutils literal notranslate"><span class="pre">None</span></code> the IP address have to be in the range of the network.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.network.ChannelPrototype.set_delay">
+<code class="sig-name descname">set_delay</code><span class="sig-paren">(</span><em class="sig-param">delay</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#ChannelPrototype.set_delay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.ChannelPrototype.set_delay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the delay of a specific channel.</p>
+<p>In case of WiFi-Channels, the distance between the nodes is important. The requested delay is configured at 100
+meters distance. If the distance is smaller, the delay is smaller as well (for example half of the delay at
+50 meters).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>delay</strong> (<em>str</em>) – The new time for delay in the channel in seconds (10s) or milliseconds (10ms)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.network.ChannelPrototype.set_speed">
+<code class="sig-name descname">set_speed</code><span class="sig-paren">(</span><em class="sig-param">speed</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#ChannelPrototype.set_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.ChannelPrototype.set_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the speed of a specific channel.</p>
+<p><em>Warning:</em> So far this only has an effect before the simulation is started.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>speed</strong> (<em>str</em>) – The new speed</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="cohydra.network.ConnectedNode">
 <em class="property">class </em><code class="sig-prename descclassname">cohydra.network.</code><code class="sig-name descname">ConnectedNode</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#ConnectedNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.ConnectedNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
 <p class="rubric">Inheritance Diagramm</p>
-<div class="graphviz"><img src="../../_images/inheritance-37af7fd767cd917753f0431b123a0fe580ebdd09.png" alt="Inheritance diagram of cohydra.network" usemap="#inheritance62d696dddd" class="inheritance graphviz" /></div>
+<div class="graphviz"><img src="../../_images/inheritance-953920e1ddc8f90e29f261c8f5e8f454b4046e7d.png" alt="Inheritance diagram of cohydra.network" usemap="#inheritance62d696dddd" class="inheritance graphviz" /></div>
 <map id="inheritance62d696dddd" name="inheritance62d696dddd">
-<area shape="rect" id="node1" href="#cohydra.network.ConnectedNode" target="_top" title="cohydra.network.ConnectedNode" alt="" coords="5,5,244,31"/>
-<area shape="rect" id="node2" href="#cohydra.network.Network" target="_top" title="A network connects many nodes together and assigns IP addresses." alt="" coords="268,5,459,31"/>
+<area shape="rect" id="node1" href="#cohydra.network.ChannelPrototype" target="_top" title="A channel prototype defines all parameters for the channel creation and offers a method to add nodes." alt="" coords="5,5,256,31"/>
+<area shape="rect" id="node2" href="#cohydra.network.ConnectedNode" target="_top" title="cohydra.network.ConnectedNode" alt="" coords="281,5,519,31"/>
+<area shape="rect" id="node3" href="#cohydra.network.Network" target="_top" title="A network connects many nodes together and assigns IP addresses." alt="" coords="543,5,734,31"/>
 </map><div class="line-block">
 <div class="line"><br /></div>
 </div>

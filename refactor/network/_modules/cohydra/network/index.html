@@ -156,6 +156,8 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">ipaddress</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">random</span>
 
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">CSMAChannel</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">network_color_for</span>
@@ -190,13 +192,15 @@
 <span class="sd">        This can be one of :class:`.CSMAChannel` or :class:`.WiFiChannel`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network_address</span><span class="p">,</span> <span class="n">netmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_channel_type</span><span class="o">=</span><span class="n">CSMAChannel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network_address</span><span class="p">,</span> <span class="n">netmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_channel_type</span><span class="o">=</span><span class="n">CSMAChannel</span><span class="p">):</span>
         <span class="c1">#: All the channels in the network.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="c1">#: The prototypes for the future channels.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">default_channel_type</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="c1">#: The channel type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_channel_type</span> <span class="o">=</span> <span class="n">default_channel_type</span>
+        <span class="c1">#: The list of random generated channel names to avoid duplicates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_channel_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="c1">#: The list of the connected nodes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1">#: The list of already allocated ip addresses</span>
@@ -222,47 +226,31 @@
         <span class="c1">#: The color of the network&#39;s nodes in a visualization.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Network.create_channel"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.create_channel">[docs]</a>    <span class="k">def</span> <span class="nf">create_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">channel_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">channel_kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Network.create_channel"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.create_channel">[docs]</a>    <span class="k">def</span> <span class="nf">create_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">channel_kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds one named channel prototype to the network.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        name : str</span>
-<span class="sd">            The name of the channel.</span>
-<span class="sd">        channel_type : str</span>
+<span class="sd">            The name of the channel. If set to :code:`None`, a random name will be generated</span>
+<span class="sd">        channel_type : class</span>
 <span class="sd">            The channel type. If set to :code:`None`, the default channel type will be set.</span>
-<span class="sd">        channel_kwargs : str</span>
+<span class="sd">        channel_kwargs : dict</span>
 <span class="sd">            The arguments of the new channel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">letters</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;channel_&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+            <span class="k">while</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_channel_names</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;channel_&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">random_channel_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">channel_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">channel_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_channel_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">channel_type</span><span class="p">,</span> <span class="n">channel_kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Network.connect"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ip_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Adds one node to the network.</span>
-
-<span class="sd">        This is comparable to inserting a cable between them.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        node : :class:`.Node`</span>
-<span class="sd">            The node that should be connected to the network. It must be instance a subclass of :class:`.Node`.</span>
-<span class="sd">        ip_addr : str</span>
-<span class="sd">            The IP address of that node. If :code:`None` an random IP from the network will be assigned.</span>
-<span class="sd">            If not :code:`None` the IP address have to be in the range of the network.</span>
-<span class="sd">        channel_name : str</span>
-<span class="sd">            The name of the channel where the node should be connected to. Default is the default channel.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">ip_addr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip_addr</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ConnectedNode</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">address</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> does not exist. You have to create it first.&quot;</span><span class="p">)</span></div>
+        <span class="n">prototype</span> <span class="o">=</span> <span class="n">ChannelPrototype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">channel_type</span><span class="p">,</span> <span class="n">channel_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prototype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prototype</span></div>
 
 <div class="viewcode-block" id="Network.block_ip_address"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.block_ip_address">[docs]</a>    <span class="k">def</span> <span class="nf">block_ip_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_addr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Blocks an IP address.</span>
@@ -313,22 +301,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing network (base IP: </span><span class="si">%s</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">channel_index</span><span class="p">,</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> will not be created because it has not enough nodes inside (2 at least)&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">][</span><span class="mi">0</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">],</span>
-                                                                    <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">channel_index</span><span class="p">,</span> <span class="n">channel_prototype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels_prototypes</span><span class="p">):</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">channel_prototype</span><span class="o">.</span><span class="n">channel_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_prototype</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">channel_prototype</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span>
+                                                     <span class="o">**</span><span class="n">channel_prototype</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">channel_prototype</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="c1"># Color is needed for a visualization.</span>
-                    <span class="n">color</span> <span class="o">=</span> <span class="n">network_color_for</span><span class="p">(</span><span class="n">network_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">networks</span><span class="p">))</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Color is needed for a visualization.</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="n">network_color_for</span><span class="p">(</span><span class="n">network_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">networks</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 
-                <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing channel #</span><span class="si">%d</span><span class="s1"> of network </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">channel_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
-                    <span class="n">channel</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span></div>
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing channel #</span><span class="si">%d</span><span class="s1"> of network </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">channel_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
+                <span class="n">channel</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Network.set_delay"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets the delay of a specific channel (if name is present) or all channels.</span>
@@ -363,6 +349,73 @@
         <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">channel</span><span class="o">.</span><span class="n">channel_name</span> <span class="ow">is</span> <span class="n">channel_name</span><span class="p">:</span>
                 <span class="n">channel</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ChannelPrototype"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ChannelPrototype">[docs]</a><span class="k">class</span> <span class="nc">ChannelPrototype</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A channel prototype defines all parameters for the channel creation and offers a method to add nodes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : :class:`.Network`</span>
+<span class="sd">        The network where the channel is located in.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the channel.</span>
+<span class="sd">    channel_type : class</span>
+<span class="sd">        The channel to use.</span>
+<span class="sd">        This can be one of :class:`.CSMAChannel` or :class:`.WiFiChannel`.</span>
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        The parameters of the channel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">channel_type</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel_type</span> <span class="o">=</span> <span class="n">channel_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># After creation, this will be the channel object</span>
+
+<div class="viewcode-block" id="ChannelPrototype.connect"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ChannelPrototype.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ip_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds one node to the channel.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : :class:`.Node`</span>
+<span class="sd">            The node that should be connected to the network. It must be instance a subclass of :class:`.Node`.</span>
+<span class="sd">        ip_addr : str</span>
+<span class="sd">            The IP address of that node. If :code:`None` an random IP from the network will be assigned.</span>
+<span class="sd">            If not :code:`None` the IP address have to be in the range of the network.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">ip_addr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip_addr</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ConnectedNode</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">address</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ChannelPrototype.set_delay"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ChannelPrototype.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the delay of a specific channel.</span>
+
+<span class="sd">        In case of WiFi-Channels, the distance between the nodes is important. The requested delay is configured at 100</span>
+<span class="sd">        meters distance. If the distance is smaller, the delay is smaller as well (for example half of the delay at</span>
+<span class="sd">        50 meters).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        delay : str</span>
+<span class="sd">            The new time for delay in the channel in seconds (10s) or milliseconds (10ms)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">set_delay</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChannelPrototype.set_speed"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ChannelPrototype.set_speed">[docs]</a>    <span class="k">def</span> <span class="nf">set_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the speed of a specific channel.</span>
+
+<span class="sd">        *Warning:* So far this only has an effect before the simulation is started.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        speed : str</span>
+<span class="sd">            The new speed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ConnectedNode"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ConnectedNode">[docs]</a><span class="k">class</span> <span class="nc">ConnectedNode</span><span class="p">:</span>

@@ -1,0 +1,5 @@
+<map id="inheritance62d696dddd" name="inheritance62d696dddd">
+<area shape="rect" id="node1" href="#cohydra.network.ChannelPrototype" target="_top" title="A channel prototype defines all parameters for the channel creation and offers a method to add nodes." alt="" coords="5,5,256,31"/>
+<area shape="rect" id="node2" href="#cohydra.network.ConnectedNode" target="_top" title="cohydra.network.ConnectedNode" alt="" coords="281,5,519,31"/>
+<area shape="rect" id="node3" href="#cohydra.network.Network" target="_top" title="A network connects many nodes together and assigns IP addresses." alt="" coords="543,5,734,31"/>
+</map>

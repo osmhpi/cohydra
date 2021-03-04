@@ -215,7 +215,7 @@
         <span class="c1">#: Standard from 2013.</span>
         <span class="n">WIFI_802_11ac</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211ac</span>
         <span class="c1">#: &quot;WiFi 6&quot;.</span>
-        <span class="n">WIFI_802_11ax</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211ax</span>
+        <span class="c1">#WIFI_802_11ax = wifi.WIFI_PHY_STANDARD_80211ax</span>
         <span class="c1">#: Wireless Access in Vehicular Environments (WAVE).</span>
         <span class="n">WIFI_802_11p</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211_10MHZ</span></div>
 
@@ -435,25 +435,29 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">EnablePcap</span><span class="p">(</span><span class="n">pcap_log_path</span><span class="p">,</span> <span class="n">interface</span><span class="o">.</span><span class="n">ns3_device</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WiFiChannel.set_delay"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Set delay of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">delay</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Set delay of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">delay</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^\d+ms&quot;</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
-        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^\d+s&quot;</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">delay</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;ms&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(</span><span class="se">\\</span><span class="s2">d+)(m?s)$&quot;</span><span class="p">)</span>
+        <span class="n">match_result</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Delay has to be in seconds or milliseconds.&quot;</span><span class="p">)</span>
+
+        <span class="n">delay</span> <span class="o">=</span> <span class="n">match_result</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match_result</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span>
+            <span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span> <span class="o">*</span> <span class="mi">1000</span>
+        <span class="n">delay</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ms&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Check if the given delay should be 0. The regex defines all supported time modes.</span>
-            <span class="k">if</span> <span class="n">delay</span> <span class="ow">is</span> <span class="s2">&quot;0ms&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">delay</span> <span class="o">==</span> <span class="s2">&quot;0ms&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span><span class="o">.</span><span class="n">SetSpeed</span><span class="p">(</span><span class="mi">299792458</span><span class="p">)</span>  <span class="c1"># Light Speed</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Initial setup: 100ms one-way means 1000 m/s speed</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span><span class="o">.</span><span class="n">SetSpeed</span><span class="p">((</span><span class="mf">100.0</span><span class="o">/</span><span class="nb">int</span><span class="p">(</span><span class="n">delay</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span><span class="o">.</span><span class="n">SetSpeed</span><span class="p">((</span><span class="mf">100.0</span> <span class="o">/</span> <span class="nb">int</span><span class="p">(</span><span class="n">delay</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WiFiChannel.set_data_rate"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.set_data_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_data_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_rate</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Set delay of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">data_rate</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Set delay of channel </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">data_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span> <span class="o">=</span> <span class="n">data_rate</span>  <span class="c1"># This have no effect after creating the network so far.</span></div></div>
 </pre></div>
 
