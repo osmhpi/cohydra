@@ -155,7 +155,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;Base abstract class for a node.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">csma</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">wifi</span>
+<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">csma</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">wifi</span><span class="p">,</span> <span class="n">mobility</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -189,6 +189,14 @@
         <span class="c1">#: The position of the node (used by wifi models and visualization)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
+        <span class="c1"># Install mobility model for networks</span>
+        <span class="n">mobility_helper</span> <span class="o">=</span> <span class="n">mobility</span><span class="o">.</span><span class="n">MobilityHelper</span><span class="p">()</span>
+        <span class="n">mobility_helper</span><span class="o">.</span><span class="n">SetMobilityModel</span><span class="p">(</span><span class="s2">&quot;ns3::ConstantPositionMobilityModel&quot;</span><span class="p">)</span>
+        <span class="n">position_alloc</span> <span class="o">=</span> <span class="n">mobility</span><span class="o">.</span><span class="n">ListPositionAllocator</span><span class="p">()</span>
+        <span class="n">position_alloc</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">mobility_helper</span><span class="o">.</span><span class="n">SetPositionAllocator</span><span class="p">(</span><span class="n">position_alloc</span><span class="p">)</span>
+        <span class="n">mobility_helper</span><span class="o">.</span><span class="n">Install</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ns3_node</span><span class="p">)</span>
+
         <span class="c1">#: The color of the node used in the visualization.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -198,7 +206,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">command_executor</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Node.set_position"><a class="viewcode-back" href="../../../../api/cohydra.node.base/#cohydra.node.base.Node.set_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span> <span class="c1"># pylint: disable=invalid-name</span>
-        <span class="sd">&quot;&quot;&quot;Set the position of the node.</span>
+        <span class="sd">&quot;&quot;&quot;Set the position of the node and updates the mobitlity model.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -209,7 +217,9 @@
 <span class="sd">        z : float</span>
 <span class="sd">            The z-position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+        <span class="n">mobility_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns3_node</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">mobility</span><span class="o">.</span><span class="n">MobilityModel</span><span class="o">.</span><span class="n">GetTypeId</span><span class="p">())</span>
+        <span class="n">mobility_model</span><span class="o">.</span><span class="n">SetPosition</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span></div>
 
 <div class="viewcode-block" id="Node.add_interface"><a class="viewcode-back" href="../../../../api/cohydra.node.base/#cohydra.node.base.Node.add_interface">[docs]</a>    <span class="k">def</span> <span class="nf">add_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;eth&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add an interface to the node.</span>
@@ -317,7 +327,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

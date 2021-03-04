@@ -157,8 +157,8 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">internet</span><span class="p">,</span> <span class="n">network</span> <span class="k">as</span> <span class="n">ns_net</span><span class="p">,</span> <span class="n">wifi</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
+<span class="kn">from</span> <span class="nn">ns</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">internet</span><span class="p">,</span> <span class="n">network</span> <span class="k">as</span> <span class="n">ns_net</span><span class="p">,</span> <span class="n">wifi</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">propagation</span>
 
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">Channel</span>
 <span class="kn">from</span> <span class="nn">..interface</span> <span class="kn">import</span> <span class="n">Interface</span>
@@ -193,7 +193,8 @@
 <span class="sd">        The WiFi data rate to use. Please make sure to pick a valid data rate for your :code:`standard`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="WiFiChannel.WiFiStandard"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.WiFiStandard">[docs]</a>    <span class="k">class</span> <span class="nc">WiFiStandard</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="WiFiChannel.WiFiStandard"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.WiFiStandard">[docs]</a>    <span class="nd">@unique</span>
+    <span class="k">class</span> <span class="nc">WiFiStandard</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;All available WiFi standards.</span>
 
 <span class="sd">        See here for further information: https://en.wikipedia.org/wiki/IEEE_802.11.</span>
@@ -211,12 +212,18 @@
         <span class="c1">#: Standard from 2013.</span>
         <span class="n">WIFI_802_11ac</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211ac</span>
         <span class="c1">#: &quot;WiFi 6&quot;.</span>
-        <span class="n">WIFI_802_11ax</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211ax_2_4GHZ</span></div>
+        <span class="n">WIFI_802_11ax</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211ax</span>
+        <span class="c1">## Wireless Access in Vehicular Environments (WAVE).</span>
+        <span class="n">WIFI_802_11p</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WIFI_PHY_STANDARD_80211_10MHZ</span></div>
 
-<div class="viewcode-block" id="WiFiChannel.WiFiDataRate"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.WiFiDataRate">[docs]</a>    <span class="k">class</span> <span class="nc">WiFiDataRate</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="WiFiChannel.WiFiDataRate"><a class="viewcode-back" href="../../../../api/cohydra.channel.wifi/#cohydra.channel.wifi.WiFiChannel.WiFiDataRate">[docs]</a>    <span class="nd">@unique</span>
+    <span class="k">class</span> <span class="nc">WiFiDataRate</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;All available WiFi data rates.</span>
 
 <span class="sd">        Choosing the correct and best data rate depends on the standard you are using.</span>
+<span class="sd">        The data rate list is incomplete. Please consider reading the ns-3 source</span>
+<span class="sd">        `here &lt;https://gitlab.com/nsnam/ns-3-dev/blob/master/src/wifi/model/wifi-phy.cc&gt;`_.</span>
+<span class="sd">        You can pass another valid string to the channel, too.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11a`.</span>
         <span class="n">OFDM_RATE_6Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate6Mbps&quot;</span>
@@ -269,11 +276,27 @@
         <span class="n">ERP_OFDM_RATE_48Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate48Mbps&quot;</span>
         <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11g`, :attr:`.WiFiStandard.WIFI_802_11ac` or</span>
         <span class="c1">#: :attr:`.WiFiStandard.WIFI_802_11ax`.</span>
-        <span class="n">ERP_OFDM_RATE_54Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate54Mbps&quot;</span></div>
+        <span class="n">ERP_OFDM_RATE_54Mbps</span> <span class="o">=</span> <span class="s2">&quot;ErpOfdmRate54Mbps&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_3Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate3MbpsBW10MHz&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_4_5Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate4_5MbpsBW10MHz&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_6Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate6MbpsBW10MHz&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_9Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate9MbpsBW10MHz&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_12Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate12MbpsBW10MHz&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_18Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate18MbpsBW10MHz&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_24Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate24MbpsBW10MHz&quot;</span>
+        <span class="c1">#: Use with :attr:`.WiFiStandard.WIFI_802_11p`.</span>
+        <span class="n">OFDM_RATE_BW_27Mbps</span> <span class="o">=</span> <span class="s2">&quot;OfdmRate27MbpsBW10MHz&quot;</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">channel_width</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">antennas</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tx_power</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
-                 <span class="n">standard</span><span class="p">:</span> <span class="n">WiFiStandard</span> <span class="o">=</span> <span class="n">WiFiStandard</span><span class="o">.</span><span class="n">WIFI_802_11a</span><span class="p">,</span>
-                 <span class="n">data_rate</span><span class="p">:</span> <span class="n">WiFiDataRate</span> <span class="o">=</span> <span class="n">WiFiDataRate</span><span class="o">.</span><span class="n">OFDM_RATE_6Mbps</span><span class="p">):</span>
+                 <span class="n">standard</span><span class="p">:</span> <span class="n">WiFiStandard</span> <span class="o">=</span> <span class="n">WiFiStandard</span><span class="o">.</span><span class="n">WIFI_802_11b</span><span class="p">,</span>
+                 <span class="n">data_rate</span><span class="p">:</span> <span class="n">WiFiDataRate</span> <span class="o">=</span> <span class="n">WiFiDataRate</span><span class="o">.</span><span class="n">DSSS_RATE_11Mbps</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
 
         <span class="c1">#: The channel to use.</span>
@@ -309,30 +332,62 @@
         <span class="c1"># Enable monitoring of radio headers.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">SetPcapDataLinkType</span><span class="p">(</span><span class="n">wifi</span><span class="o">.</span><span class="n">WifiPhyHelper</span><span class="o">.</span><span class="n">DLT_IEEE802_11_RADIO</span><span class="p">)</span>
 
-        <span class="n">wifi_channel_helper</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">YansWifiChannelHelper</span><span class="p">()</span>
-        <span class="n">wifi_channel_helper</span><span class="o">.</span><span class="n">SetPropagationDelay</span><span class="p">(</span><span class="s2">&quot;ns3::ConstantSpeedPropagationDelayModel&quot;</span><span class="p">)</span>
-        <span class="n">wifi_channel_helper</span><span class="o">.</span><span class="n">AddPropagationLoss</span><span class="p">(</span><span class="s2">&quot;ns3::LogDistancePropagationLossModel&quot;</span><span class="p">)</span>
-        <span class="c1"># wifi_channel_helper.AddPropagationLoss(&quot;ns3::RangePropagationLossModel&quot;)</span>
+        <span class="n">wifi_channel</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">YansWifiChannel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span> <span class="o">=</span> <span class="n">propagation</span><span class="o">.</span><span class="n">ConstantSpeedPropagationDelayModel</span><span class="p">()</span>
+        <span class="n">wifi_channel</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;PropagationDelayModel&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">PointerValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">propagation_delay_model</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">SetChannel</span><span class="p">(</span><span class="n">wifi_channel_helper</span><span class="o">.</span><span class="n">Create</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">standard</span> <span class="o">==</span> <span class="n">WiFiChannel</span><span class="o">.</span><span class="n">WiFiStandard</span><span class="o">.</span><span class="n">WIFI_802_11p</span><span class="p">:</span>
+            <span class="c1"># Loss Model, parameter values from Boockmeyer, A. (2020):</span>
+            <span class="c1"># &quot;Hatebefi: Hybrid Application Testbed for Fault Injection&quot;</span>
+            <span class="n">loss_model</span> <span class="o">=</span> <span class="n">propagation</span><span class="o">.</span><span class="n">ThreeLogDistancePropagationLossModel</span><span class="p">()</span>
+            <span class="n">loss_model</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;Distance0&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="mf">27.3</span><span class="p">))</span>
+            <span class="n">loss_model</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;Distance1&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="mf">68.4</span><span class="p">))</span>
+            <span class="n">loss_model</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;Distance2&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="mf">80.7</span><span class="p">))</span>
+            <span class="n">loss_model</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;Exponent0&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="mf">1.332671627050236</span><span class="p">))</span>
+            <span class="n">loss_model</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;Exponent1&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="mf">2.6812446718062612</span><span class="p">))</span>
+            <span class="n">loss_model</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;Exponent2&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="mf">3.5145944762444183</span><span class="p">))</span>
+            <span class="n">loss_model</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;ReferenceLoss&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">DoubleValue</span><span class="p">(</span><span class="mf">83.54330702928374</span><span class="p">))</span>
+            <span class="n">wifi_channel</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;PropagationLossModel&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">PointerValue</span><span class="p">(</span><span class="n">loss_model</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loss_model</span> <span class="o">=</span> <span class="n">propagation</span><span class="o">.</span><span class="n">LogDistancePropagationLossModel</span><span class="p">()</span>
+            <span class="n">wifi_channel</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;PropagationLossModel&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">PointerValue</span><span class="p">(</span><span class="n">loss_model</span><span class="p">))</span>
 
-        <span class="c1">#: Helper for creating the WiFi channel</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WifiHelper</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">SetRemoteStationManager</span><span class="p">(</span><span class="s2">&quot;ns3::ConstantRateWifiManager&quot;</span><span class="p">,</span>
-                                          <span class="s2">&quot;DataMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
-                                          <span class="s2">&quot;ControlMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">SetStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="o">.</span><span class="n">SetChannel</span><span class="p">(</span><span class="n">wifi_channel</span><span class="p">)</span>
 
-        <span class="n">wifi_mac_helper</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WifiMacHelper</span><span class="p">()</span>
+        <span class="c1">#: Helper for creating the WiFi channel.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Adhoc network between multiple nodes (no access point).</span>
-        <span class="n">wifi_mac_helper</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="s2">&quot;ns3::AdhocWifiMac&quot;</span><span class="p">)</span>
+        <span class="c1">#: All ns-3 devices on this channel.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">#: Helper for creating MAC layers.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wifi_mac_helper</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">standard</span> <span class="o">!=</span> <span class="n">WiFiChannel</span><span class="o">.</span><span class="n">WiFiStandard</span><span class="o">.</span><span class="n">WIFI_802_11p</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WifiHelper</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">SetRemoteStationManager</span><span class="p">(</span><span class="s2">&quot;ns3::ConstantRateWifiManager&quot;</span><span class="p">,</span>
+                                              <span class="s2">&quot;DataMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                                              <span class="s2">&quot;ControlMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">SetStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_mac_helper</span> <span class="o">=</span> <span class="n">wifi</span><span class="o">.</span><span class="n">WifiMacHelper</span><span class="p">()</span>
+
+            <span class="c1"># Adhoc network between multiple nodes (no access point).</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_mac_helper</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="s2">&quot;ns3::AdhocWifiMac&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">Wifi80211pHelper</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">SetRemoteStationManager</span><span class="p">(</span><span class="s2">&quot;ns3::ConstantRateWifiManager&quot;</span><span class="p">,</span>
+                                              <span class="s2">&quot;DataMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                                              <span class="s2">&quot;ControlMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                                              <span class="s2">&quot;NonUnicastMode&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wifi_mac_helper</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">NqosWaveMacHelper</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
 
         <span class="c1"># Install on all connected nodes.</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Installing the WiFi channel to </span><span class="si">%d</span><span class="s2"> nodes. Mode is </span><span class="si">%s</span><span class="s2"> (data) / </span><span class="si">%s</span><span class="s2"> (control).&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">),</span>
                      <span class="bp">self</span><span class="o">.</span><span class="n">standard</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_rate</span><span class="p">)</span>
+
         <span class="c1">#: All ns-3 devices on this channel.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">Install</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="p">,</span> <span class="n">wifi_mac_helper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns3_nodes_container</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices_container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">Install</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wifi_phy_helper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wifi_mac_helper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns3_nodes_container</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Setting IP addresses on nodes.&#39;</span><span class="p">)</span>
         <span class="n">stack_helper</span> <span class="o">=</span> <span class="n">internet</span><span class="o">.</span><span class="n">InternetStackHelper</span><span class="p">()</span>
@@ -372,7 +427,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

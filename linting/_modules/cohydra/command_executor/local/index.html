@@ -181,6 +181,10 @@
         <span class="k">if</span> <span class="n">stdout_logfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">stderr_logfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;LocalCommandExecutor does not implement logfiles&#39;</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">apply_user_and_shell</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="n">shell</span><span class="p">)</span>
+            <span class="n">shell</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
         <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span> <span class="c1"># pylint: disable=subprocess-run-check</span>
@@ -215,7 +219,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

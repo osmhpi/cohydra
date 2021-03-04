@@ -163,7 +163,25 @@
     <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">,</span> <span class="n">command</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="split_shell_arguments"><a class="viewcode-back" href="../../../../api/cohydra.command_executor.util/#cohydra.command_executor.util.split_shell_arguments">[docs]</a><span class="k">def</span> <span class="nf">split_shell_arguments</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">command</span>
+
     <span class="k">return</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="apply_user_and_shell"><a class="viewcode-back" href="../../../../api/cohydra.command_executor.util/#cohydra.command_executor.util.apply_user_and_shell">[docs]</a><span class="k">def</span> <span class="nf">apply_user_and_shell</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sudo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">shell</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="n">stringify_shell_arguments</span><span class="p">(</span><span class="n">command</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">command</span>
+
+    <span class="n">prefix</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">shell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">prefix</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">sudo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;sudo&#39;</span><span class="p">,</span> <span class="s1">&#39;-u&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">prefix</span><span class="p">,</span> <span class="o">*</span><span class="n">split_shell_arguments</span><span class="p">(</span><span class="n">command</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;su&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">prefix</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="n">stringify_shell_arguments</span><span class="p">(</span><span class="n">command</span><span class="p">)]</span></div>
 
 <div class="viewcode-block" id="LogFile"><a class="viewcode-back" href="../../../../api/cohydra.command_executor.util/#cohydra.command_executor.util.LogFile">[docs]</a><span class="k">class</span> <span class="nc">LogFile</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;The logfile helps by prepending timestamps to log lines.&quot;&quot;&quot;</span>
@@ -200,7 +218,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

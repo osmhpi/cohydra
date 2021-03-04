@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cohydra.node.lxd &mdash; cohydra 0.2.0 - linting documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="https://osmhpi.github.io/cohydra/versions.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="cohydra.node.ssh" href="../cohydra.node.ssh/" />
+    <link rel="prev" title="cohydra.node.interface" href="../cohydra.node.interface/" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../" class="icon icon-home"> cohydra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0 - linting
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sumo/">Using SUMO With cohydra</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../#module-cohydra">cohydra</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.argparse/">cohydra.argparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.channel/">cohydra.channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.command_executor/">cohydra.command_executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../cohydra.node/">cohydra.node</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.base/">cohydra.node.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.docker/">cohydra.node.docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.external/">cohydra.node.external</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.interface/">cohydra.node.interface</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.node.lxd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.ssh/">cohydra.node.ssh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.switch/">cohydra.node.switch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.simulation/">cohydra.simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.util/">cohydra.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.visualization/">cohydra.visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cohydra.workflow/">cohydra.workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">cohydra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../">Docs</a> &raquo;</li>
+        
+          <li><a href="../">API Reference</a> &raquo;</li>
+        
+          <li><a href="../cohydra.node/">cohydra.node</a> &raquo;</li>
+        
+      <li>cohydra.node.lxd</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-cohydra.node.lxd">
+<span id="cohydra-node-lxd"></span><h1>cohydra.node.lxd<a class="headerlink" href="#module-cohydra.node.lxd" title="Permalink to this headline">¶</a></h1>
+<p>LXD containers in the simulation.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.node.lxd.log_to_file" title="cohydra.node.lxd.log_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_to_file</span></code></a></p></td>
+<td><p>Log the container’s output.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cohydra.node.lxd.LXDNode" title="cohydra.node.lxd.LXDNode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LXDNode</span></code></a></p></td>
+<td><p>A LXDNode represents a LXD container.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="function">
+<dt id="cohydra.node.lxd.log_to_file">
+<code class="sig-prename descclassname">cohydra.node.lxd.</code><code class="sig-name descname">log_to_file</code><span class="sig-paren">(</span><em class="sig-param">container</em>, <em class="sig-param">log_path</em>, <em class="sig-param">stdout=False</em>, <em class="sig-param">stderr=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#log_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.log_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log the container’s output.</p>
+<p>This opens a stream to the docker container’s log output and writes it into a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log_path</strong> (<em>str</em>) – The file path to the log file.</p></li>
+<li><p><strong>stdout</strong> (<em>bool</em>) – Whether stdout should be logged.</p></li>
+<li><p><strong>stderr</strong> (<em>bool</em>) – Whether stderr should be logged.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="cohydra.node.lxd.LXDNode">
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.node.lxd.</code><code class="sig-name descname">LXDNode</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">image=None</em>, <em class="sig-param">image_server='https://images.linuxcontainers.org'</em>, <em class="sig-param">custom_configuration=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#LXDNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.LXDNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.node.base.Node</span></code></a></p>
+<p>A LXDNode represents a LXD container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the node (and container).</p></li>
+<li><p><strong>image</strong> (<em>str</em>) – The name of the image to use (=the <strong>alias</strong>).</p></li>
+<li><p><strong>image_server</strong> (<em>str</em>) – The server to pull the image off if not found locally.</p></li>
+<li><p><strong>custom_configuration</strong> (<em>dict</em>) – Additional configuration key-value-pairs to pass to LXD.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="cohydra.node.lxd.LXDNode.image">
+<code class="sig-name descname">image</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.lxd.LXDNode.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>The image’s name being used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.node.lxd.LXDNode.container">
+<code class="sig-name descname">container</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.lxd.LXDNode.container" title="Permalink to this definition">¶</a></dt>
+<dd><p>The container instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.node.lxd.LXDNode.custom_configuration">
+<code class="sig-name descname">custom_configuration</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.lxd.LXDNode.custom_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom configuration values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.node.lxd.LXDNode.command_executor">
+<code class="sig-name descname">command_executor</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.lxd.LXDNode.command_executor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The executor for running commands in the container.
+This is useful for a scripted <a class="reference internal" href="../cohydra.workflow/#cohydra.workflow.Workflow" title="cohydra.workflow.Workflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">Workflow</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.node.lxd.LXDNode.image_server">
+<code class="sig-name descname">image_server</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.node.lxd.LXDNode.image_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>The server to fetch the image from.
+Before fetching from the server, local images will be checked.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.wants_ip_stack">
+<code class="sig-name descname">wants_ip_stack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#LXDNode.wants_ip_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.LXDNode.wants_ip_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether a IP stack shall be installed onto the node.</p>
+<p>Installing is handled by the Channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="code docutils literal notranslate"><span class="pre">True</span></code> indicates that a ns-3 IP stack shall be installed when preparing this node.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">simulation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#LXDNode.prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.LXDNode.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>This runs a setup on network interfaces and starts the container.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.create_container">
+<code class="sig-name descname">create_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#LXDNode.create_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.LXDNode.create_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the LXC container.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.start_container">
+<code class="sig-name descname">start_container</code><span class="sig-paren">(</span><em class="sig-param">log_directory</em>, <em class="sig-param">hosts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#LXDNode.start_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.LXDNode.start_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the LXC container.</p>
+<p>All docker containers are labeled with “ns-3” as the creator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log_directory</strong> (<em>str</em>) – The path to the directory to put log files in.</p></li>
+<li><p><strong>hosts</strong> (<em>dict</em>) – A dictionary with hostnames as keys and IP addresses (a list) as value.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.delete_container">
+<code class="sig-name descname">delete_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#LXDNode.delete_container"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.LXDNode.delete_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the container.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.setup_host_interfaces">
+<code class="sig-name descname">setup_host_interfaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/node/lxd/#LXDNode.setup_host_interfaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.node.lxd.LXDNode.setup_host_interfaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the interfaces (bridge, tap, VETH pair) on the host and connect
+them to the container.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.add_interface">
+<code class="sig-name descname">add_interface</code><span class="sig-paren">(</span><em class="sig-param">interface</em>, <em class="sig-param">name=None</em>, <em class="sig-param">prefix='eth'</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.lxd.LXDNode.add_interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interface to the node.</p>
+<dl class="simple">
+<dt><em>Warning:</em> Do not call this function manually.</dt><dd><p>The functionality is handled by the network and channels.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interface</strong> (<a class="reference internal" href="../cohydra.interface/#cohydra.interface.Interface" title="cohydra.interface.Interface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interface</span></code></a>) – The interface to add.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the interface.</p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – If no name is supplied, the function works out
+a name by appending a number to the prefix.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.execute_command">
+<code class="sig-name descname">execute_command</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">user=None</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.lxd.LXDNode.execute_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a command within the node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str or list of str</em>) – The command to execute.</p></li>
+<li><p><strong>user</strong> (<em>str</em>) – If a user (name) is specified, the command is executed
+as this user. <strong>Warning:</strong> Not all nodes support this feature.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.go_offline">
+<code class="sig-name descname">go_offline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.lxd.LXDNode.go_offline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect the node from all channels.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.go_online">
+<code class="sig-name descname">go_online</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.lxd.LXDNode.go_online" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect the node back to all channels.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cohydra.node.lxd.LXDNode.set_position">
+<code class="sig-name descname">set_position</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.lxd.LXDNode.set_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the position of the node and updates the mobitlity model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – The x-position.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The y-position.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – The z-position.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Inheritance Diagramm</p>
+<div class="graphviz"><img src="../../_images/inheritance-8f960ab7250dca9cdda09980790e88de866793e3.png" alt="Inheritance diagram of cohydra.node.lxd" usemap="#inheritance31b80ff093" class="inheritance graphviz" /></div>
+<map id="inheritance31b80ff093" name="inheritance31b80ff093">
+<area shape="rect" id="node1" href="../cohydra.node.base/#cohydra.node.base.Node" target="_top" title="A node represents a computer in the simulation." alt="" coords="13,5,196,31"/>
+<area shape="rect" id="node2" href="#cohydra.node.lxd.LXDNode" target="_top" title="A LXDNode represents a LXD container." alt="" coords="5,79,204,104"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cohydra.node.ssh/" class="btn btn-neutral float-right" title="cohydra.node.ssh" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cohydra.node.interface/" class="btn btn-neutral float-left" title="cohydra.node.interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex/" />
     <link rel="search" title="Search" href="../../search/" />
-    <link rel="next" title="cohydra.mobility_input" href="../cohydra.mobility_input/" />
+    <link rel="next" title="cohydra.network" href="../cohydra.network/" />
     <link rel="prev" title="cohydra.events.Event" href="../cohydra.events.Event/" /> 
 </head>
 
@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">cohydra.interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
@@ -325,11 +324,14 @@ If you have any constraints on MAC addresses used externally, set it here.</p></
 
 <dl class="method">
 <dt id="cohydra.interface.Interface.connect_tap_to_bridge">
-<code class="sig-name descname">connect_tap_to_bridge</code><span class="sig-paren">(</span><em class="sig-param">bridge_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/interface/#Interface.connect_tap_to_bridge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.interface.Interface.connect_tap_to_bridge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_tap_to_bridge</code><span class="sig-paren">(</span><em class="sig-param">bridge_name=None</em>, <em class="sig-param">tap_mode='ConfigureLocal'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/interface/#Interface.connect_tap_to_bridge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.interface.Interface.connect_tap_to_bridge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect a ns-3 tap device to the bridge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bridge_name</strong> (<em>str</em>) – The bridge to connect the tap (and ns-3) device to.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bridge_name</strong> (<em>str</em>) – The bridge to connect the tap (and ns-3) device to.</p></li>
+<li><p><strong>tap_mode</strong> (<em>str</em>) – The ns-3 mode for the tap bridge. Either ConfigureLocal or UseLocal.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -383,7 +385,7 @@ This can e.g. contain the network namespace (see <a class="reference internal" h
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cohydra.mobility_input/" class="btn btn-neutral float-right" title="cohydra.mobility_input" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cohydra.network/" class="btn btn-neutral float-right" title="cohydra.network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../cohydra.events.Event/" class="btn btn-neutral float-left" title="cohydra.events.Event" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -395,7 +397,7 @@ This can e.g. contain the network namespace (see <a class="reference internal" h
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

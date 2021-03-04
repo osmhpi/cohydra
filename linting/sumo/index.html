@@ -196,7 +196,7 @@ You have to provide a port for TraCI:</p>
 <h3>Run SUMO In Local Mode<a class="headerlink" href="#run-sumo-in-local-mode" title="Permalink to this headline">¶</a></h3>
 <p><strong>Prerequesite:</strong> This assumes that <strong>you are not using cohydra in Docker</strong>! From within the cohydra-container, you cannot start SUMO automatically on the host.
 To install cohydra locally, please see <a class="reference internal" href="../installation/#local-installation-without-docker"><span class="std std-ref">Local Installation Without Docker</span></a>.</p>
-<p>Cohydra can start the SUMO simulation for you. You can just pass a <code class="docutils literal notranslate"><span class="pre">config_path</span></code> to the initializer of the <a class="reference internal" href="../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.SUMOMobilityInput" title="cohydra.mobility_input.sumo.SUMOMobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code></a>.
+<p>Cohydra can start the SUMO simulation for you. You can just pass a <code class="docutils literal notranslate"><span class="pre">config_path</span></code> to the initializer of the <code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code>.
 The testbed will use a version of SUMO <strong>without GUI</strong> because there is no way to start the SUMO simulation automatically from cohydra with the GUI-version.</p>
 </div>
 </div>
@@ -232,7 +232,7 @@ Make sure to properly setup your <em>volume mounts</em>.</p>
 </div>
 <div class="section" id="writing-a-sumo-scenario-with-cohydra">
 <h2>Writing a SUMO Scenario With cohydra<a class="headerlink" href="#writing-a-sumo-scenario-with-cohydra" title="Permalink to this headline">¶</a></h2>
-<p>After installing and starting SUMO, the simulation be configured to use SUMO with the <a class="reference internal" href="../api/cohydra.mobility_input.sumo/#cohydra.mobility_input.sumo.SUMOMobilityInput" title="cohydra.mobility_input.sumo.SUMOMobilityInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code></a> class.
+<p>After installing and starting SUMO, the simulation be configured to use SUMO with the <code class="xref py py-class docutils literal notranslate"><span class="pre">SUMOMobilityInput</span></code> class.
 Please configure the port and host accordingly.
 Furthermore, nodes have to be mapped to SUMO IDs in order to be moved by the co-simulation.</p>
 <div class="section" id="connect-to-a-sumo-remote-mode-instance">
@@ -294,7 +294,7 @@ The container must be in the same network namespace, though. Please have a look 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

@@ -186,22 +186,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span> <span class="o">=</span> <span class="n">sudo</span>
 
 <div class="viewcode-block" id="SSHCommandExecutor.execute"><a class="viewcode-back" href="../../../../api/cohydra.command_executor.ssh/#cohydra.command_executor.ssh.SSHCommandExecutor.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stdout_logfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr_logfile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">apply_user_and_shell</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="n">shell</span><span class="p">,</span> <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">)</span>
         <span class="n">command</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">stringify_shell_arguments</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">shell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="n">shell</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="n">command</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">:</span>
-                <span class="n">command_end</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">split_shell_arguments</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
-                <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sudo&#39;</span><span class="p">,</span> <span class="s1">&#39;-u&#39;</span><span class="p">,</span> <span class="n">user</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">command_end</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="n">command</span><span class="p">]</span>
-                <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;su&#39;</span><span class="p">,</span> <span class="n">user</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">shell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">command</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="p">])</span>
-            <span class="n">command</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">command_end</span><span class="p">)</span>
-
-        <span class="n">command</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">stringify_shell_arguments</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
         <span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
@@ -228,7 +215,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

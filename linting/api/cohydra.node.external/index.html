@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex/" />
     <link rel="search" title="Search" href="../../search/" />
-    <link rel="next" title="cohydra.node.ssh" href="../cohydra.node.ssh/" />
+    <link rel="next" title="cohydra.node.interface" href="../cohydra.node.interface/" />
     <link rel="prev" title="cohydra.node.docker" href="../cohydra.node.docker/" /> 
 </head>
 
@@ -98,12 +98,13 @@
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../cohydra.node/">cohydra.node</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.base/">cohydra.node.base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.docker/">cohydra.node.docker</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cohydra.node.external</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.interface/">cohydra.node.interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cohydra.node.lxd/">cohydra.node.lxd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.ssh/">cohydra.node.ssh</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cohydra.node.switch/">cohydra.node.switch</a></li>
 </ul>
@@ -340,7 +341,7 @@ as this user. <strong>Warning:</strong> Not all nodes support this feature.</p><
 <dl class="method">
 <dt id="cohydra.node.external.ExternalNode.set_position">
 <code class="sig-name descname">set_position</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.node.external.ExternalNode.set_position" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the position of the node.</p>
+<dd><p>Set the position of the node and updates the mobitlity model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -372,7 +373,7 @@ as this user. <strong>Warning:</strong> Not all nodes support this feature.</p><
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cohydra.node.ssh/" class="btn btn-neutral float-right" title="cohydra.node.ssh" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cohydra.node.interface/" class="btn btn-neutral float-right" title="cohydra.node.interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../cohydra.node.docker/" class="btn btn-neutral float-left" title="cohydra.node.docker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -384,7 +385,7 @@ as this user. <strong>Warning:</strong> Not all nodes support this feature.</p><
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 

@@ -103,7 +103,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
@@ -209,7 +208,7 @@
 </div>
 <dl class="class">
 <dt id="cohydra.channel.wifi.WiFiChannel">
-<em class="property">class </em><code class="sig-prename descclassname">cohydra.channel.wifi.</code><code class="sig-name descname">WiFiChannel</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">nodes</em>, <em class="sig-param">frequency=None</em>, <em class="sig-param">channel=1</em>, <em class="sig-param">channel_width=40</em>, <em class="sig-param">antennas=1</em>, <em class="sig-param">tx_power=20.0</em>, <em class="sig-param">standard: cohydra.channel.wifi.WiFiChannel.WiFiStandard = &lt;WiFiStandard.WIFI_802_11a: 0&gt;</em>, <em class="sig-param">data_rate: cohydra.channel.wifi.WiFiChannel.WiFiDataRate = &lt;WiFiDataRate.OFDM_RATE_6Mbps: 'OfdmRate6Mbps'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/wifi/#WiFiChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.channel.wifi.</code><code class="sig-name descname">WiFiChannel</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">nodes</em>, <em class="sig-param">frequency=None</em>, <em class="sig-param">channel=1</em>, <em class="sig-param">channel_width=40</em>, <em class="sig-param">antennas=1</em>, <em class="sig-param">tx_power=20.0</em>, <em class="sig-param">standard: cohydra.channel.wifi.WiFiChannel.WiFiStandard = &lt;WiFiStandard.WIFI_802_11b: 1&gt;</em>, <em class="sig-param">data_rate: cohydra.channel.wifi.WiFiChannel.WiFiDataRate = &lt;WiFiDataRate.DSSS_RATE_11Mbps: 'DsssRate11Mbps'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/channel/wifi/#WiFiChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../cohydra.channel.channel/#cohydra.channel.channel.Channel" title="cohydra.channel.channel.Channel"><code class="xref py py-class docutils literal notranslate"><span class="pre">cohydra.channel.channel.Channel</span></code></a></p>
 <p>A WiFiChannel is a physical (but of course wireless) connection
 between two or more wireless devices.</p>
@@ -256,27 +255,32 @@ Valid values are <code class="code docutils literal notranslate"><span class="pr
 
 <dl class="attribute">
 <dt id="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11n">
-<code class="sig-name descname">WIFI_802_11n</code><em class="property"> = 6</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11n" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">WIFI_802_11n</code><em class="property"> = 7</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11n" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard from 2009 in 2.4GHz band.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11n_5G">
-<code class="sig-name descname">WIFI_802_11n_5G</code><em class="property"> = 7</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11n_5G" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">WIFI_802_11n_5G</code><em class="property"> = 8</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11n_5G" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard from 2009 in 5GHz band.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ac">
-<code class="sig-name descname">WIFI_802_11ac</code><em class="property"> = 8</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ac" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">WIFI_802_11ac</code><em class="property"> = 10</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard from 2013.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ax">
-<code class="sig-name descname">WIFI_802_11ax</code><em class="property"> = 9</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ax" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">WIFI_802_11ax</code><em class="property"> = 11</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ax" title="Permalink to this definition">¶</a></dt>
 <dd><p>“WiFi 6”.</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p">
+<code class="sig-name descname">WIFI_802_11p</code><em class="property"> = 3</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -285,7 +289,10 @@ Valid values are <code class="code docutils literal notranslate"><span class="pr
 <em class="property">class </em><code class="sig-name descname">WiFiDataRate</code><a class="reference internal" href="../../_modules/cohydra/channel/wifi/#WiFiChannel.WiFiDataRate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
 <p>All available WiFi data rates.</p>
-<p>Choosing the correct and best data rate depends on the standard you are using.</p>
+<p>Choosing the correct and best data rate depends on the standard you are using.
+The data rate list is incomplete. Please consider reading the ns-3 source
+<a class="reference external" href="https://gitlab.com/nsnam/ns-3-dev/blob/master/src/wifi/model/wifi-phy.cc">here</a>.
+You can pass another valid string to the channel, too.</p>
 <dl class="attribute">
 <dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_6Mbps">
 <code class="sig-name descname">OFDM_RATE_6Mbps</code><em class="property"> = 'OfdmRate6Mbps'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_6Mbps" title="Permalink to this definition">¶</a></dt>
@@ -418,6 +425,54 @@ Valid values are <code class="code docutils literal notranslate"><span class="pr
 <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ax" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11ax"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11ax</span></code></a>.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_3Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_3Mbps</code><em class="property"> = 'OfdmRate3MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_3Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_4_5Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_4_5Mbps</code><em class="property"> = 'OfdmRate4_5MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_4_5Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_6Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_6Mbps</code><em class="property"> = 'OfdmRate6MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_6Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_9Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_9Mbps</code><em class="property"> = 'OfdmRate9MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_9Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_12Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_12Mbps</code><em class="property"> = 'OfdmRate12MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_12Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_18Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_18Mbps</code><em class="property"> = 'OfdmRate18MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_18Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_24Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_24Mbps</code><em class="property"> = 'OfdmRate24MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_24Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_27Mbps">
+<code class="sig-name descname">OFDM_RATE_BW_27Mbps</code><em class="property"> = 'OfdmRate27MbpsBW10MHz'</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.WiFiDataRate.OFDM_RATE_BW_27Mbps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with <a class="reference internal" href="#cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p" title="cohydra.channel.wifi.WiFiChannel.WiFiStandard.WIFI_802_11p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WiFiStandard.WIFI_802_11p</span></code></a>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="attribute">
@@ -463,10 +518,30 @@ Valid values are <code class="code docutils literal notranslate"><span class="pr
 <dd><p>The data rate to use.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="cohydra.channel.wifi.WiFiChannel.nodes">
+<em class="property">property </em><code class="sig-name descname">nodes</code><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all nodes of this channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The list of nodes in this channel.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="cohydra.channel.wifi.WiFiChannel.wifi">
 <code class="sig-name descname">wifi</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.wifi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper for creating the WiFi channel</p>
+<dd><p>Helper for creating the WiFi channel.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cohydra.channel.wifi.WiFiChannel.wifi_mac_helper">
+<code class="sig-name descname">wifi_mac_helper</code><em class="property"> = None</em><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.wifi_mac_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper for creating MAC layers.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -482,20 +557,6 @@ Valid values are <code class="code docutils literal notranslate"><span class="pr
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>simulation</strong> (<a class="reference internal" href="../cohydra.simulation/#cohydra.simulation.Simulation" title="cohydra.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>) – The simulation to prepare the channel for.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="cohydra.channel.wifi.WiFiChannel.nodes">
-<em class="property">property </em><code class="sig-name descname">nodes</code><a class="headerlink" href="#cohydra.channel.wifi.WiFiChannel.nodes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all nodes of this channel.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The list of nodes in this channel.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list of <a class="reference internal" href="../cohydra.node.base/#cohydra.node.base.Node" title="cohydra.node.base.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -532,7 +593,7 @@ Valid values are <code class="code docutils literal notranslate"><span class="pr
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 
