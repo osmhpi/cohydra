@@ -173,7 +173,7 @@ class DockerNode(Node):
 
         self.docker_image.tag(self.docker_image_tag)
 
-    def start_docker_container(self, log_directory, extra_hosts=None):
+    def start_docker_container(self, log_directory, hosts=None):
         """Start the docker container.
 
         All docker containers are labeled with "ns-3" as the creator.
@@ -182,11 +182,14 @@ class DockerNode(Node):
         ----------
         log_directory : str
             The path to the directory to put log files in.
-        extra_hosts : dict
-            A dictionary with hostnames as keys and IP addresses as value.
+        hosts : dict
+            A dictionary with hostnames as keys and IP addresses (a list) as value.
         """
         logger.info('Starting docker container: %s', self.name)
         client = docker.from_env()
+
+        extra_hosts = [f'{name}:{address}' for name, addresses in hosts.items() for address in addresses]
+
         self.container = client.containers.run(
             self.docker_image_tag,
             name=self.name,

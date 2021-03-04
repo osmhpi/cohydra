@@ -3,6 +3,7 @@
 import logging
 import os
 import threading
+from collections import defaultdict
 from datetime import datetime
 
 from ns import core, internet
@@ -102,14 +103,15 @@ class Simulation:
         # Add host to hostsfile.
         ipr = IPRoute()
         host_ip = ipr.get_addr(label='docker0')[0].get_attr('IFA_ADDRESS')
-        self.hosts = [f'host:{host_ip}']
+        self.hosts = defaultdict(list)
+        self.hosts['host'].append(host_ip)
 
         # Try to add influxdb to hosts file (if container is running).
         try:
             influxdb_container = self.docker_client.containers.get('ns3-influxdb')
             influxdb_ip = influxdb_container.attrs["NetworkSettings"]["IPAddress"]
             if influxdb_ip is not None:
-                self.hosts.append(f'influxdb:{influxdb_ip}')
+                self.hosts['influxdb'].append(influxdb_ip)
         except docker.errors.NotFound:
             pass
 
@@ -117,7 +119,7 @@ class Simulation:
         for channel in self.scenario.channels():
             for interface in channel.interfaces:
                 if interface.address is not None:
-                    self.hosts.append(f'{interface.node.name}:{interface.address.ip}')
+                    self.hosts[interface.node.name].append(interface.address.ip)
 
         logger.info('Preparing networks for simulation.')
         for (i, network) in enumerate(self.scenario.networks):

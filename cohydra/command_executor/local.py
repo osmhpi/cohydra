@@ -27,6 +27,10 @@ class LocalCommandExecutor(CommandExecutor):
         if stdout_logfile is not None or stderr_logfile is not None:
             raise ValueError('LocalCommandExecutor does not implement logfiles')
 
+        if user is not None:
+            command = util.apply_user_and_shell(command, user=user, shell=shell)
+            shell = None
+
         logger = self.get_logger()
         logger.debug('%s', command)
         process = subprocess.Popen( # pylint: disable=subprocess-run-check

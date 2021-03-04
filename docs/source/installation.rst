@@ -17,8 +17,15 @@ The Docker socket is mounted into the container to enable creating new container
 You of course need to modify the volume mount to allow cohydra access to your scenarios:
 
 ::
-
-    $ docker run -it --rm --cap-add=ALL -v /var/run/docker.sock:/var/run/docker.sock --net host --pid host --userns host --privileged osmhpi/cohydra:latest
+    $ docker run -it --rm --cap-add=ALL \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v /var/lib/lxd:/var/lib/lxd \
+        -v /var/snap/lxd/common/lxd:/var/snap/lxd/common/lxd \
+        --net host \
+        --pid host \
+        --userns host \
+        --privileged \
+        osmhpi/cohydra:latest
 
 The main image is based on the images in the :src:`docker <docker>` directory.
 The :src:`cohydra-base <docker/cohydra-base/Dockerfile>` installs all neccessary dependencies for cohydra,
@@ -29,6 +36,6 @@ Local Installation Without Docker
 
 In the case you do not want to use the prebuilt docker, a normal ns-3 installation with *NetAnim* Python bindings will work, too.
 The Python libraries / directory provided by ns-3 has to be in your :code:`PYTHONPATH`, though.
-Cohydra so far has only been tested with **Debian 10 Buster**, **Ubuntu 18.04 Bionic Beaver** and **ns-3.30**.
+Cohydra so far has only been tested with **Debian 10 Buster**, **Ubuntu 18.04 Bionic Beaver** and **ns-3.33**.
 
 There is no installation via :code:`pip`.
