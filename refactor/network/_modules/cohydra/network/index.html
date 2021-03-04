@@ -262,7 +262,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ConnectedNode</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">address</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> does not exists. You have to create it before.&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> does not exist. You have to create it first.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Network.block_ip_address"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.block_ip_address">[docs]</a>    <span class="k">def</span> <span class="nf">block_ip_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_addr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Blocks an IP address.</span>
@@ -351,7 +351,7 @@
 <div class="viewcode-block" id="Network.set_speed"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.set_speed">[docs]</a>    <span class="k">def</span> <span class="nf">set_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets the speed of a specific channel (if name is present) or all channels.</span>
 
-<span class="sd">        *Warning:* Sofar this has only effect when happening before simulation start.</span>
+<span class="sd">        *Warning:* So far this only has an effect before the simulation is started.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
