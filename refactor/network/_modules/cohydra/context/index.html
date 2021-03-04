@@ -160,6 +160,7 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+
 <div class="viewcode-block" id="ThreadLocalStack"><a class="viewcode-back" href="../../../api/cohydra.context/#cohydra.context.ThreadLocalStack">[docs]</a><span class="k">class</span> <span class="nc">ThreadLocalStack</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -179,6 +180,7 @@
 
 <div class="viewcode-block" id="ThreadLocalStack.top"><a class="viewcode-back" href="../../../api/cohydra.context/#cohydra.context.ThreadLocalStack.top">[docs]</a>    <span class="k">def</span> <span class="nf">top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="k">else</span> <span class="kc">None</span></div></div>
+
 
 <div class="viewcode-block" id="Context"><a class="viewcode-back" href="../../../api/cohydra.context/#cohydra.context.Context">[docs]</a><span class="k">class</span> <span class="nc">Context</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A context can be used for deferring function calls.</span>
@@ -229,7 +231,7 @@
         <span class="sd">&quot;&quot;&quot;Do whatever is needed to cleanup the context.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Context.add_error"><a class="viewcode-back" href="../../../api/cohydra.context/#cohydra.context.Context.add_error">[docs]</a>    <span class="k">def</span> <span class="nf">add_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">):</span> <span class="c1"># pylint: disable=unused-argument</span>
+<div class="viewcode-block" id="Context.add_error"><a class="viewcode-back" href="../../../api/cohydra.context/#cohydra.context.Context.add_error">[docs]</a>    <span class="k">def</span> <span class="nf">add_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="sd">&quot;&quot;&quot;Add an error (to be implemented).&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fails</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
