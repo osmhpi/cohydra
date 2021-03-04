@@ -7,6 +7,7 @@ from aexpr import aexpr
 
 logger = logging.getLogger(__name__)
 
+
 class Workflow:
     """A workflow is a contains a list of commands for planned execution during the simulation.
 

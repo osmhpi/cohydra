@@ -43,5 +43,5 @@ class NetAnimVisualization(Visualization):
 
     def _prepare(self):
         if self.animation_interface is None:
-            self.animation_interface = netanim.AnimationInterface(os.path.join(self.output_directory,"netanim.xml"))
+            self.animation_interface = netanim.AnimationInterface(os.path.join(self.output_directory, "netanim.xml"))
             self.animation_interface.EnablePacketMetadata(True)
