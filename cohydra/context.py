@@ -6,6 +6,7 @@ import threading
 
 logger = logging.getLogger(__name__)
 
+
 class ThreadLocalStack:
 
     def __init__(self):
@@ -25,6 +26,7 @@ class ThreadLocalStack:
 
     def top(self):
         return self.stack[-1] if self.stack else None
+
 
 class Context:
     """A context can be used for deferring function calls.
@@ -75,7 +77,7 @@ class Context:
         """Do whatever is needed to cleanup the context."""
         raise NotImplementedError
 
-    def add_error(self, err: Exception): # pylint: disable=unused-argument
+    def add_error(self, err: Exception):  # pylint: disable=unused-argument
         """Add an error (to be implemented)."""
         self.fails += 1
 

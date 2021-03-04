@@ -5,7 +5,6 @@ import os
 import sys
 import threading
 import time
-from math import hypot
 
 if 'SUMO_HOME' in os.environ:
     SUMO_HOME = os.environ['SUMO_HOME']
@@ -24,7 +23,8 @@ class SUMOMobilityInput(MobilityInput):
     This mobility input supports two modes:
 
     * | **Remote Mode**: In this mode the testbed connects to an external already running SUMO instance.
-      | You configure the host and port where the SUMO server is running via the ``sumo_host`` and ``sumo_port`` argument.
+      | You configure the host and port where the SUMO server is running via the ``sumo_host`` and ``sumo_port``
+        argument.
     * | **Local Mode**: In this mode the testbed starts a locally installed version of SUMO.
       | You configure the simulation via the ``sumo_cmd`` and ``config_path`` argument.
         If SUMO is not installed globally you need to set the ``SUMO_HOME`` environment variable.
@@ -109,18 +109,16 @@ class SUMOMobilityInput(MobilityInput):
 
     def __get_position_of_node(self, node):
         if node not in self.node_mapping:
-            print("Unknown node "+str(node.name))
-        else:
-            if self.node_mapping[node][1] == "person":
-                return traci.person.getPosition3D(self.node_mapping[node][0])
-            elif self.node_mapping[node][1] == "vehicle":
-                return traci.vehicle.getPosition3D(self.node_mapping[node][0])
-            elif self.node_mapping[node][1] == "junction":
-                # Junction has no support for 3D positions
-                x, y = traci.junction.getPosition(self.node_mapping[node][0])
-                return x, y, 0.0
-            else:
-                print("Unknown type " + str(self.node_mapping[node][1]))
+            raise "Unknown node "+str(node.name)
+        if self.node_mapping[node][1] == "person":
+            return traci.person.getPosition3D(self.node_mapping[node][0])
+        if self.node_mapping[node][1] == "vehicle":
+            return traci.vehicle.getPosition3D(self.node_mapping[node][0])
+        if self.node_mapping[node][1] == "junction":
+            # Junction has no support for 3D positions
+            x, y = traci.junction.getPosition(self.node_mapping[node][0])
+            return x, y, 0.0
+        raise "Unknown type " + str(self.node_mapping[node][1])
 
     def destroy(self):
         """Stop SUMO."""

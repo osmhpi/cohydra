@@ -4,7 +4,6 @@ import logging
 
 from .simulation import Simulation
 from .context import Context, SimpleContext
-from .visualization import Visualization
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +37,6 @@ class Scenario:
         #: It is created on simulation start.
         self.context = None
         self.mobility_inputs = []
-
 
     def add_network(self, network):
         """Add a network to be simulated.
