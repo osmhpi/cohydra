@@ -2,6 +2,8 @@
 
 import logging
 import ipaddress
+import string
+import random
 
 from .channel import CSMAChannel
 from .util import network_color_for
@@ -36,13 +38,15 @@ class Network:
         This can be one of :class:`.CSMAChannel` or :class:`.WiFiChannel`.
     """
 
-    def __init__(self, network_address, netmask=None, base=None, default_channel_type=CSMAChannel, **kwargs):
+    def __init__(self, network_address, netmask=None, base=None, default_channel_type=CSMAChannel):
         #: All the channels in the network.
         self.channels = list()
         #: The prototypes for the future channels.
-        self.channels_prototypes = {"default": (default_channel_type, kwargs)}
+        self.channels_prototypes = list()
         #: The channel type
         self.default_channel_type = default_channel_type
+        #: The list of random generated channel names to avoid duplicates
+        self.random_channel_names = set()
         #: The list of the connected nodes
         self.nodes = {}
         #: The list of already allocated ip addresses
@@ -68,47 +72,31 @@ class Network:
         #: The color of the network's nodes in a visualization.
         self.color = None
 
-    def create_channel(self, name, channel_type=None, **channel_kwargs):
+    def create_channel(self, name=None, channel_type=None, **channel_kwargs):
         """Adds one named channel prototype to the network.
 
         Parameters
         ----------
         name : str
-            The name of the channel.
-        channel_type : str
+            The name of the channel. If set to :code:`None`, a random name will be generated
+        channel_type : class
             The channel type. If set to :code:`None`, the default channel type will be set.
-        channel_kwargs : str
+        channel_kwargs : dict
             The arguments of the new channel
         """
+        if name is None:
+            letters = string.ascii_lowercase
+            name = "channel_" + "".join(random.choice(letters) for i in range(4))
+            while name in self.random_channel_names:
+                name = "channel_" + "".join(random.choice(letters) for i in range(4))
+            self.random_channel_names.add(name)
+
         if channel_type is None:
             channel_type = self.default_channel_type
-        self.channels_prototypes[name] = (channel_type, channel_kwargs)
 
-    def connect(self, node, ip_addr=None, channel_name="default"):
-        """Adds one node to the network.
-
-        This is comparable to inserting a cable between them.
-
-        Parameters
-        ----------
-        node : :class:`.Node`
-            The node that should be connected to the network. It must be instance a subclass of :class:`.Node`.
-        ip_addr : str
-            The IP address of that node. If :code:`None` an random IP from the network will be assigned.
-            If not :code:`None` the IP address have to be in the range of the network.
-        channel_name : str
-            The name of the channel where the node should be connected to. Default is the default channel.
-        """
-        address = None
-        if ip_addr is not None:
-            address = ipaddress.ip_address(ip_addr)
-            self.allocated_ip_addresses.append(address)
-        if channel_name in self.channels_prototypes:
-            if channel_name not in self.nodes:
-                self.nodes[channel_name] = list()
-            self.nodes[channel_name].append(ConnectedNode(node, address))
-        else:
-            raise ValueError(f"Channel {channel_name} does not exist. You have to create it first.")
+        prototype = ChannelPrototype(self, name, channel_type, channel_kwargs)
+        self.channels_prototypes.append(prototype)
+        return prototype
 
     def block_ip_address(self, ip_addr):
         """Blocks an IP address.
@@ -159,22 +147,20 @@ class Network:
         """
         logger.info('Preparing network (base IP: %s)', self.network)
 
-        for channel_index, channel_name in enumerate(self.channels_prototypes):
-            if channel_name not in self.nodes or len(self.nodes[channel_name]) < 2:
-                logger.warning(f'{channel_name} will not be created because it has not enough nodes inside (2 at least)')
-            else:
-                channel = self.channels_prototypes[channel_name][0](self, channel_name, self.nodes[channel_name],
-                                                                    **self.channels_prototypes[channel_name][1])
-                self.channels.append(channel)
+        for channel_index, channel_prototype in enumerate(self.channels_prototypes):
+            channel = channel_prototype.channel_type(self, channel_prototype.name, channel_prototype.nodes,
+                                                     **channel_prototype.kwargs)
+            channel_prototype.channel = channel
+            self.channels.append(channel)
 
-                if self.color is None:
-                    # Color is needed for a visualization.
-                    color = network_color_for(network_index, len(simulation.scenario.networks))
-                    self.color = color
+            if self.color is None:
+                # Color is needed for a visualization.
+                color = network_color_for(network_index, len(simulation.scenario.networks))
+                self.color = color
 
-                for channel in self.channels:
-                    logger.info('Preparing channel #%d of network %s', channel_index, self.network)
-                    channel.prepare(simulation)
+            for channel in self.channels:
+                logger.info('Preparing channel #%d of network %s', channel_index, self.network)
+                channel.prepare(simulation)
 
     def set_delay(self, delay, channel_name=None):
         """Sets the delay of a specific channel (if name is present) or all channels.
@@ -209,6 +195,73 @@ class Network:
         for channel in self.channels:
             if channel_name is None or channel.channel_name is channel_name:
                 channel.set_speed(speed)
+
+
+class ChannelPrototype:
+    """A channel prototype defines all parameters for the channel creation and offers a method to add nodes.
+
+    Parameters
+    ----------
+    network : :class:`.Network`
+        The network where the channel is located in.
+    name : str
+        The name of the channel.
+    channel_type : class
+        The channel to use.
+        This can be one of :class:`.CSMAChannel` or :class:`.WiFiChannel`.
+    kwargs : dict
+        The parameters of the channel.
+    """
+    def __init__(self, network, name, channel_type, kwargs):
+        self.network = network
+        self.name = name
+        self.channel_type = channel_type
+        self.kwargs = kwargs
+        self.nodes = list()
+        self.channel = None  # After creation, this will be the channel object
+
+    def connect(self, node, ip_addr=None):
+        """Adds one node to the channel.
+
+        Parameters
+        ----------
+        node : :class:`.Node`
+            The node that should be connected to the network. It must be instance a subclass of :class:`.Node`.
+        ip_addr : str
+            The IP address of that node. If :code:`None` an random IP from the network will be assigned.
+            If not :code:`None` the IP address have to be in the range of the network.
+        """
+        address = None
+        if ip_addr is not None:
+            address = ipaddress.ip_address(ip_addr)
+            self.network.allocated_ip_addresses.append(address)
+        self.nodes.append(ConnectedNode(node, address))
+
+    def set_delay(self, delay):
+        """Sets the delay of a specific channel.
+
+        In case of WiFi-Channels, the distance between the nodes is important. The requested delay is configured at 100
+        meters distance. If the distance is smaller, the delay is smaller as well (for example half of the delay at
+        50 meters).
+
+        Parameters
+        ----------
+        delay : str
+            The new time for delay in the channel in seconds (10s) or milliseconds (10ms)
+        """
+        self.channel.set_delay(delay)
+
+    def set_speed(self, speed):
+        """Sets the speed of a specific channel.
+
+        *Warning:* So far this only has an effect before the simulation is started.
+
+        Parameters
+        ----------
+        speed : str
+            The new speed
+        """
+        self.channel.set_speed(speed)
 
 
 class ConnectedNode:

@@ -61,7 +61,7 @@ class WiFiChannel(Channel):
         #: Standard from 2013.
         WIFI_802_11ac = wifi.WIFI_PHY_STANDARD_80211ac
         #: "WiFi 6".
-        WIFI_802_11ax = wifi.WIFI_PHY_STANDARD_80211ax
+        #WIFI_802_11ax = wifi.WIFI_PHY_STANDARD_80211ax
         #: Wireless Access in Vehicular Environments (WAVE).
         WIFI_802_11p = wifi.WIFI_PHY_STANDARD_80211_10MHZ
 
@@ -281,23 +281,27 @@ class WiFiChannel(Channel):
             self.wifi_phy_helper.EnablePcap(pcap_log_path, interface.ns3_device, True, True)
 
     def set_delay(self, delay):
-        logger.info(f'Set delay of channel {self.channel_name} to {delay}')
+        logger.info(f"Set delay of channel {self.channel_name} to {delay}")
 
-        if re.match("^\d+ms", delay):
-            self.delay = delay
-        elif re.match("^\d+s", delay):
-            self.delay = str(int(delay[:-1])*1000)+"ms"
-        else:
+        pattern = re.compile("(\\d+)(m?s)$")
+        match_result = pattern.search(delay)
+        if match_result is None:
             raise ValueError("Delay has to be in seconds or milliseconds.")
+
+        delay = match_result.group(1)
+        if match_result.group(2) == "s":
+            delay = delay * 1000
+        delay = str(delay) + "ms"
+        self.delay = delay
 
         if self.propagation_delay_model is not None:
             # Check if the given delay should be 0. The regex defines all supported time modes.
-            if delay is "0ms":
+            if delay == "0ms":
                 self.propagation_delay_model.SetSpeed(299792458)  # Light Speed
             else:
                 # Initial setup: 100ms one-way means 1000 m/s speed
-                self.propagation_delay_model.SetSpeed((100.0/int(delay[:-2]))*1000.0)
+                self.propagation_delay_model.SetSpeed((100.0 / int(delay[:-2])) * 1000.0)
 
     def set_data_rate(self, data_rate):
-        logger.info(f'Set delay of channel {self.channel_name} to {data_rate}')
+        logger.info(f"Set delay of channel {self.channel_name} to {data_rate}")
         self.data_rate = data_rate  # This have no effect after creating the network so far.

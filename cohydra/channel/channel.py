@@ -25,6 +25,9 @@ class Channel:
     """
 
     def __init__(self, network, channel_name, nodes):
+        if len(nodes) < 2:
+            raise ValueError(f"The channel {channel_name} has less than 2 nodes. Abort.")
+
         #: The network the channel belongs to.
         self.network = network
 
