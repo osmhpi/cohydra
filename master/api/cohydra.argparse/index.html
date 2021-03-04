@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.context/">cohydra.context</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.events/">cohydra.events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.interface/">cohydra.interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cohydra.mobility_input/">cohydra.mobility_input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.network/">cohydra.network</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.node/">cohydra.node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cohydra.scenario/">cohydra.scenario</a></li>
@@ -202,7 +201,7 @@
 </div>
 <dl class="class">
 <dt id="cohydra.argparse.ArgumentParser">
-<em class="property">class </em><code class="sig-prename descclassname">cohydra.argparse.</code><code class="sig-name descname">ArgumentParser</code><span class="sig-paren">(</span><em class="sig-param">prog=None</em>, <em class="sig-param">usage=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">epilog=None</em>, <em class="sig-param">parents=[]</em>, <em class="sig-param">formatter_class=&lt;class 'argparse.HelpFormatter'&gt;</em>, <em class="sig-param">prefix_chars='-'</em>, <em class="sig-param">fromfile_prefix_chars=None</em>, <em class="sig-param">argument_default=None</em>, <em class="sig-param">conflict_handler='error'</em>, <em class="sig-param">add_help=True</em>, <em class="sig-param">allow_abbrev=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/argparse/#ArgumentParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cohydra.argparse.</code><code class="sig-name descname">ArgumentParser</code><span class="sig-paren">(</span><em class="sig-param">prog=None</em>, <em class="sig-param">usage=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">epilog=None</em>, <em class="sig-param">version=None</em>, <em class="sig-param">parents=[]</em>, <em class="sig-param">formatter_class=&lt;class 'argparse.HelpFormatter'&gt;</em>, <em class="sig-param">prefix_chars='-'</em>, <em class="sig-param">fromfile_prefix_chars=None</em>, <em class="sig-param">argument_default=None</em>, <em class="sig-param">conflict_handler='error'</em>, <em class="sig-param">add_help=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/argparse/#ArgumentParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></p>
 <p>A simple-to-use argument parser for log levels.</p>
 <p>ArgumentParser by default defines the <cite>–verbose</cite> and <cite>–log-level</cite> flag.
@@ -280,6 +279,11 @@ should either exit or raise an exception.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="cohydra.argparse.ArgumentParser.format_version">
+<code class="sig-name descname">format_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/argparse/#ArgumentParser.format_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser.format_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="cohydra.argparse.ArgumentParser.get_default">
 <code class="sig-name descname">get_default</code><span class="sig-paren">(</span><em class="sig-param">dest</em><span class="sig-paren">)</span><a class="headerlink" href="#cohydra.argparse.ArgumentParser.get_default" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -290,18 +294,8 @@ should either exit or raise an exception.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="cohydra.argparse.ArgumentParser.parse_intermixed_args">
-<code class="sig-name descname">parse_intermixed_args</code><span class="sig-paren">(</span><em class="sig-param">args=None</em>, <em class="sig-param">namespace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/argparse/#ArgumentParser.parse_intermixed_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser.parse_intermixed_args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="cohydra.argparse.ArgumentParser.parse_known_args">
 <code class="sig-name descname">parse_known_args</code><span class="sig-paren">(</span><em class="sig-param">args=None</em>, <em class="sig-param">namespace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/argparse/#ArgumentParser.parse_known_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser.parse_known_args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="cohydra.argparse.ArgumentParser.parse_known_intermixed_args">
-<code class="sig-name descname">parse_known_intermixed_args</code><span class="sig-paren">(</span><em class="sig-param">args=None</em>, <em class="sig-param">namespace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/argparse/#ArgumentParser.parse_known_intermixed_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser.parse_known_intermixed_args" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -312,6 +306,11 @@ should either exit or raise an exception.</p>
 <dl class="method">
 <dt id="cohydra.argparse.ArgumentParser.print_usage">
 <code class="sig-name descname">print_usage</code><span class="sig-paren">(</span><em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/argparse/#ArgumentParser.print_usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser.print_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cohydra.argparse.ArgumentParser.print_version">
+<code class="sig-name descname">print_version</code><span class="sig-paren">(</span><em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/argparse/#ArgumentParser.print_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.argparse.ArgumentParser.print_version" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -355,7 +354,7 @@ should either exit or raise an exception.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Arne Boockmeyer, Martin Michaelis, Felix Gohla
+        &copy; Copyright 2021, Arne Boockmeyer, Martin Michaelis, Felix Gohla
 
     </p>
   </div> 
