@@ -108,7 +108,7 @@ class Network:
                 self.nodes[channel_name] = list()
             self.nodes[channel_name].append(ConnectedNode(node, address))
         else:
-            raise ValueError(f"Channel {channel_name} does not exists. You have to create it before.")
+            raise ValueError(f"Channel {channel_name} does not exist. You have to create it first.")
 
     def block_ip_address(self, ip_addr):
         """Blocks an IP address.
@@ -197,7 +197,7 @@ class Network:
     def set_speed(self, speed, channel_name=None):
         """Sets the speed of a specific channel (if name is present) or all channels.
 
-        *Warning:* Sofar this has only effect when happening before simulation start.
+        *Warning:* So far this only has an effect before the simulation is started.
 
         Parameters
         ----------
