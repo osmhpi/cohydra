@@ -1,4 +1,4 @@
-export NS3_TAG ?= 3.30
+export NS3_TAG ?= 3.33
 export SUMO_TAG ?= 1.4.0
 COHYDRA_TAG ?= $(shell if [ -z "`git status --porcelain`" ]; then git rev-parse --short HEAD; else echo dirty; fi)
 export COHYDRA_TAG := ${COHYDRA_TAG}
@@ -20,10 +20,10 @@ else
 endif
 
 
-latest: git-is-clean all
-	docker tag osmhpi/cohydra:base-${COHYDRA_TAG} osmhpi/cohydra:base
-	docker tag osmhpi/cohydra:${COHYDRA_TAG} osmhpi/cohydra:latest
-	docker tag osmhpi/cohydra:dev-${COHYDRA_TAG} osmhpi/cohydra:dev
+latest:
+	docker tag osmhpi/cohydra:base-${COHYDRA_TAG} osmhpi/cohydra:base || true
+	docker tag osmhpi/cohydra:${COHYDRA_TAG} osmhpi/cohydra:latest 	  || true
+	docker tag osmhpi/cohydra:dev-${COHYDRA_TAG} osmhpi/cohydra:dev   || true
 
 cohydra-base:
 	${docker_build} -t osmhpi/cohydra:base-${COHYDRA_TAG} docker/cohydra-base
