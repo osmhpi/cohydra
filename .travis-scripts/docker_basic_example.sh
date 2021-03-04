@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-docker build -t osmhpi/cohydra -f docker/Dockerfile .
+make cohydra-base cohydra latest
 
 cd examples
 
