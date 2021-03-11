@@ -10,12 +10,13 @@ def main():
     node1 = DockerNode('pong', docker_build_dir='./docker/pong')
     node2 = SwitchNode('bridge-1')
     node3 = SSHNode('ping', '10.243.42.11')
-    net.create_channel("channel1")
-    net.create_channel("channel2")
-    net.connect(node1, channel_name="channel1")
-    net.connect(node2, channel_name="channel1")
-    net.connect(node2, channel_name="channel2")
-    net.connect(node3, channel_name="channel2")
+
+    channel1 = net.create_channel("channel1")
+    channel1.connect(node1)
+    channel1.connect(node2)
+    channel2 = net.create_channel("channel2")
+    channel2.connect(node2)
+    channel2.connect(node3)
 
     scenario.add_network(net)
     with scenario as sim:

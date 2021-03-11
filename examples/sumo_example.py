@@ -12,8 +12,9 @@ def main():
 
     switch = DockerNode('switch', docker_build_dir='./docker/sumo', command="java FileServer")
     train = DockerNode('train', docker_build_dir='./docker/sumo', command="java FileClient")
-    net.connect(train)
-    net.connect(switch)
+    channel = net.create_channel()
+    channel.connect(train)
+    channel.connect(switch)
 
     scenario.add_network(net)
 

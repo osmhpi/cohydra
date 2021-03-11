@@ -13,8 +13,9 @@ def main():
     node2.set_position(5, 50, 0)
     # Also have a look at the WiFiChannel initializer. There are some more options you can configure.
     # E.g. the WiFi standard, transmit power and channel number can be set.
-    net.connect(node1)
-    net.connect(node2)
+    channel = net.create_channel()
+    channel.connect(node1)
+    channel.connect(node2)
 
     scenario.add_network(net)
 
