@@ -10,8 +10,14 @@ def main():
     node1 = DockerNode('ping', docker_build_dir='./docker/ping')
     node2 = SwitchNode('bridge-1')
     node3 = DockerNode('pong', docker_build_dir='./docker/pong')
-    net.connect(node1, node2, delay='200ms')
-    net.connect(node2, node3, delay='200ms')
+
+    channel1 = net.create_channel(delay="200ms")
+    channel1.connect(node1)
+    channel1.connect(node2)
+
+    channel2 = net.create_channel(delay="200ms")
+    channel2.connect(node2)
+    channel2.connect(node3)
 
     scenario.add_network(net)
     with scenario as sim:
