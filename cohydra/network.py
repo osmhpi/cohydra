@@ -7,6 +7,7 @@ import random
 
 from .channel import CSMAChannel
 from .util import network_color_for
+from .node import SwitchNode
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +49,7 @@ class Network:
         #: The list of random generated channel names to avoid duplicates
         self.random_channel_names = set()
         #: The list of the connected nodes
-        self.nodes = {}
+        self.nodes = list()
         #: The list of already allocated ip addresses
         self.allocated_ip_addresses = list()
 
@@ -158,9 +159,9 @@ class Network:
                 color = network_color_for(network_index, len(simulation.scenario.networks))
                 self.color = color
 
-            for channel in self.channels:
-                logger.info('Preparing channel #%d of network %s', channel_index, self.network)
-                channel.prepare(simulation)
+        for channel in self.channels:
+            logger.info('Preparing channel #%d of network %s', channel_index, self.network)
+            channel.prepare(simulation)
 
     def set_delay(self, delay, channel_name=None):
         """Sets the delay of a specific channel (if name is present) or all channels.
@@ -223,6 +224,9 @@ class ChannelPrototype:
     def connect(self, node, ip_addr=None):
         """Adds one node to the channel.
 
+        Please note: Every node can only be added to one channel in the same network. Otherwise proper routing is not
+        possible. Use SwitchNode to connect channels.
+
         Parameters
         ----------
         node : :class:`.Node`
@@ -231,11 +235,15 @@ class ChannelPrototype:
             The IP address of that node. If :code:`None` an random IP from the network will be assigned.
             If not :code:`None` the IP address have to be in the range of the network.
         """
+        if node in self.network.nodes and not isinstance(node, SwitchNode):
+            raise ValueError("Every node can only be in one channel of a network.")
+
         address = None
         if ip_addr is not None:
             address = ipaddress.ip_address(ip_addr)
             self.network.allocated_ip_addresses.append(address)
         self.nodes.append(ConnectedNode(node, address))
+        self.network.nodes.append(node)
 
     def set_delay(self, delay):
         """Sets the delay of a specific channel.
