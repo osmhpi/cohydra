@@ -389,6 +389,8 @@ This can be one of <a class="reference internal" href="../cohydra.channel.csma/#
 <dt id="cohydra.network.ChannelPrototype.connect">
 <code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">ip_addr=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cohydra/network/#ChannelPrototype.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cohydra.network.ChannelPrototype.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds one node to the channel.</p>
+<p>Please note: Every node can only be added to one channel in the same network. Otherwise proper routing is not
+possible. Use SwitchNode to connect channels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

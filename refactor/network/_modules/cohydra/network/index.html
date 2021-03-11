@@ -161,6 +161,7 @@
 
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">CSMAChannel</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">network_color_for</span>
+<span class="kn">from</span> <span class="nn">.node</span> <span class="kn">import</span> <span class="n">SwitchNode</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -202,7 +203,7 @@
         <span class="c1">#: The list of random generated channel names to avoid duplicates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_channel_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="c1">#: The list of the connected nodes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="c1">#: The list of already allocated ip addresses</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allocated_ip_addresses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
@@ -312,9 +313,9 @@
                 <span class="n">color</span> <span class="o">=</span> <span class="n">network_color_for</span><span class="p">(</span><span class="n">network_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">networks</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 
-            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing channel #</span><span class="si">%d</span><span class="s1"> of network </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">channel_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
-                <span class="n">channel</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span></div>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing channel #</span><span class="si">%d</span><span class="s1"> of network </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">channel_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
+            <span class="n">channel</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Network.set_delay"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.Network.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets the delay of a specific channel (if name is present) or all channels.</span>
@@ -377,6 +378,9 @@
 <div class="viewcode-block" id="ChannelPrototype.connect"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ChannelPrototype.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ip_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds one node to the channel.</span>
 
+<span class="sd">        Please note: Every node can only be added to one channel in the same network. Otherwise proper routing is not</span>
+<span class="sd">        possible. Use SwitchNode to connect channels.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        node : :class:`.Node`</span>
@@ -385,11 +389,15 @@
 <span class="sd">            The IP address of that node. If :code:`None` an random IP from the network will be assigned.</span>
 <span class="sd">            If not :code:`None` the IP address have to be in the range of the network.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">SwitchNode</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Every node can only be in one channel of a network.&quot;</span><span class="p">)</span>
+
         <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">ip_addr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">address</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip_addr</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">allocated_ip_addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ConnectedNode</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">address</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ConnectedNode</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">address</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ChannelPrototype.set_delay"><a class="viewcode-back" href="../../../api/cohydra.network/#cohydra.network.ChannelPrototype.set_delay">[docs]</a>    <span class="k">def</span> <span class="nf">set_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets the delay of a specific channel.</span>
