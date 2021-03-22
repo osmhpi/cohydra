@@ -1,3 +1,7 @@
+# Marvis
+
+This tool was renamed to Marvis. See the new repository: https://github.com/diselab/marvis
+
 # cohydra
 
 [![master](https://api.travis-ci.com/osmhpi/cohydra.svg?branch=master)](https://travis-ci.com/osmhpi/cohydra)
