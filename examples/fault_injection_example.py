@@ -19,7 +19,7 @@ def main():
     @scenario.workflow
     def increase_delay(workflow):
         workflow.sleep(60)
-        net.set_delay("50ms")  # Inject a fault by increasing the delay to 400ms
+        net.set_delay("50ms")  # Inject a fault by increasing the delay to 50ms
 
     with scenario as sim:
         # To simulate forever, just do not specifiy the simulation_time parameter.
